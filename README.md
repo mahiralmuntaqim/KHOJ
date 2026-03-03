@@ -7,8 +7,11 @@ SRS link - https://docs.google.com/document/d/1GEd0g9geeg6B3my4WG3xLLmd8j0CpuUY/
 
 #Team Memebers list-
 Imran Ahmed Upon (ID-23201634)
+
 Mahir Al Muntaqim (ID-23201151)
+
 Atik Joyad (ID-22101553)
+
 Rifat Farzad Azad (ID-22301353)
 
 Tech Description-
