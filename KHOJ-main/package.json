@@ -1,0 +1,14 @@
+{
+  "name": "khoj-main",
+  "version": "1.0.0",
+  "description": "KHOJ service marketplace backend and static frontend",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mongoose": "^7.5.3"
+  }
+}
