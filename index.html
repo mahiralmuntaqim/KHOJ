@@ -11,7 +11,6 @@
 </head>
 <body>
 
-  <!-- ── NAVBAR ── -->
   <header class="navbar">
     <div class="container nav-inner">
       <a href="#" class="logo">KHOJ<span class="logo-dot">.</span></a>
@@ -19,7 +18,7 @@
         <a href="#services">Services</a>
         <a href="#rentals">Rentals</a>
         <a href="#how">How it works</a>
-        <a href="#" class="btn-outline">Sign In</a>
+        <a href="#demo-section" class="btn-outline" onclick="document.getElementById('swapToSignin').click()">Sign In</a>
         <a href="#" class="btn-primary">Get Started</a>
       </nav>
       <button class="hamburger" id="hamburger" aria-label="Menu">
@@ -35,7 +34,6 @@
     </div>
   </header>
 
-  <!-- ── HERO ── -->
   <section class="hero">
     <div class="hero-bg-shape"></div>
     <div class="container hero-inner">
@@ -75,7 +73,6 @@
     </div>
   </section>
 
-  <!-- ── STATS ── -->
   <div class="stats-strip">
     <div class="container stats-inner">
       <div class="stat-item">
@@ -100,7 +97,6 @@
     </div>
   </div>
 
-  <!-- ── SEARCH ── -->
   <section class="search-section">
     <div class="container">
       <div class="search-box">
@@ -128,7 +124,6 @@
     </div>
   </section>
 
-  <!-- ── SERVICES ── -->
   <section class="section" id="services">
     <div class="container">
       <div class="section-header">
@@ -238,7 +233,6 @@
     </div>
   </section>
 
-  <!-- ── RENTALS ── -->
   <section class="section section-alt" id="rentals">
     <div class="container">
       <div class="section-header">
@@ -314,7 +308,6 @@
     </div>
   </section>
 
-  <!-- ── HOW IT WORKS ── -->
   <section class="section" id="how">
     <div class="container">
       <div class="section-header center">
@@ -351,8 +344,174 @@
       </div>
     </div>
   </section>
+  
+  <section class="section section-alt" id="demo-section" style="border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+    <div class="container">
+      <div class="section-header center">
+        <div>
+          <h2 class="section-title">Login Or Signup Here!</h2>
+        </div>
+      </div>
 
-  <!-- ── CTA BANNER ── -->
+      <div id="auth-view" style="max-width: 500px; margin: 0 auto; background: var(--white); padding: 32px; border-radius: var(--radius-lg); border: 1px solid var(--border); box-shadow: var(--shadow-sm);">
+        
+        <div id="signin-box">
+          <h3 style="margin-bottom: 20px; text-align: center;">Sign In to KHOJ</h3>
+          <form id="demoSigninForm">
+            <input type="text" id="demoInIdentifier" class="search-input" style="width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 12px; padding: 12px;" placeholder="Email or Phone Number" required>
+            <input type="password" id="demoInPass" class="search-input" style="width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 12px; padding: 12px;" placeholder="Password" required>
+            <button type="submit" class="btn-primary" style="width: 100%;">Sign In</button>
+          </form>
+          <div id="demoSigninStatus" class="status-msg"></div>
+          <p style="text-align: center; margin-top: 15px; font-size: 13px; color: var(--text-muted);">
+            Need an account? <a href="#demo-section" id="swapToSignup" style="color: var(--green); font-weight: 600;">Register here</a>
+          </p>
+        </div>
+
+        <div id="signup-box" style="display: none;">
+          <h3 style="margin-bottom: 20px; text-align: center;">Create Account</h3>
+          <form id="demoSignupForm">
+            <input type="text" id="demoUpName" class="search-input" style="width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 12px; padding: 12px;" placeholder="Full Name" required>
+            <input type="text" id="demoUpPhone" class="search-input" style="width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 12px; padding: 12px;" placeholder="Phone Number" required>
+            <input type="email" id="demoUpEmail" class="search-input" style="width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 12px; padding: 12px;" placeholder="Email Address" required>
+            <input type="password" id="demoUpPass" class="search-input" style="width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 12px; padding: 12px;" placeholder="Password" required>
+            <select id="demoUpRole" class="search-input" style="width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 12px; padding: 12px; background: white;" required>
+              <option value="" disabled selected>Select Role...</option>
+              <option value="customer">Customer</option>
+              <option value="provider">Provider</option>
+            </select>
+            <button type="submit" class="btn-outline" style="width: 100%;">Register</button>
+          </form>
+          <div id="demoSignupStatus" class="status-msg"></div>
+          <p style="text-align: center; margin-top: 15px; font-size: 13px; color: var(--text-muted);">
+            Have an account? <a href="#demo-section" id="swapToSignin" style="color: var(--green); font-weight: 600;">Sign in</a>
+          </p>
+        </div>
+      </div>
+
+      <div id="app-view" style="display: none;">
+        
+        <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 24px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
+          <div style="font-size: 14px;">
+            Logged in as: <strong id="loggedName" style="color: var(--green-dark);">...</strong> 
+            (<span id="loggedRole" style="text-transform: capitalize;">...</span>) | 
+            <span style="color: var(--text-faint); font-family: monospace;">ID: <span id="loggedId">...</span></span>
+          </div>
+          <button id="demoLogoutBtn" class="btn-outline" style="padding: 6px 12px; font-size: 12px; color: #d85a30; border-color: #d85a30;">Logout</button>
+        </div>
+
+        <div id="customer-view" style="display: none; text-align: center; background: var(--white); padding: 48px 24px; border-radius: var(--radius-lg); border: 1px solid var(--border); box-shadow: var(--shadow-sm);">
+            <div style="font-size: 48px; margin-bottom: 16px;">👋</div>
+            <h3 style="font-size: 24px; margin-bottom: 8px; font-family: 'Fraunces', serif;">Welcome back to KHOJ!</h3>
+            <p style="color: var(--text-muted); margin-bottom: 32px;">Your one-stop destination for trusted local services and rentals.</p>
+            <a href="#services" class="btn-primary btn-lg" style="text-decoration: none;">Browse Available Services</a>
+        </div>
+
+        <div id="provider-view" style="display: none; background: var(--white); padding: 32px; border-radius: var(--radius-lg); border: 1px solid var(--border); max-width: 600px; margin: 0 auto; box-shadow: var(--shadow-sm);">
+            
+            <div id="prov-unverified">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                    <span style="font-size: 24px;">🛡️</span>
+                    <h3 style="font-size: 20px; font-family: 'Fraunces', serif;">Identity Verification</h3>
+                </div>
+                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">To ensure platform safety and start receiving bookings, please submit your National ID.</p>
+                
+                <form id="demoNidForm">
+                  <label style="font-size: 12px; font-weight: bold; color: var(--text-muted); display: block; margin-bottom: 4px;">Your User ID</label>
+                  <input type="text" id="demoNidUserId" class="search-input" style="width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 16px; padding: 12px; background: var(--bg-alt); color: var(--text-muted);" readonly>
+                  
+                  <label style="font-size: 12px; font-weight: bold; color: var(--text-muted); display: block; margin-bottom: 4px;">NID Number</label>
+                  <input type="text" id="demoNidNum" class="search-input" style="width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 24px; padding: 12px;" placeholder="e.g. 1998765432109" required>
+                  
+                  <button type="submit" class="btn-primary" style="width: 100%; padding: 14px;">Submit Document for Review</button>
+                </form>
+                <div id="demoNidStatus" class="status-msg"></div>
+            </div>
+
+            <div id="prov-pending" style="display: none; text-align: center; padding: 20px 0;">
+                <div style="font-size: 48px; margin-bottom: 16px;">⏳</div>
+                <h3 style="font-size: 22px; margin-bottom: 8px; font-family: 'Fraunces', serif;">Verification Pending</h3>
+                <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6;">Your National ID document has been submitted and is currently under review by our admin team.<br>Please check back shortly.</p>
+            </div>
+
+            <div id="prov-verified" style="display: none; text-align: center; padding: 20px 0;">
+                <div style="font-size: 48px; margin-bottom: 16px;">✅</div>
+                <h3 style="font-size: 22px; margin-bottom: 8px; font-family: 'Fraunces', serif; color: var(--green-dark);">Identity Verified</h3>
+                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 32px;">Congratulations! You are now an official KHOJ Verified Provider. You can start offering your services to customers.</p>
+                
+                <div style="border-top: 1px dashed var(--border); padding-top: 32px; text-align: left;">
+                    <h4 style="margin-bottom: 16px; font-size: 16px;">Provider Dashboard</h4>
+                    <button class="btn-primary" style="width: 100%; padding: 14px; font-size: 15px; display: flex; justify-content: center; align-items: center; gap: 8px;">
+                        <span>➕</span> Create New Service Listing
+                    </button>
+                    <button class="btn-outline" style="width: 100%; margin-top: 12px; padding: 14px; font-size: 15px;">View My Active Bookings</button>
+                </div>
+            </div>
+
+            <div id="prov-rejected" style="display: none; text-align: center; padding: 20px 0;">
+                <div style="font-size: 48px; margin-bottom: 16px;">❌</div>
+                <h3 style="font-size: 22px; margin-bottom: 8px; font-family: 'Fraunces', serif; color: #c62828;">Verification Rejected</h3>
+                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">Your NID was not approved. Please verify with valid documents to work with us.</p>
+                <button id="demoRetryNidBtn" class="btn-outline" style="padding: 10px 20px; border-color: #c62828; color: #c62828;">Submit Documents Again</button>
+            </div>
+        </div>
+
+        <div id="admin-view" style="display: none;">
+            
+            <div style="background: var(--white); padding: 32px; border-radius: var(--radius-lg); border: 1px solid var(--border); margin-bottom: 24px; box-shadow: var(--shadow-sm);">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
+                    <div>
+                        <h3 style="margin-bottom: 6px; font-size: 22px; font-family: 'Fraunces', serif;">Admin Control Center</h3>
+                        <p style="font-size: 13px; color: var(--text-faint);">Real-time financial and demographic analytics.</p>
+                    </div>
+                    <button id="demoLoadDashBtn" class="btn-primary" style="padding: 10px 20px;">Refresh Data 🔄</button>
+                </div>
+                <div id="demoDashStatus" class="status-msg" style="margin-bottom: 20px;"></div>
+
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+                  <div style="background: linear-gradient(135deg, var(--green-dark), var(--green)); color: white; padding: 24px; border-radius: var(--radius-md); text-align: center; box-shadow: 0 4px 12px rgba(29,158,117,0.3);">
+                    <div style="font-size: 12px; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Total Revenue</div>
+                    <div id="dashResRev" style="font-size: 32px; font-weight: bold; font-family: 'Fraunces', serif;">৳0</div>
+                  </div>
+                  <div style="background: var(--bg-alt); padding: 24px; border-radius: var(--radius-md); text-align: center; border: 1px solid var(--border);">
+                    <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Transactions</div>
+                    <div id="dashResTx" style="font-size: 32px; font-weight: bold; color: var(--text); font-family: 'Fraunces', serif;">0</div>
+                  </div>
+                  <div style="background: var(--bg-alt); padding: 24px; border-radius: var(--radius-md); text-align: center; border: 1px solid var(--border);">
+                    <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Providers</div>
+                    <div id="dashResPro" style="font-size: 32px; font-weight: bold; color: var(--text); font-family: 'Fraunces', serif;">0</div>
+                  </div>
+                  <div style="background: var(--bg-alt); padding: 24px; border-radius: var(--radius-md); text-align: center; border: 1px solid var(--border);">
+                    <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Customers</div>
+                    <div id="dashResCus" style="font-size: 32px; font-weight: bold; color: var(--text); font-family: 'Fraunces', serif;">0</div>
+                  </div>
+                </div>
+            </div>
+
+            <div style="background: #fffdfa; padding: 24px; border-radius: var(--radius-lg); border: 1px solid #ffe0b2;">
+                
+                <h3 style="margin-bottom: 8px; font-size: 18px; color: #d85a30; font-family: 'Fraunces', serif;">Action Required: Pending NIDs</h3>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Review provider identities below.</p>
+                
+                <div id="adminPendingList" style="margin-bottom: 24px;">
+                    <p style="font-size: 13px; color: var(--text-faint);">Loading pending requests...</p>
+                </div>
+
+                <h3 style="margin-bottom: 12px; font-size: 16px; color: var(--green-dark); font-family: 'Fraunces', serif; border-top: 1px dashed #ffe0b2; padding-top: 20px;">Approved Providers</h3>
+                <details style="background: white; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px;">
+                    <summary style="font-size: 14px; font-weight: bold; cursor: pointer; color: var(--text); outline: none;">View Verified NIDs 🔽</summary>
+                    <div id="adminApprovedList" style="margin-top: 12px; font-size: 13px; max-height: 200px; overflow-y: auto; padding-top: 12px; border-top: 1px solid var(--border);">
+                        </div>
+                </details>
+
+            </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+  
   <section class="cta-section">
     <div class="container cta-inner">
       <div class="cta-text">
@@ -366,7 +525,6 @@
     </div>
   </section>
 
-  <!-- ── TESTIMONIALS ── -->
   <section class="section section-alt">
     <div class="container">
       <div class="section-header center">
@@ -413,7 +571,6 @@
     </div>
   </section>
 
-  <!-- ── FOOTER ── -->
   <footer class="footer">
     <div class="container footer-inner">
       <div class="footer-brand">

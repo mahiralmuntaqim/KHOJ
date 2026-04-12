@@ -864,3 +864,7 @@ a { text-decoration: none; color: inherit; }
   .rentals-grid { grid-template-columns: 1fr; }
   .footer-links { grid-template-columns: 1fr 1fr; }
 }
+/* ── RIFAT'S DEMO STYLES ── */
+.status-msg { margin-top: 12px; padding: 10px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; text-align: center; display: none; }
+.msg-success { background: var(--green-light); color: var(--green-dark); display: block; }
+.msg-error { background: #ffebee; color: #c62828; display: block; }

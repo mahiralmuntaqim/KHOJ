@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
-    phone: { type: String, required: true, unique: true }, // For Feature 1: OTP
+    phone: { type: String, required: true },
+    email: { type: String, required: true }, // Added Email Field
     password: { type: String, required: true },
     role: { 
         type: String, 

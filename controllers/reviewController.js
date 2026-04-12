@@ -1,14 +1,14 @@
-const Review = require('../review');
-const Booking = require('../booking');
-const Listing = require('../listings');
-require('../user');
+const Review = require('../models/review');
+const Booking = require('../models/booking');
+const Listing = require('../models/listings');
+const User = require('../models/user'); // Ensure User is required for populate
 
 const submitReview = async (req, res) => {
   try {
     const { bookingId, rating, title, comment } = req.body;
     const booking = await Booking.findById(bookingId).populate({
       path: 'listing',
-      populate: { path: 'provider' }
+      populate: { path: 'provider', model: 'User' }
     }).populate('customer');
     if (!booking) {
       return res.status(404).json({ message: 'Booking not found' });
@@ -27,7 +27,7 @@ const submitReview = async (req, res) => {
       booking: booking._id,
       listing: booking.listing._id,
       customer: booking.customer._id,
-      provider: booking.listing.provider,
+      provider: booking.listing.provider._id,
       rating,
       title,
       comment,
@@ -35,6 +35,7 @@ const submitReview = async (req, res) => {
       isVerified: true
     });
 
+    // Update listing average rating
     const listing = await Listing.findById(booking.listing._id);
     if (listing) {
       const totalRating = listing.averageRating * listing.reviewCount + rating;
@@ -54,6 +55,7 @@ const getListingReviews = async (req, res) => {
   try {
     const { listingId } = req.params;
     const reviews = await Review.find({ listing: listingId, status: 'published' })
+      .populate('customer', 'name')
       .sort({ createdAt: -1 });
     return res.status(200).json(reviews);
   } catch (error) {
@@ -65,7 +67,7 @@ const getListingReviews = async (req, res) => {
 const getBookingReview = async (req, res) => {
   try {
     const { bookingId } = req.params;
-    const review = await Review.findOne({ booking: bookingId });
+    const review = await Review.findOne({ booking: bookingId }).populate('customer provider');
     if (!review) {
       return res.status(404).json({ message: 'Review not found' });
     }
