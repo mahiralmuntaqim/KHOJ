@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const reviewController = require('../controllers/reviewController');
+const reviewController = require('../Database/SRC/SRC/controllers/review');
 
 router.post('/', reviewController.submitReview);
 router.get('/listing/:listingId', reviewController.getListingReviews);

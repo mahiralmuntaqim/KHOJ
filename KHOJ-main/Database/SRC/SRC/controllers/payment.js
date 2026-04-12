@@ -1,4 +1,4 @@
-const Booking = require('../models/booking');
+const Booking = require('../booking');
 
 const createPaymentRecord = async (req, res) => {
   try {

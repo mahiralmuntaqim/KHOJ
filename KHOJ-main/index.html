@@ -19,8 +19,8 @@
         <a href="#services">Services</a>
         <a href="#rentals">Rentals</a>
         <a href="#how">How it works</a>
-        <a href="#" class="btn-outline">Sign In</a>
-        <a href="#" class="btn-primary">Get Started</a>
+        <a href="#" class="btn-outline" id="signInTrigger">Sign In</a>
+        <a href="#" class="btn-primary" id="getStartedTrigger">Get Started</a>
       </nav>
       <button class="hamburger" id="hamburger" aria-label="Menu">
         <span></span><span></span><span></span>
@@ -30,10 +30,39 @@
       <a href="#services">Services</a>
       <a href="#rentals">Rentals</a>
       <a href="#how">How it works</a>
-      <a href="#" class="btn-outline">Sign In</a>
-      <a href="#" class="btn-primary">Get Started</a>
+      <a href="#" class="btn-outline" id="mobileSignInTrigger">Sign In</a>
+      <a href="#" class="btn-primary" id="mobileGetStartedTrigger">Get Started</a>
     </div>
   </header>
+
+  <section class="app-status">
+    <div class="container app-status-inner">
+      <div>
+        <p class="section-eyebrow">Account status</p>
+        <h2 class="section-title status-title" id="authStatus">Not signed in</h2>
+        <p class="status-copy" id="bookingStatus">Sign in first, then book any service or rental from the cards below.</p>
+      </div>
+      <div class="status-actions">
+        <button class="btn-outline" id="statusSignInBtn">Sign In</button>
+        <button class="btn-primary" id="statusPaymentBtn" disabled>Pay Latest Booking</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section dashboard-section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <p class="section-eyebrow">Dashboard</p>
+          <h2 class="section-title">Your bookings and payments</h2>
+        </div>
+      </div>
+      <div class="dashboard-empty" id="dashboardEmpty">
+        Sign in to see your bookings, payment method, and payment status here.
+      </div>
+      <div class="dashboard-grid hidden" id="dashboardGrid"></div>
+    </div>
+  </section>
 
   <!-- ── HERO ── -->
   <section class="hero">
@@ -463,6 +492,76 @@
       </div>
     </div>
   </footer>
+
+  <div class="modal-shell hidden" id="authModal">
+    <div class="modal-backdrop" data-close-modal="authModal"></div>
+    <div class="modal-card">
+      <button class="modal-close" data-close-modal="authModal" aria-label="Close">x</button>
+      <p class="section-eyebrow">Access account</p>
+      <h3 class="modal-title">Sign in to continue</h3>
+      <form id="signInForm" class="modal-form">
+        <label>
+          <span>Name</span>
+          <input type="text" id="signInName" placeholder="Your name" />
+        </label>
+        <label>
+          <span>Phone</span>
+          <input type="tel" id="signInPhone" placeholder="01XXXXXXXXX" required />
+        </label>
+        <label>
+          <span>Password</span>
+          <input type="password" id="signInPassword" placeholder="Enter password" required />
+        </label>
+        <button type="submit" class="btn-primary">Sign In</button>
+      </form>
+      <p class="modal-note" id="authFeedback">New phone numbers create a customer account automatically.</p>
+    </div>
+  </div>
+
+  <div class="modal-shell hidden" id="bookingModal">
+    <div class="modal-backdrop" data-close-modal="bookingModal"></div>
+    <div class="modal-card">
+      <button class="modal-close" data-close-modal="bookingModal" aria-label="Close">x</button>
+      <p class="section-eyebrow">Book service</p>
+      <h3 class="modal-title" id="bookingModalTitle">Confirm your booking</h3>
+      <form id="bookingForm" class="modal-form">
+        <label>
+          <span>Selected listing</span>
+          <input type="text" id="bookingListing" readonly />
+        </label>
+        <label>
+          <span>Provider</span>
+          <input type="text" id="bookingProvider" readonly />
+        </label>
+        <label>
+          <span>Preferred date</span>
+          <input type="date" id="bookingDate" required />
+        </label>
+        <button type="submit" class="btn-primary">Create Booking</button>
+      </form>
+      <div class="payment-panel hidden" id="paymentPanel">
+        <p class="modal-note" id="bookingFeedback"></p>
+        <div class="payment-methods">
+          <label class="payment-option">
+            <input type="radio" name="paymentMethod" value="online" checked />
+            <span>Online Payment</span>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="paymentMethod" value="offline" />
+            <span>Offline Payment</span>
+          </label>
+        </div>
+        <div class="payment-hint" id="paymentHint">
+          Online payment confirms instantly with the server.
+        </div>
+        <button class="btn-primary" id="payNowBtn">Confirm Payment</button>
+        <div class="payment-success hidden" id="paymentSuccessCard">
+          <div class="payment-success-badge">Payment Done</div>
+          <p id="paymentSuccessText">Your payment was completed successfully.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
