@@ -1,6 +1,6 @@
-const Booking = require('../booking');
-const Listing = require('../listings');
-const User = require('../user');
+const Booking = require('../models/booking');
+const Listing = require('../models/listings');
+const User = require('../models/user');
 
 const createBooking = async (req, res) => {
   try {
