@@ -1,0 +1,26 @@
+{
+  "name": "khoj",
+  "version": "1.0.0",
+  "description": "Project Description-\r KHOJ is a comprehensive service and space-sharing marketplace designed to bridge the gap between local service providers and customers. The platform facilitates \"Location-Based Discovery,\" allowing users to find everything from professional services to physical rental spaces (rooms, halls, or workspaces) in their immediate vicinity. By integrating robust identity verification through National ID (NID) and OTP Authentication, KHOJ establishes a high-trust environment. The platform features an intelligent ecosystem including smart recommendations, a loyalty-based badge system, and real-time order tracking to ensure a seamless end-to-end experience for both providers and users.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mahiralmuntaqim/KHOJ.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/mahiralmuntaqim/KHOJ/issues"
+  },
+  "homepage": "https://github.com/mahiralmuntaqim/KHOJ#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "mongoose": "^9.4.1"
+  }
+}
