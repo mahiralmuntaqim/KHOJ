@@ -1,6 +1,6 @@
 const Review = require('../models/review');
 const Booking = require('../models/booking');
-const Listing = require('../models/listings');
+const Listing = require('../models/serviceListing'); // FIXED!
 const User = require('../models/user'); // Ensure User is required for populate
 
 const submitReview = async (req, res) => {

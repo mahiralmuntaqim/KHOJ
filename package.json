@@ -11,7 +11,11 @@
     "type": "git",
     "url": "git+https://github.com/mahiralmuntaqim/KHOJ.git"
   },
-  "keywords": ["marketplace", "booking", "service"],
+  "keywords": [
+    "marketplace",
+    "booking",
+    "service"
+  ],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
@@ -21,8 +25,9 @@
   "homepage": "https://github.com/mahiralmuntaqim/KHOJ#readme",
   "dependencies": {
     "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "mongoose": "^9.4.1",
+    "mongoose": "^9.6.0",
     "path": "^0.12.7"
   }
 }

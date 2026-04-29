@@ -1,3 +1,4 @@
+const dotenv = require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -17,9 +18,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // Added for form data
 app.use(express.static(path.join(__dirname, '.'))); // Serve frontend static
 
-mongoose.connect('mongodb://localhost:27017/khojdb')
-    .then(() => console.log('MongoDB Connected successfully!'))
-    .catch(err => console.error('DB Connection Error:', err));
+// --- DATABASE CONNECTION ---
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('✅ MongoDB successfully connected to khojdb!'))
+  .catch((err) => console.error('❌ MongoDB Connection Error:', err));
 
 // Mount Routes
 app.use('/api/users', userRoutes);
