@@ -8,9 +8,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="new-features.css" />
 </head>
 <body>
 
+  <!-- ── NAVBAR ── -->
   <header class="navbar">
     <div class="container nav-inner">
       <a href="#" class="logo">KHOJ<span class="logo-dot">.</span></a>
@@ -18,8 +20,8 @@
         <a href="#services">Services</a>
         <a href="#rentals">Rentals</a>
         <a href="#how">How it works</a>
-        <a href="#demo-section" class="btn-outline" onclick="document.getElementById('swapToSignin').click()">Sign In</a>
-        <a href="#" class="btn-primary">Get Started</a>
+        <a href="#" class="btn-outline" id="signInBtn">Sign In</a>
+        <a href="#" class="btn-primary" id="getStartedBtn">Get Started</a>
       </nav>
       <button class="hamburger" id="hamburger" aria-label="Menu">
         <span></span><span></span><span></span>
@@ -29,11 +31,12 @@
       <a href="#services">Services</a>
       <a href="#rentals">Rentals</a>
       <a href="#how">How it works</a>
-      <a href="#" class="btn-outline">Sign In</a>
-      <a href="#" class="btn-primary">Get Started</a>
+      <a href="#" id="mobileSignIn">Sign In</a>
+      <a href="#" id="mobileGetStarted">Get Started</a>
     </div>
   </header>
 
+  <!-- ── HERO ── -->
   <section class="hero">
     <div class="hero-bg-shape"></div>
     <div class="container hero-inner">
@@ -43,7 +46,7 @@
         <p>Book home repairs, tutors, event planners — or rent appliances, furniture, and electronics. Verified providers. Transparent pricing.</p>
         <div class="hero-actions">
           <a href="#services" class="btn-primary btn-lg">Explore Services</a>
-          <a href="#" class="btn-ghost btn-lg">List Your Service →</a>
+          <a href="#" class="btn-ghost btn-lg" id="listServiceBtn">List Your Service →</a>
         </div>
       </div>
       <div class="hero-card-wrap fade-up delay-2">
@@ -73,6 +76,7 @@
     </div>
   </section>
 
+  <!-- ── STATS ── -->
   <div class="stats-strip">
     <div class="container stats-inner">
       <div class="stat-item">
@@ -97,6 +101,7 @@
     </div>
   </div>
 
+  <!-- ── SEARCH ── -->
   <section class="search-section">
     <div class="container">
       <div class="search-box">
@@ -124,6 +129,83 @@
     </div>
   </section>
 
+  <!-- ── LOCATION DISCOVERY ── (NEW) -->
+  <section class="section section-alt" id="location-discovery">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <p class="section-eyebrow">Near you</p>
+          <h2 class="section-title">Services in your area</h2>
+        </div>
+        <button class="btn-outline" id="detectLocationBtn">📍 Detect My Location</button>
+      </div>
+      <div class="location-bar" id="locationBar">
+        <span class="loc-icon">📍</span>
+        <span id="locationText">Enable location to see nearby services</span>
+        <div class="location-districts">
+          <button class="district-btn active" data-district="all">All Districts</button>
+          <button class="district-btn" data-district="dhaka">Dhaka</button>
+          <button class="district-btn" data-district="chittagong">Chittagong</button>
+          <button class="district-btn" data-district="sylhet">Sylhet</button>
+          <button class="district-btn" data-district="rajshahi">Rajshahi</button>
+          <button class="district-btn" data-district="khulna">Khulna</button>
+          <button class="district-btn" data-district="barisal">Barisal</button>
+        </div>
+      </div>
+      <div class="nearby-grid" id="nearbyGrid">
+        <div class="nearby-card">
+          <div class="nearby-map-pin">🔧</div>
+          <div class="nearby-info">
+            <h4>Reza's Tech Services</h4>
+            <p>AC Repair & Installation</p>
+            <span class="nearby-dist">0.8 km away • Mirpur</span>
+          </div>
+          <div class="nearby-meta">
+            <span class="nearby-rating">★ 4.9</span>
+            <button class="card-btn nearby-book-btn">Book</button>
+          </div>
+        </div>
+        <div class="nearby-card">
+          <div class="nearby-map-pin">🧹</div>
+          <div class="nearby-info">
+            <h4>CleanBD</h4>
+            <p>Deep Home Cleaning</p>
+            <span class="nearby-dist">1.2 km away • Uttara</span>
+          </div>
+          <div class="nearby-meta">
+            <span class="nearby-rating">★ 4.6</span>
+            <button class="card-btn nearby-book-btn">Book</button>
+          </div>
+        </div>
+        <div class="nearby-card">
+          <div class="nearby-map-pin">💻</div>
+          <div class="nearby-info">
+            <h4>TechFix BD</h4>
+            <p>Laptop & PC Repair</p>
+            <span class="nearby-dist">2.1 km away • Dhanmondi</span>
+          </div>
+          <div class="nearby-meta">
+            <span class="nearby-rating">★ 4.7</span>
+            <button class="card-btn nearby-book-btn">Book</button>
+          </div>
+        </div>
+        <div class="nearby-card">
+          <div class="nearby-map-pin">📚</div>
+          <div class="nearby-info">
+            <h4>Nadia Ahmed</h4>
+            <p>HSC Physics & Math Tutor</p>
+            <span class="nearby-dist">3.5 km away • Mirpur</span>
+          </div>
+          <div class="nearby-meta">
+            <span class="nearby-rating">★ 5.0</span>
+            <button class="card-btn nearby-book-btn">Book</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SERVICES ── -->
   <section class="section" id="services">
     <div class="container">
       <div class="section-header">
@@ -155,7 +237,7 @@
               <span class="card-price">৳800 <small>/ visit</small></span>
               <span class="card-rating">★ 4.9 <small>(42)</small></span>
             </div>
-            <button class="card-btn">Book Now</button>
+            <button class="card-btn" onclick="openBookingModal('AC Installation & Servicing', '৳800')">Book Now</button>
           </div>
         </div>
 
@@ -169,7 +251,7 @@
               <span class="card-price">৳500 <small>/ hour</small></span>
               <span class="card-rating">★ 5.0 <small>(18)</small></span>
             </div>
-            <button class="card-btn">Book Now</button>
+            <button class="card-btn" onclick="openBookingModal('HSC Physics & Math Tutor', '৳500')">Book Now</button>
           </div>
         </div>
 
@@ -183,7 +265,7 @@
               <span class="card-price">৳2,500 <small>/ event</small></span>
               <span class="card-rating">★ 4.8 <small>(31)</small></span>
             </div>
-            <button class="card-btn">Book Now</button>
+            <button class="card-btn" onclick="openBookingModal('Birthday Party Decoration', '৳2,500')">Book Now</button>
           </div>
         </div>
 
@@ -197,7 +279,7 @@
               <span class="card-price">৳600 <small>/ session</small></span>
               <span class="card-rating">★ 4.7 <small>(56)</small></span>
             </div>
-            <button class="card-btn">Book Now</button>
+            <button class="card-btn" onclick="openBookingModal('Laptop & PC Repair', '৳600')">Book Now</button>
           </div>
         </div>
 
@@ -211,7 +293,7 @@
               <span class="card-price">৳1,200 <small>/ session</small></span>
               <span class="card-rating">★ 4.6 <small>(73)</small></span>
             </div>
-            <button class="card-btn">Book Now</button>
+            <button class="card-btn" onclick="openBookingModal('Deep Home Cleaning', '৳1,200')">Book Now</button>
           </div>
         </div>
 
@@ -225,7 +307,7 @@
               <span class="card-price">৳700 <small>/ visit</small></span>
               <span class="card-rating">★ 4.8 <small>(29)</small></span>
             </div>
-            <button class="card-btn">Book Now</button>
+            <button class="card-btn" onclick="openBookingModal('Plumbing & Pipe Fixing', '৳700')">Book Now</button>
           </div>
         </div>
 
@@ -233,7 +315,36 @@
     </div>
   </section>
 
-  <section class="section section-alt" id="rentals">
+  <!-- ── AVAILABILITY CALENDAR ── (NEW) -->
+  <section class="section section-alt" id="availability">
+    <div class="container">
+      <div class="section-header center">
+        <div>
+          <p class="section-eyebrow">Book a slot</p>
+          <h2 class="section-title">Check availability & schedule</h2>
+        </div>
+      </div>
+      <div class="calendar-widget">
+        <div class="cal-header">
+          <button class="cal-nav" id="calPrev">‹</button>
+          <span class="cal-month-label" id="calMonthLabel"></span>
+          <button class="cal-nav" id="calNext">›</button>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="cal-legend">
+          <span class="leg-item"><span class="leg-dot available"></span>Available</span>
+          <span class="leg-item"><span class="leg-dot busy"></span>Busy</span>
+          <span class="leg-item"><span class="leg-dot selected"></span>Selected</span>
+        </div>
+        <div class="cal-time-slots" id="timeSlots">
+          <p class="cal-hint">Select a date to see available time slots</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── RENTALS ── -->
+  <section class="section" id="rentals">
     <div class="container">
       <div class="section-header">
         <div>
@@ -308,7 +419,84 @@
     </div>
   </section>
 
-  <section class="section" id="how">
+  <!-- ── ORDER STATUS & TRACKING ── (NEW) -->
+  <section class="section" id="tracking">
+    <div class="container">
+      <div class="section-header center">
+        <div>
+          <p class="section-eyebrow">Always in the loop</p>
+          <h2 class="section-title">Track your order</h2>
+        </div>
+      </div>
+      <div class="tracking-widget">
+        <div class="tracking-input-row">
+          <input type="text" class="tracking-input" id="trackingInput" placeholder="Enter Order ID or Parcel ID (e.g. KHJ-2025-0042)" />
+          <button class="btn-primary" id="trackBtn">Track Now</button>
+        </div>
+        <div class="tracking-result" id="trackingResult" style="display:none;">
+          <div class="track-order-id">
+            Order <strong id="trackOrderId"></strong>
+            <span class="track-badge" id="trackStatusBadge"></span>
+          </div>
+          <div class="track-steps">
+            <div class="track-step completed" id="tStep1">
+              <div class="track-step-icon">✅</div>
+              <div class="track-step-info">
+                <div class="track-step-title">Order Confirmed</div>
+                <div class="track-step-time" id="tTime1"></div>
+              </div>
+            </div>
+            <div class="track-connector" id="tConn1"></div>
+            <div class="track-step" id="tStep2">
+              <div class="track-step-icon">🔄</div>
+              <div class="track-step-info">
+                <div class="track-step-title">Provider Assigned</div>
+                <div class="track-step-time" id="tTime2"></div>
+              </div>
+            </div>
+            <div class="track-connector" id="tConn2"></div>
+            <div class="track-step" id="tStep3">
+              <div class="track-step-icon">🚗</div>
+              <div class="track-step-info">
+                <div class="track-step-title">In Progress</div>
+                <div class="track-step-time" id="tTime3"></div>
+              </div>
+            </div>
+            <div class="track-connector" id="tConn3"></div>
+            <div class="track-step" id="tStep4">
+              <div class="track-step-icon">🎉</div>
+              <div class="track-step-info">
+                <div class="track-step-title">Completed</div>
+                <div class="track-step-time" id="tTime4"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Parcel Tracking -->
+        <div class="parcel-track-section">
+          <div class="parcel-track-label">📦 Parcel Tracking</div>
+          <div class="parcel-track-row">
+            <div class="parcel-map-mock">
+              <div class="parcel-route-line"></div>
+              <div class="parcel-origin">🏠<span>Warehouse</span></div>
+              <div class="parcel-dot parcel-moving" id="parcelDot">📦</div>
+              <div class="parcel-dest">🏡<span>Your Address</span></div>
+            </div>
+            <div class="parcel-status-info">
+              <div class="parcel-eta">Estimated arrival: <strong>Today, 4–6 PM</strong></div>
+              <div class="parcel-current">Current location: <strong>Farmgate, Dhaka</strong></div>
+              <div class="parcel-id">Parcel ID: <strong>KHJ-PCL-8841</strong></div>
+              <button class="btn-outline btn-sm" style="margin-top:12px;">Get SMS Updates</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HOW IT WORKS ── -->
+  <section class="section section-alt" id="how">
     <div class="container">
       <div class="section-header center">
         <div>
@@ -344,174 +532,274 @@
       </div>
     </div>
   </section>
-  
-  <section class="section section-alt" id="demo-section" style="border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+
+  <!-- ── BADGE SYSTEM ── (NEW) -->
+  <section class="section" id="badges">
     <div class="container">
       <div class="section-header center">
         <div>
-          <h2 class="section-title">Login Or Signup Here!</h2>
+          <p class="section-eyebrow">Loyalty rewards</p>
+          <h2 class="section-title">Earn badges, unlock perks</h2>
         </div>
       </div>
-
-      <div id="auth-view" style="max-width: 500px; margin: 0 auto; background: var(--white); padding: 32px; border-radius: var(--radius-lg); border: 1px solid var(--border); box-shadow: var(--shadow-sm);">
-        
-        <div id="signin-box">
-          <h3 style="margin-bottom: 20px; text-align: center;">Sign In to KHOJ</h3>
-          <form id="demoSigninForm">
-            <input type="text" id="demoInIdentifier" class="search-input" style="width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 12px; padding: 12px;" placeholder="Email or Phone Number" required>
-            <input type="password" id="demoInPass" class="search-input" style="width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 12px; padding: 12px;" placeholder="Password" required>
-            <button type="submit" class="btn-primary" style="width: 100%;">Sign In</button>
-          </form>
-          <div id="demoSigninStatus" class="status-msg"></div>
-          <p style="text-align: center; margin-top: 15px; font-size: 13px; color: var(--text-muted);">
-            Need an account? <a href="#demo-section" id="swapToSignup" style="color: var(--green); font-weight: 600;">Register here</a>
-          </p>
+      <div class="badges-grid">
+        <div class="badge-card badge-bronze">
+          <div class="badge-icon">🥉</div>
+          <div class="badge-name">Newcomer</div>
+          <div class="badge-desc">Complete your first booking</div>
+          <div class="badge-perk">5% off next order</div>
+          <div class="badge-progress-bar"><div class="badge-fill" style="width:100%"></div></div>
         </div>
-
-        <div id="signup-box" style="display: none;">
-          <h3 style="margin-bottom: 20px; text-align: center;">Create Account</h3>
-          <form id="demoSignupForm">
-            <input type="text" id="demoUpName" class="search-input" style="width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 12px; padding: 12px;" placeholder="Full Name" required>
-            <input type="text" id="demoUpPhone" class="search-input" style="width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 12px; padding: 12px;" placeholder="Phone Number" required>
-            <input type="email" id="demoUpEmail" class="search-input" style="width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 12px; padding: 12px;" placeholder="Email Address" required>
-            <input type="password" id="demoUpPass" class="search-input" style="width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 12px; padding: 12px;" placeholder="Password" required>
-            <select id="demoUpRole" class="search-input" style="width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 12px; padding: 12px; background: white;" required>
-              <option value="" disabled selected>Select Role...</option>
-              <option value="customer">Customer</option>
-              <option value="provider">Provider</option>
-            </select>
-            <button type="submit" class="btn-outline" style="width: 100%;">Register</button>
-          </form>
-          <div id="demoSignupStatus" class="status-msg"></div>
-          <p style="text-align: center; margin-top: 15px; font-size: 13px; color: var(--text-muted);">
-            Have an account? <a href="#demo-section" id="swapToSignin" style="color: var(--green); font-weight: 600;">Sign in</a>
-          </p>
+        <div class="badge-card badge-silver">
+          <div class="badge-icon">🥈</div>
+          <div class="badge-name">Regular</div>
+          <div class="badge-desc">5+ bookings completed</div>
+          <div class="badge-perk">Priority support + 8% off</div>
+          <div class="badge-progress-bar"><div class="badge-fill" style="width:60%"></div></div>
+        </div>
+        <div class="badge-card badge-gold">
+          <div class="badge-icon">🥇</div>
+          <div class="badge-name">Trusted</div>
+          <div class="badge-desc">15+ bookings + 4.5★ avg rating</div>
+          <div class="badge-perk">Free delivery + 12% off</div>
+          <div class="badge-progress-bar"><div class="badge-fill" style="width:30%"></div></div>
+        </div>
+        <div class="badge-card badge-platinum">
+          <div class="badge-icon">💎</div>
+          <div class="badge-name">KHOJ Elite</div>
+          <div class="badge-desc">50+ orders, verified NID</div>
+          <div class="badge-perk">Dedicated manager + 20% off</div>
+          <div class="badge-progress-bar"><div class="badge-fill" style="width:10%"></div></div>
         </div>
       </div>
-
-      <div id="app-view" style="display: none;">
-        
-        <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 24px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
-          <div style="font-size: 14px;">
-            Logged in as: <strong id="loggedName" style="color: var(--green-dark);">...</strong> 
-            (<span id="loggedRole" style="text-transform: capitalize;">...</span>) | 
-            <span style="color: var(--text-faint); font-family: monospace;">ID: <span id="loggedId">...</span></span>
-          </div>
-          <button id="demoLogoutBtn" class="btn-outline" style="padding: 6px 12px; font-size: 12px; color: #d85a30; border-color: #d85a30;">Logout</button>
-        </div>
-
-        <div id="customer-view" style="display: none; text-align: center; background: var(--white); padding: 48px 24px; border-radius: var(--radius-lg); border: 1px solid var(--border); box-shadow: var(--shadow-sm);">
-            <div style="font-size: 48px; margin-bottom: 16px;">👋</div>
-            <h3 style="font-size: 24px; margin-bottom: 8px; font-family: 'Fraunces', serif;">Welcome back to KHOJ!</h3>
-            <p style="color: var(--text-muted); margin-bottom: 32px;">Your one-stop destination for trusted local services and rentals.</p>
-            <a href="#services" class="btn-primary btn-lg" style="text-decoration: none;">Browse Available Services</a>
-        </div>
-
-        <div id="provider-view" style="display: none; background: var(--white); padding: 32px; border-radius: var(--radius-lg); border: 1px solid var(--border); max-width: 600px; margin: 0 auto; box-shadow: var(--shadow-sm);">
-            
-            <div id="prov-unverified">
-                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-                    <span style="font-size: 24px;">🛡️</span>
-                    <h3 style="font-size: 20px; font-family: 'Fraunces', serif;">Identity Verification</h3>
-                </div>
-                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">To ensure platform safety and start receiving bookings, please submit your National ID.</p>
-                
-                <form id="demoNidForm">
-                  <label style="font-size: 12px; font-weight: bold; color: var(--text-muted); display: block; margin-bottom: 4px;">Your User ID</label>
-                  <input type="text" id="demoNidUserId" class="search-input" style="width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 16px; padding: 12px; background: var(--bg-alt); color: var(--text-muted);" readonly>
-                  
-                  <label style="font-size: 12px; font-weight: bold; color: var(--text-muted); display: block; margin-bottom: 4px;">NID Number</label>
-                  <input type="text" id="demoNidNum" class="search-input" style="width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 24px; padding: 12px;" placeholder="e.g. 1998765432109" required>
-                  
-                  <button type="submit" class="btn-primary" style="width: 100%; padding: 14px;">Submit Document for Review</button>
-                </form>
-                <div id="demoNidStatus" class="status-msg"></div>
-            </div>
-
-            <div id="prov-pending" style="display: none; text-align: center; padding: 20px 0;">
-                <div style="font-size: 48px; margin-bottom: 16px;">⏳</div>
-                <h3 style="font-size: 22px; margin-bottom: 8px; font-family: 'Fraunces', serif;">Verification Pending</h3>
-                <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6;">Your National ID document has been submitted and is currently under review by our admin team.<br>Please check back shortly.</p>
-            </div>
-
-            <div id="prov-verified" style="display: none; text-align: center; padding: 20px 0;">
-                <div style="font-size: 48px; margin-bottom: 16px;">✅</div>
-                <h3 style="font-size: 22px; margin-bottom: 8px; font-family: 'Fraunces', serif; color: var(--green-dark);">Identity Verified</h3>
-                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 32px;">Congratulations! You are now an official KHOJ Verified Provider. You can start offering your services to customers.</p>
-                
-                <div style="border-top: 1px dashed var(--border); padding-top: 32px; text-align: left;">
-                    <h4 style="margin-bottom: 16px; font-size: 16px;">Provider Dashboard</h4>
-                    <button class="btn-primary" style="width: 100%; padding: 14px; font-size: 15px; display: flex; justify-content: center; align-items: center; gap: 8px;">
-                        <span>➕</span> Create New Service Listing
-                    </button>
-                    <button class="btn-outline" style="width: 100%; margin-top: 12px; padding: 14px; font-size: 15px;">View My Active Bookings</button>
-                </div>
-            </div>
-
-            <div id="prov-rejected" style="display: none; text-align: center; padding: 20px 0;">
-                <div style="font-size: 48px; margin-bottom: 16px;">❌</div>
-                <h3 style="font-size: 22px; margin-bottom: 8px; font-family: 'Fraunces', serif; color: #c62828;">Verification Rejected</h3>
-                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">Your NID was not approved. Please verify with valid documents to work with us.</p>
-                <button id="demoRetryNidBtn" class="btn-outline" style="padding: 10px 20px; border-color: #c62828; color: #c62828;">Submit Documents Again</button>
-            </div>
-        </div>
-
-        <div id="admin-view" style="display: none;">
-            
-            <div style="background: var(--white); padding: 32px; border-radius: var(--radius-lg); border: 1px solid var(--border); margin-bottom: 24px; box-shadow: var(--shadow-sm);">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
-                    <div>
-                        <h3 style="margin-bottom: 6px; font-size: 22px; font-family: 'Fraunces', serif;">Admin Control Center</h3>
-                        <p style="font-size: 13px; color: var(--text-faint);">Real-time financial and demographic analytics.</p>
-                    </div>
-                    <button id="demoLoadDashBtn" class="btn-primary" style="padding: 10px 20px;">Refresh Data 🔄</button>
-                </div>
-                <div id="demoDashStatus" class="status-msg" style="margin-bottom: 20px;"></div>
-
-                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
-                  <div style="background: linear-gradient(135deg, var(--green-dark), var(--green)); color: white; padding: 24px; border-radius: var(--radius-md); text-align: center; box-shadow: 0 4px 12px rgba(29,158,117,0.3);">
-                    <div style="font-size: 12px; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Total Revenue</div>
-                    <div id="dashResRev" style="font-size: 32px; font-weight: bold; font-family: 'Fraunces', serif;">৳0</div>
-                  </div>
-                  <div style="background: var(--bg-alt); padding: 24px; border-radius: var(--radius-md); text-align: center; border: 1px solid var(--border);">
-                    <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Transactions</div>
-                    <div id="dashResTx" style="font-size: 32px; font-weight: bold; color: var(--text); font-family: 'Fraunces', serif;">0</div>
-                  </div>
-                  <div style="background: var(--bg-alt); padding: 24px; border-radius: var(--radius-md); text-align: center; border: 1px solid var(--border);">
-                    <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Providers</div>
-                    <div id="dashResPro" style="font-size: 32px; font-weight: bold; color: var(--text); font-family: 'Fraunces', serif;">0</div>
-                  </div>
-                  <div style="background: var(--bg-alt); padding: 24px; border-radius: var(--radius-md); text-align: center; border: 1px solid var(--border);">
-                    <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Customers</div>
-                    <div id="dashResCus" style="font-size: 32px; font-weight: bold; color: var(--text); font-family: 'Fraunces', serif;">0</div>
-                  </div>
-                </div>
-            </div>
-
-            <div style="background: #fffdfa; padding: 24px; border-radius: var(--radius-lg); border: 1px solid #ffe0b2;">
-                
-                <h3 style="margin-bottom: 8px; font-size: 18px; color: #d85a30; font-family: 'Fraunces', serif;">Action Required: Pending NIDs</h3>
-                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Review provider identities below.</p>
-                
-                <div id="adminPendingList" style="margin-bottom: 24px;">
-                    <p style="font-size: 13px; color: var(--text-faint);">Loading pending requests...</p>
-                </div>
-
-                <h3 style="margin-bottom: 12px; font-size: 16px; color: var(--green-dark); font-family: 'Fraunces', serif; border-top: 1px dashed #ffe0b2; padding-top: 20px;">Approved Providers</h3>
-                <details style="background: white; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px;">
-                    <summary style="font-size: 14px; font-weight: bold; cursor: pointer; color: var(--text); outline: none;">View Verified NIDs 🔽</summary>
-                    <div id="adminApprovedList" style="margin-top: 12px; font-size: 13px; max-height: 200px; overflow-y: auto; padding-top: 12px; border-top: 1px solid var(--border);">
-                        </div>
-                </details>
-
-            </div>
-        </div>
-
-      </div>
-
     </div>
   </section>
-  
+
+  <!-- ── PROVIDER DASHBOARD PREVIEW ── (NEW) -->
+  <section class="section section-alt" id="provider-dashboard">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <p class="section-eyebrow">For providers</p>
+          <h2 class="section-title">Your earning dashboard</h2>
+        </div>
+        <a href="#" class="btn-primary">Go to Dashboard →</a>
+      </div>
+      <div class="dashboard-preview">
+        <div class="dash-stats-row">
+          <div class="dash-stat-card">
+            <div class="dash-stat-icon">💰</div>
+            <div class="dash-stat-val">৳24,500</div>
+            <div class="dash-stat-label">This Month</div>
+            <div class="dash-stat-trend up">↑ 14% vs last month</div>
+          </div>
+          <div class="dash-stat-card">
+            <div class="dash-stat-icon">📋</div>
+            <div class="dash-stat-val">38</div>
+            <div class="dash-stat-label">Orders Completed</div>
+            <div class="dash-stat-trend up">↑ 6 this week</div>
+          </div>
+          <div class="dash-stat-card">
+            <div class="dash-stat-icon">⭐</div>
+            <div class="dash-stat-val">4.87</div>
+            <div class="dash-stat-label">Avg. Rating</div>
+            <div class="dash-stat-trend neutral">Stable</div>
+          </div>
+          <div class="dash-stat-card">
+            <div class="dash-stat-icon">⏳</div>
+            <div class="dash-stat-val">৳6,200</div>
+            <div class="dash-stat-label">Pending Payout</div>
+            <div class="dash-stat-trend">Next: 15 Jan</div>
+          </div>
+        </div>
+        <div class="dash-orders-table">
+          <div class="dash-table-header">
+            <span>Recent Orders</span>
+            <a href="#" class="view-all">View all →</a>
+          </div>
+          <div class="dash-table">
+            <div class="dash-row dash-row-head">
+              <span>Order ID</span><span>Service</span><span>Customer</span><span>Amount</span><span>Status</span>
+            </div>
+            <div class="dash-row">
+              <span>#KHJ-4821</span><span>AC Servicing</span><span>Rafiq M.</span><span>৳800</span><span class="status-pill completed">Completed</span>
+            </div>
+            <div class="dash-row">
+              <span>#KHJ-4820</span><span>AC Servicing</span><span>Sara K.</span><span>৳800</span><span class="status-pill in-progress">In Progress</span>
+            </div>
+            <div class="dash-row">
+              <span>#KHJ-4818</span><span>Installation</span><span>Tanvir H.</span><span>৳1,200</span><span class="status-pill pending">Pending</span>
+            </div>
+            <div class="dash-row">
+              <span>#KHJ-4815</span><span>AC Servicing</span><span>Meem R.</span><span>৳800</span><span class="status-pill completed">Completed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── IN-APP MESSAGES PREVIEW ── (NEW) -->
+  <section class="section" id="messages">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <p class="section-eyebrow">Stay connected</p>
+          <h2 class="section-title">Chat with your provider</h2>
+        </div>
+      </div>
+      <div class="messages-preview">
+        <div class="chat-sidebar">
+          <div class="chat-search-bar">
+            <input type="text" placeholder="Search conversations..." class="chat-search-input" />
+          </div>
+          <div class="chat-list">
+            <div class="chat-item active">
+              <div class="chat-avatar">RT</div>
+              <div class="chat-item-info">
+                <div class="chat-item-name">Reza's Tech Services</div>
+                <div class="chat-item-preview">I'll arrive at 2 PM ✓✓</div>
+              </div>
+              <div class="chat-item-meta">
+                <div class="chat-item-time">2m ago</div>
+                <div class="chat-unread">2</div>
+              </div>
+            </div>
+            <div class="chat-item">
+              <div class="chat-avatar">ND</div>
+              <div class="chat-item-info">
+                <div class="chat-item-name">Nadia Ahmed</div>
+                <div class="chat-item-preview">Sure, Saturday works!</div>
+              </div>
+              <div class="chat-item-meta">
+                <div class="chat-item-time">1h ago</div>
+              </div>
+            </div>
+            <div class="chat-item">
+              <div class="chat-avatar">DD</div>
+              <div class="chat-item-info">
+                <div class="chat-item-name">DhakaDecor</div>
+                <div class="chat-item-preview">Please send the venue details</div>
+              </div>
+              <div class="chat-item-meta">
+                <div class="chat-item-time">Yesterday</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chat-window">
+          <div class="chat-win-header">
+            <div class="chat-win-avatar">RT</div>
+            <div>
+              <div class="chat-win-name">Reza's Tech Services</div>
+              <div class="chat-win-status">🟢 Online</div>
+            </div>
+          </div>
+          <div class="chat-messages" id="chatMessages">
+            <div class="msg-bubble them">Hi! Your AC service is booked for today at 2 PM.</div>
+            <div class="msg-bubble me">Great! Please bring the filter replacement too.</div>
+            <div class="msg-bubble them">Sure, will do! I'll arrive at 2 PM ✓✓</div>
+            <div class="msg-time">Just now</div>
+          </div>
+          <div class="chat-input-row">
+            <input type="text" class="chat-type-input" id="chatTypeInput" placeholder="Type a message..." />
+            <button class="chat-send-btn" id="chatSendBtn">➤</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ORDER HISTORY & INVOICING ── (NEW) -->
+  <section class="section section-alt" id="order-history">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <p class="section-eyebrow">Your records</p>
+          <h2 class="section-title">Order history & invoices</h2>
+        </div>
+        <button class="btn-outline" id="exportAllBtn">⬇ Export All</button>
+      </div>
+      <div class="history-table">
+        <div class="history-filters">
+          <button class="ctab active" data-hfilter="all">All</button>
+          <button class="ctab" data-hfilter="completed">Completed</button>
+          <button class="ctab" data-hfilter="in-progress">In Progress</button>
+          <button class="ctab" data-hfilter="cancelled">Cancelled</button>
+        </div>
+        <div class="history-list" id="historyList">
+          <div class="history-item" data-hstatus="completed">
+            <div class="history-icon">🔧</div>
+            <div class="history-info">
+              <div class="history-title">AC Installation & Servicing</div>
+              <div class="history-meta">by Reza's Tech Services • Jan 10, 2025</div>
+            </div>
+            <div class="history-amount">৳800</div>
+            <span class="status-pill completed">Completed</span>
+            <button class="history-invoice-btn" onclick="downloadInvoice('KHJ-4821')">🧾 Invoice</button>
+          </div>
+          <div class="history-item" data-hstatus="completed">
+            <div class="history-icon">📚</div>
+            <div class="history-info">
+              <div class="history-title">HSC Physics & Math Tutor</div>
+              <div class="history-meta">by Nadia Ahmed • Jan 5, 2025</div>
+            </div>
+            <div class="history-amount">৳500</div>
+            <span class="status-pill completed">Completed</span>
+            <button class="history-invoice-btn" onclick="downloadInvoice('KHJ-4780')">🧾 Invoice</button>
+          </div>
+          <div class="history-item" data-hstatus="in-progress">
+            <div class="history-icon">🎉</div>
+            <div class="history-info">
+              <div class="history-title">Birthday Party Decoration</div>
+              <div class="history-meta">by DhakaDecor • Jan 15, 2025</div>
+            </div>
+            <div class="history-amount">৳2,500</div>
+            <span class="status-pill in-progress">In Progress</span>
+            <button class="history-invoice-btn" onclick="downloadInvoice('KHJ-4830')">🧾 Invoice</button>
+          </div>
+          <div class="history-item" data-hstatus="cancelled">
+            <div class="history-icon">🧹</div>
+            <div class="history-info">
+              <div class="history-title">Deep Home Cleaning</div>
+              <div class="history-meta">by CleanBD • Dec 28, 2024</div>
+            </div>
+            <div class="history-amount">৳1,200</div>
+            <span class="status-pill cancelled">Cancelled</span>
+            <button class="history-invoice-btn" onclick="downloadInvoice('KHJ-4760')">🧾 Invoice</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── EMERGENCY SERVICES ── (NEW) -->
+  <section class="section emergency-section" id="emergency">
+    <div class="container">
+      <div class="emergency-banner">
+        <div class="emergency-left">
+          <div class="emergency-pulse">🚨</div>
+          <div class="emergency-text">
+            <h3>Emergency Services</h3>
+            <p>Need urgent help? Our verified emergency providers are available 24/7 across all major cities.</p>
+          </div>
+        </div>
+        <div class="emergency-right">
+          <a href="tel:09609000000" class="emergency-btn">
+            <span>📞</span> Call Emergency Helpline
+          </a>
+          <div class="emergency-services-row">
+            <button class="emg-chip">⚡ Electric Emergency</button>
+            <button class="emg-chip">🚿 Plumbing Emergency</button>
+            <button class="emg-chip">🔒 Locksmith</button>
+            <button class="emg-chip">🔥 Gas Leak</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA BANNER ── -->
   <section class="cta-section">
     <div class="container cta-inner">
       <div class="cta-text">
@@ -519,13 +807,14 @@
         <p>Join thousands of professionals earning through KHOJ. List your service for free.</p>
       </div>
       <div class="cta-actions">
-        <a href="#" class="btn-white btn-lg">Start Listing Free</a>
+        <a href="#" class="btn-white btn-lg" id="ctaProviderBtn">Start Listing Free</a>
         <a href="#" class="btn-ghost-white btn-lg">Learn More →</a>
       </div>
     </div>
   </section>
 
-  <section class="section section-alt">
+  <!-- ── TESTIMONIALS ── -->
+  <section class="section">
     <div class="container">
       <div class="section-header center">
         <div>
@@ -568,9 +857,24 @@
           </div>
         </div>
       </div>
+
+      <!-- Write a Review (NEW) -->
+      <div class="write-review-section">
+        <h3 class="wr-title">Share your experience</h3>
+        <div class="wr-stars" id="wrStars">
+          <span class="wr-star" data-val="1">★</span>
+          <span class="wr-star" data-val="2">★</span>
+          <span class="wr-star" data-val="3">★</span>
+          <span class="wr-star" data-val="4">★</span>
+          <span class="wr-star" data-val="5">★</span>
+        </div>
+        <textarea class="wr-textarea" placeholder="Write your review here..."></textarea>
+        <button class="btn-primary wr-submit">Submit Review</button>
+      </div>
     </div>
   </section>
 
+  <!-- ── FOOTER ── -->
   <footer class="footer">
     <div class="container footer-inner">
       <div class="footer-brand">
@@ -620,6 +924,99 @@
       </div>
     </div>
   </footer>
+
+  <!-- ── AUTH MODAL (OTP + Role Selection) ── (NEW) -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-box">
+      <button class="modal-close" id="modalClose">✕</button>
+
+      <!-- Step 1: Role Selection -->
+      <div class="auth-step" id="authStep1">
+        <div class="modal-logo">KHOJ<span class="logo-dot">.</span></div>
+        <h2 class="modal-title">Join KHOJ</h2>
+        <p class="modal-sub">Who are you joining as?</p>
+        <div class="role-cards">
+          <div class="role-card" data-role="customer" id="roleCustomer">
+            <div class="role-icon">👤</div>
+            <div class="role-name">Customer</div>
+            <div class="role-desc">Book services & rentals</div>
+          </div>
+          <div class="role-card" data-role="provider" id="roleProvider">
+            <div class="role-icon">🔧</div>
+            <div class="role-name">Service Provider</div>
+            <div class="role-desc">List & earn from services</div>
+          </div>
+        </div>
+        <button class="btn-primary btn-lg w-full" id="roleNextBtn" disabled>Continue →</button>
+        <p class="modal-footer-text">Already have an account? <a href="#" id="switchToSignIn">Sign in</a></p>
+      </div>
+
+      <!-- Step 2: Phone Input -->
+      <div class="auth-step hidden" id="authStep2">
+        <div class="modal-logo">KHOJ<span class="logo-dot">.</span></div>
+        <h2 class="modal-title">Enter your phone</h2>
+        <p class="modal-sub">We'll send a one-time password to verify</p>
+        <div class="phone-input-wrap">
+          <span class="phone-flag">🇧🇩 +880</span>
+          <input type="tel" class="phone-input" id="phoneInput" placeholder="01XXXXXXXXX" maxlength="11" />
+        </div>
+        <!-- NID Verification -->
+        <div class="nid-section">
+          <label class="nid-label">
+            <input type="checkbox" id="nidCheck" /> Verify with National ID (NID) for trusted badge
+          </label>
+          <div class="nid-input-wrap hidden" id="nidInputWrap">
+            <input type="text" class="phone-input" id="nidInput" placeholder="Enter NID number (17 digits)" maxlength="17" />
+          </div>
+        </div>
+        <button class="btn-primary btn-lg w-full" id="sendOtpBtn">Send OTP</button>
+        <p class="modal-footer-text"><a href="#" id="backToRole">← Back</a></p>
+      </div>
+
+      <!-- Step 3: OTP Verification -->
+      <div class="auth-step hidden" id="authStep3">
+        <div class="modal-logo">KHOJ<span class="logo-dot">.</span></div>
+        <h2 class="modal-title">Verify OTP</h2>
+        <p class="modal-sub">Enter the 6-digit code sent to <strong id="otpPhone"></strong></p>
+        <div class="otp-inputs" id="otpInputs">
+          <input type="text" class="otp-box" maxlength="1" />
+          <input type="text" class="otp-box" maxlength="1" />
+          <input type="text" class="otp-box" maxlength="1" />
+          <input type="text" class="otp-box" maxlength="1" />
+          <input type="text" class="otp-box" maxlength="1" />
+          <input type="text" class="otp-box" maxlength="1" />
+        </div>
+        <p class="otp-hint" id="otpHint">Didn't receive it? <a href="#" id="resendOtp">Resend</a> (available in <span id="otpTimer">30</span>s)</p>
+        <button class="btn-primary btn-lg w-full" id="verifyOtpBtn">Verify & Continue</button>
+      </div>
+
+      <!-- Step 4: Success -->
+      <div class="auth-step hidden" id="authStep4">
+        <div class="auth-success-icon">🎉</div>
+        <h2 class="modal-title">Welcome to KHOJ!</h2>
+        <p class="modal-sub" id="successMessage"></p>
+        <button class="btn-primary btn-lg w-full" id="authDoneBtn">Start Exploring →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── BOOKING MODAL (Availability Calendar) ── (NEW) -->
+  <div class="modal-overlay" id="bookingModal">
+    <div class="modal-box booking-modal-box">
+      <button class="modal-close" id="bookingModalClose">✕</button>
+      <h2 class="modal-title" id="bookingServiceName">Book Service</h2>
+      <p class="modal-sub">Choose your preferred date and time</p>
+      <div class="booking-cal-mini" id="bookingCalMini"></div>
+      <div class="booking-time-slots" id="bookingTimeSlots"></div>
+      <div class="booking-summary" id="bookingSummary" style="display:none;">
+        <div class="booking-sum-row"><span>Service:</span><strong id="bsService"></strong></div>
+        <div class="booking-sum-row"><span>Date:</span><strong id="bsDate"></strong></div>
+        <div class="booking-sum-row"><span>Time:</span><strong id="bsTime"></strong></div>
+        <div class="booking-sum-row"><span>Price:</span><strong id="bsPrice"></strong></div>
+      </div>
+      <button class="btn-primary btn-lg w-full" id="confirmBookingBtn" style="display:none;">Confirm Booking</button>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
