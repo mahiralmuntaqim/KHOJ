@@ -1,245 +1,557 @@
-const BACKEND_URL = 'http://localhost:3000/api';
+// ── Mobile Menu ──
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
 
-// UI Elements
-const authView = document.getElementById('auth-view');
-const appView = document.getElementById('app-view');
-const signinBox = document.getElementById('signin-box');
-const signupBox = document.getElementById('signup-box');
-
-// Swap Forms
-document.getElementById('swapToSignup').addEventListener('click', (e) => { e.preventDefault(); signinBox.style.display='none'; signupBox.style.display='block'; });
-document.getElementById('swapToSignin').addEventListener('click', (e) => { e.preventDefault(); signupBox.style.display='none'; signinBox.style.display='block'; });
-
-function showStatus(id, msg, isError = false) {
-  const el = document.getElementById(id);
-  if(!el) return;
-  el.textContent = msg;
-  el.className = `status-msg ${isError ? 'msg-error' : 'msg-success'}`;
-}
-
-// 1. SIGN UP
-document.getElementById('demoSignupForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  try {
-    const res = await fetch(`${BACKEND_URL}/auth/signup`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: document.getElementById('demoUpName').value,
-        phone: document.getElementById('demoUpPhone').value,
-        email: document.getElementById('demoUpEmail').value,
-        password: document.getElementById('demoUpPass').value,
-        role: document.getElementById('demoUpRole').value
-      })
-    });
-    const data = await res.json();
-    if (res.ok) { 
-        showStatus('demoSignupStatus', 'Account Created! Please Sign In.'); 
-        document.getElementById('demoSignupForm').reset(); 
-    } else { 
-        showStatus('demoSignupStatus', data.error || data.message, true); 
-    }
-  } catch (err) { showStatus('demoSignupStatus', 'Server Error.', true); }
+hamburger.addEventListener('click', () => {
+  mobileMenu.classList.toggle('open');
 });
 
-// 2. SIGN IN
-document.getElementById('demoSigninForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  try {
-    const res = await fetch(`${BACKEND_URL}/auth/signin`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        identifier: document.getElementById('demoInIdentifier').value,
-        password: document.getElementById('demoInPass').value
-      })
-    });
-    const data = await res.json();
-    
-    if (res.ok) {
-      // Save data & Update Header
-      localStorage.setItem('k_id', data.user._id);
-      document.getElementById('loggedName').textContent = data.user.name;
-      document.getElementById('loggedRole').textContent = data.user.role;
-      document.getElementById('loggedId').textContent = data.user._id;
+mobileMenu.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+});
 
-      // Switch from Auth view to App view
-      authView.style.display = 'none';
-      appView.style.display = 'block';
+// ── Category Tabs ──
+const tabs = document.querySelectorAll('.ctab');
+const cards = document.querySelectorAll('.listing-card');
 
-      // --- ROLE-BASED ROUTING ---
-      // Hide all specific role views first
-      document.getElementById('customer-view').style.display = 'none';
-      document.getElementById('provider-view').style.display = 'none';
-      document.getElementById('admin-view').style.display = 'none';
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
 
-      if (data.user.role === 'customer') {
-          document.getElementById('customer-view').style.display = 'block';
-          
-      } else if (data.user.role === 'provider') {
-          document.getElementById('provider-view').style.display = 'block';
-
-          // Auto-fill NID form if they are unverified
-          if(document.getElementById('demoNidUserId')) {
-              document.getElementById('demoNidUserId').value = data.user._id;
-          }
-
-          // Check current NID status safely
-          const nidStatus = (data.user.nidVerification && data.user.nidVerification.status) 
-                            ? data.user.nidVerification.status 
-                            : 'unverified';
-
-          // Hide all provider sub-states
-          document.getElementById('prov-unverified').style.display = 'none';
-          document.getElementById('prov-pending').style.display = 'none';
-          document.getElementById('prov-verified').style.display = 'none';
-          document.getElementById('prov-rejected').style.display = 'none';
-
-          // Show the correct provider state based on their database status
-          if (nidStatus === 'verified') {
-              document.getElementById('prov-verified').style.display = 'block';
-          } else if (nidStatus === 'pending') {
-              document.getElementById('prov-pending').style.display = 'block';
-          } else if (nidStatus === 'rejected') {
-              document.getElementById('prov-rejected').style.display = 'block';
-          } else {
-              document.getElementById('prov-unverified').style.display = 'block';
-          }
-
-      } else if (data.user.role === 'admin') {
-          document.getElementById('admin-view').style.display = 'block';
-          // Auto-load admin data
-          loadAdminNidLists();
-          if (document.getElementById('demoLoadDashBtn')) document.getElementById('demoLoadDashBtn').click();
+    const cat = tab.dataset.cat;
+    cards.forEach(card => {
+      if (cat === 'all' || card.dataset.cat === cat) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
       }
-    } else { 
-        showStatus('demoSigninStatus', data.error || data.message, true); 
-    }
-  } catch (err) { showStatus('demoSigninStatus', 'Server Error.', true); }
-});
-
-// LOGOUT
-document.getElementById('demoLogoutBtn').addEventListener('click', () => {
-  localStorage.removeItem('k_id');
-  appView.style.display = 'none';
-  authView.style.display = 'block';
-  if(document.getElementById('demoDashStatus')) document.getElementById('demoDashStatus').style.display = 'none';
-  if(document.getElementById('demoNidStatus')) document.getElementById('demoNidStatus').style.display = 'none';
-});
-
-// 3. SUBMIT NID (For Provider)
-document.getElementById('demoNidForm')?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  try {
-    const res = await fetch(`${BACKEND_URL}/users/verify-nid`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        userId: document.getElementById('demoNidUserId').value,
-        nidNumber: document.getElementById('demoNidNum').value,
-        frontImageUrl: "dummy.jpg", backImageUrl: "dummy.jpg"
-      })
     });
-    if (res.ok) {
-        showStatus('demoNidStatus', 'NID Submitted Successfully!');
-        // Transition smoothly to pending state
-        setTimeout(() => {
-            document.getElementById('prov-unverified').style.display = 'none';
-            document.getElementById('prov-pending').style.display = 'block';
-        }, 1500);
+  });
+});
+
+// ── Quick Tags ──
+document.querySelectorAll('.qtag').forEach(tag => {
+  tag.addEventListener('click', () => {
+    document.getElementById('searchInput').value = tag.textContent;
+    document.getElementById('searchInput').focus();
+  });
+});
+
+// ── Search Button ──
+document.getElementById('searchBtn').addEventListener('click', () => {
+  const query = document.getElementById('searchInput').value.trim();
+  const category = document.getElementById('categorySelect').value;
+  if (query || category) {
+    console.log('Search:', { query, category });
+    alert(`Searching for "${query}" in "${category || 'All Categories'}" — backend coming soon!`);
+  }
+});
+
+// ── Scroll fade-in for sections ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
     }
-  } catch (err) { showStatus('demoNidStatus', 'Error.', true); }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.listing-card, .rental-card, .step-card, .testi-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  observer.observe(el);
 });
 
-// RETRY NID (If Rejected)
-document.getElementById('demoRetryNidBtn')?.addEventListener('click', () => {
-    document.getElementById('prov-rejected').style.display = 'none';
-    document.getElementById('prov-unverified').style.display = 'block';
-    document.getElementById('demoNidNum').value = '';
-});
 
-// 4. ADMIN DASHBOARD METRICS
-document.getElementById('demoLoadDashBtn')?.addEventListener('click', async () => {
-  try {
-    const res = await fetch(`${BACKEND_URL}/admin/dashboard`, {
-      headers: { 'user-id': localStorage.getItem('k_id') }
-    });
-    const data = await res.json();
+// ══════════════════════════════════════════
+// NEW FEATURE SCRIPTS
+// ══════════════════════════════════════════
 
-    if (res.ok) {
-      showStatus('demoDashStatus', 'Analytics Loaded Successfully.');
-      document.getElementById('dashResRev').textContent = `৳${data.data.financials.totalPlatformRevenue || 0}`;
-      document.getElementById('dashResTx').textContent = data.data.financials.successfulTransactions || 0;
+// ── Auth Modal ──
+const authModal = document.getElementById('authModal');
+const modalClose = document.getElementById('modalClose');
 
-      let prov = 0, cus = 0;
-      data.data.demographics.forEach(d => {
-        if(d._id === 'provider') prov = d.count;
-        if(d._id === 'customer') cus = d.count;
-      });
-      document.getElementById('dashResPro').textContent = prov;
-      document.getElementById('dashResCus').textContent = cus;
-    } else {
-      showStatus('demoDashStatus', `Access Denied: ${data.error}`, true);
-    }
-  } catch (err) { showStatus('demoDashStatus', 'Failed to connect.', true); }
-});
-
-// 5. ADMIN NID LIST RENDERING
-async function loadAdminNidLists() {
-    try {
-        const res = await fetch(`${BACKEND_URL}/admin/nid-list`);
-        const data = await res.json();
-
-        if(res.ok) {
-            // Render Pending
-            const pendingContainer = document.getElementById('adminPendingList');
-            if(data.pending.length === 0) {
-                pendingContainer.innerHTML = '<p style="font-size:13px; color:var(--text-faint);">No pending requests at this time.</p>';
-            } else {
-                pendingContainer.innerHTML = data.pending.map(u => `
-                    <div style="background: white; border: 1px solid #ffd54f; padding: 16px; margin-bottom: 12px; border-radius: var(--radius-sm); display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-sm);">
-                        <div>
-                            <strong style="font-size: 15px; display: block; margin-bottom: 4px;">${u.name}</strong>
-                            <span style="font-size: 12px; color: var(--text-muted);">Phone: ${u.phone} | NID: <strong>${u.nidVerification ? u.nidVerification.nidNumber : 'N/A'}</strong></span>
-                        </div>
-                        <div style="display: flex; gap: 8px;">
-                            <button onclick="handleNidAction('${u._id}', 'approve')" style="background: var(--green); color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold;">Approve</button>
-                            <button onclick="handleNidAction('${u._id}', 'reject')" style="background: white; color: #c62828; border: 1px solid #c62828; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold;">Reject</button>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            // Render Approved
-            const approvedContainer = document.getElementById('adminApprovedList');
-            if(data.verified.length === 0) {
-                approvedContainer.innerHTML = '<p style="font-size:13px; color:var(--text-faint);">No verified providers yet.</p>';
-            } else {
-                approvedContainer.innerHTML = data.verified.map(u => `
-                    <div style="padding: 10px 8px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between;">
-                        <span><strong>${u.name}</strong> (${u.phone})</span>
-                        <span style="color: var(--text-muted);">NID: ${u.nidVerification ? u.nidVerification.nidNumber : 'N/A'}</span>
-                    </div>
-                `).join('');
-            }
-        }
-    } catch(err) { console.error("Failed to load lists", err); }
+function openAuthModal() {
+  authModal.classList.add('open');
+  showAuthStep(1);
+}
+function closeAuthModal() {
+  authModal.classList.remove('open');
 }
 
-// Ensure Admin Lists load when the Dashboard refreshes
-document.getElementById('demoLoadDashBtn')?.addEventListener('click', loadAdminNidLists);
+['signInBtn','getStartedBtn','mobileSignIn','mobileGetStarted','ctaProviderBtn','listServiceBtn'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('click', e => { e.preventDefault(); openAuthModal(); });
+});
+modalClose.addEventListener('click', closeAuthModal);
+authModal.addEventListener('click', e => { if (e.target === authModal) closeAuthModal(); });
 
-// 6. ADMIN APPROVE/REJECT ACTION
-window.handleNidAction = async (userId, action) => {
-    const endpoint = action === 'approve' ? `/admin/approve-nid/${userId}` : `/admin/reject-nid/${userId}`;
+function showAuthStep(n) {
+  [1,2,3,4].forEach(i => {
+    const s = document.getElementById('authStep' + i);
+    if (s) s.classList.toggle('hidden', i !== n);
+  });
+}
 
-    try {
-        const res = await fetch(`${BACKEND_URL}${endpoint}`, { method: 'PUT' });
-        if (res.ok) {
-            // Instantly refresh the lists and metrics
-            loadAdminNidLists();
-            document.getElementById('demoLoadDashBtn').click();
-        } else {
-            console.error("Failed to process the request.");
-        }
-    } catch(err) {
-        console.error("Server error during action.", err);
+// Role selection
+let selectedRole = null;
+document.querySelectorAll('.role-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    selectedRole = card.dataset.role;
+    document.getElementById('roleNextBtn').disabled = false;
+  });
+});
+
+document.getElementById('roleNextBtn').addEventListener('click', () => {
+  if (selectedRole) showAuthStep(2);
+});
+
+document.getElementById('backToRole').addEventListener('click', e => {
+  e.preventDefault(); showAuthStep(1);
+});
+
+document.getElementById('switchToSignIn').addEventListener('click', e => {
+  e.preventDefault();
+  // Treat as same flow but skip role selection
+  selectedRole = 'customer';
+  showAuthStep(2);
+});
+
+// NID checkbox
+document.getElementById('nidCheck').addEventListener('change', e => {
+  document.getElementById('nidInputWrap').classList.toggle('hidden', !e.target.checked);
+});
+
+// Send OTP
+document.getElementById('sendOtpBtn').addEventListener('click', () => {
+  const phone = document.getElementById('phoneInput').value.trim();
+  if (phone.length < 10) { alert('Please enter a valid phone number.'); return; }
+  document.getElementById('otpPhone').textContent = '+880 ' + phone;
+  showAuthStep(3);
+  startOtpTimer();
+});
+
+// OTP auto-tab
+const otpBoxes = document.querySelectorAll('.otp-box');
+otpBoxes.forEach((box, i) => {
+  box.addEventListener('input', () => {
+    if (box.value && i < otpBoxes.length - 1) otpBoxes[i+1].focus();
+  });
+  box.addEventListener('keydown', e => {
+    if (e.key === 'Backspace' && !box.value && i > 0) otpBoxes[i-1].focus();
+  });
+});
+
+// OTP Timer
+let otpTimerInterval;
+function startOtpTimer() {
+  let t = 30;
+  document.getElementById('otpTimer').textContent = t;
+  document.getElementById('resendOtp').style.pointerEvents = 'none';
+  document.getElementById('resendOtp').style.opacity = '0.4';
+  clearInterval(otpTimerInterval);
+  otpTimerInterval = setInterval(() => {
+    t--;
+    document.getElementById('otpTimer').textContent = t;
+    if (t <= 0) {
+      clearInterval(otpTimerInterval);
+      document.getElementById('resendOtp').style.pointerEvents = 'auto';
+      document.getElementById('resendOtp').style.opacity = '1';
     }
+  }, 1000);
+}
+
+document.getElementById('resendOtp').addEventListener('click', e => {
+  e.preventDefault();
+  startOtpTimer();
+  alert('OTP resent! (demo)');
+});
+
+// Verify OTP
+document.getElementById('verifyOtpBtn').addEventListener('click', () => {
+  const code = Array.from(otpBoxes).map(b => b.value).join('');
+  if (code.length < 6) { alert('Please enter the 6-digit code.'); return; }
+  const msg = selectedRole === 'provider'
+    ? 'You\'re now registered as a Service Provider. Start listing your services!'
+    : 'Welcome! Browse and book trusted services near you.';
+  document.getElementById('successMessage').textContent = msg;
+  showAuthStep(4);
+});
+
+document.getElementById('authDoneBtn').addEventListener('click', closeAuthModal);
+
+
+// ── Location Discovery ──
+document.getElementById('detectLocationBtn').addEventListener('click', () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(pos => {
+      document.getElementById('locationText').textContent = `📍 Dhaka, Bangladesh (${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)})`;
+    }, () => {
+      document.getElementById('locationText').textContent = '📍 Location: Dhaka, Bangladesh (default)';
+    });
+  } else {
+    document.getElementById('locationText').textContent = '📍 Location: Dhaka, Bangladesh (default)';
+  }
+});
+
+document.querySelectorAll('.district-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.district-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('locationText').textContent = `📍 Showing services in: ${btn.textContent}`;
+  });
+});
+
+
+// ── Availability Calendar ──
+let calDate = new Date();
+let selectedCalDay = null;
+
+function renderCalendar(date) {
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('calMonthLabel').textContent = months[date.getMonth()] + ' ' + date.getFullYear();
+
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = '';
+
+  ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d => {
+    const dn = document.createElement('div');
+    dn.className = 'cal-day-name';
+    dn.textContent = d;
+    grid.appendChild(dn);
+  });
+
+  const firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+  const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+  const today = new Date();
+
+  for (let i = 0; i < firstDay; i++) {
+    const empty = document.createElement('div');
+    empty.className = 'cal-day empty';
+    grid.appendChild(empty);
+  }
+
+  const busyDays = [3, 7, 12, 18, 22, 27];
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dayEl = document.createElement('div');
+    dayEl.className = 'cal-day';
+    dayEl.textContent = d;
+
+    const dayDate = new Date(date.getFullYear(), date.getMonth(), d);
+    if (dayDate < new Date(today.getFullYear(), today.getMonth(), today.getDate())) {
+      dayEl.classList.add('past');
+    } else if (busyDays.includes(d)) {
+      dayEl.classList.add('busy');
+    } else {
+      dayEl.classList.add('available');
+    }
+
+    if (d === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()) {
+      dayEl.classList.add('today');
+    }
+
+    if (!dayEl.classList.contains('past') && !dayEl.classList.contains('busy')) {
+      dayEl.addEventListener('click', () => {
+        document.querySelectorAll('.cal-day').forEach(el => el.classList.remove('selected'));
+        dayEl.classList.add('selected');
+        selectedCalDay = d;
+        showTimeSlots(d, date);
+      });
+    }
+
+    grid.appendChild(dayEl);
+  }
+}
+
+function showTimeSlots(day, date) {
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const slots = ['9:00 AM','10:30 AM','12:00 PM','2:00 PM','3:30 PM','5:00 PM'];
+  const fullSlots = ['10:30 AM','3:30 PM'];
+  const container = document.getElementById('timeSlots');
+  container.innerHTML = `
+    <div class="time-slots-label">Available slots for ${months[date.getMonth()]} ${day}</div>
+    <div class="time-slots-grid">
+      ${slots.map(s => `<button class="time-slot-btn${fullSlots.includes(s) ? ' full' : ''}" ${fullSlots.includes(s) ? 'disabled' : ''}>${s}</button>`).join('')}
+    </div>
+  `;
+  container.querySelectorAll('.time-slot-btn:not(.full)').forEach(btn => {
+    btn.addEventListener('click', () => {
+      container.querySelectorAll('.time-slot-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+    });
+  });
+}
+
+document.getElementById('calPrev').addEventListener('click', () => {
+  calDate.setMonth(calDate.getMonth() - 1);
+  renderCalendar(calDate);
+});
+document.getElementById('calNext').addEventListener('click', () => {
+  calDate.setMonth(calDate.getMonth() + 1);
+  renderCalendar(calDate);
+});
+
+renderCalendar(calDate);
+
+
+// ── Order Tracking ──
+const mockOrders = {
+  'KHJ-2025-0042': { status: 'in-progress', steps: [true, true, true, false], times: ['Jan 14, 9:00 AM', 'Jan 14, 9:30 AM', 'Jan 14, 10:00 AM', ''] },
+  'KHJ-2025-0038': { status: 'completed', steps: [true, true, true, true], times: ['Jan 10, 11:00 AM', 'Jan 10, 11:20 AM', 'Jan 10, 12:00 PM', 'Jan 10, 2:30 PM'] },
+  'KHJ-2025-0055': { status: 'pending', steps: [true, false, false, false], times: ['Jan 15, 8:45 AM', '', '', ''] },
 };
+
+document.getElementById('trackBtn').addEventListener('click', () => {
+  const id = document.getElementById('trackingInput').value.trim().toUpperCase();
+  const result = document.getElementById('trackingResult');
+  const order = mockOrders[id];
+
+  if (!order) {
+    result.style.display = 'none';
+    alert('Order not found. Try: KHJ-2025-0042, KHJ-2025-0038, or KHJ-2025-0055');
+    return;
+  }
+
+  document.getElementById('trackOrderId').textContent = id;
+  const badge = document.getElementById('trackStatusBadge');
+  badge.textContent = order.status.replace('-', ' ').replace(/\b\w/g, c => c.toUpperCase());
+  badge.className = 'track-badge ' + order.status;
+
+  order.steps.forEach((done, i) => {
+    const step = document.getElementById('tStep' + (i+1));
+    const conn = document.getElementById('tConn' + (i+1));
+    if (step) {
+      step.className = 'track-step' + (done ? ' completed' : (i > 0 && order.steps[i-1] ? ' active' : ''));
+      document.getElementById('tTime' + (i+1)).textContent = order.times[i];
+    }
+    if (conn && done) conn.classList.add('done');
+    else if (conn) conn.classList.remove('done');
+  });
+
+  result.style.display = 'block';
+});
+
+
+// ── Order History Filters ──
+document.querySelectorAll('[data-hfilter]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-hfilter]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.hfilter;
+    document.querySelectorAll('.history-item').forEach(item => {
+      item.style.display = (filter === 'all' || item.dataset.hstatus === filter) ? 'grid' : 'none';
+    });
+  });
+});
+
+function downloadInvoice(orderId) {
+  alert(`Downloading invoice for Order ${orderId}... (PDF generation — backend coming soon)`);
+}
+
+document.getElementById('exportAllBtn').addEventListener('click', () => {
+  alert('Exporting all orders to CSV... (backend coming soon)');
+});
+
+
+// ── In-App Messages ──
+document.querySelectorAll('.chat-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.chat-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+  });
+});
+
+document.getElementById('chatSendBtn').addEventListener('click', sendChatMsg);
+document.getElementById('chatTypeInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') sendChatMsg();
+});
+
+function sendChatMsg() {
+  const input = document.getElementById('chatTypeInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  const chatMessages = document.getElementById('chatMessages');
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble me';
+  bubble.textContent = msg;
+  chatMessages.appendChild(bubble);
+
+  const time = document.createElement('div');
+  time.className = 'msg-time';
+  time.textContent = 'Just now';
+  chatMessages.appendChild(time);
+
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+  input.value = '';
+
+  // Auto reply simulation
+  setTimeout(() => {
+    const reply = document.createElement('div');
+    reply.className = 'msg-bubble them';
+    reply.textContent = 'Got it! I\'ll make a note. See you soon.';
+    chatMessages.appendChild(reply);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }, 1200);
+}
+
+
+// ── Booking Modal ──
+const bookingModal = document.getElementById('bookingModal');
+let currentBookingService = '', currentBookingPrice = '';
+let selectedBookingDate = '', selectedBookingTime = '';
+
+function openBookingModal(service, price) {
+  currentBookingService = service;
+  currentBookingPrice = price;
+  document.getElementById('bookingServiceName').textContent = 'Book: ' + service;
+  bookingModal.classList.add('open');
+  renderBookingCalendar();
+  document.getElementById('bookingSummary').style.display = 'none';
+  document.getElementById('confirmBookingBtn').style.display = 'none';
+}
+
+document.getElementById('bookingModalClose').addEventListener('click', () => {
+  bookingModal.classList.remove('open');
+});
+bookingModal.addEventListener('click', e => { if (e.target === bookingModal) bookingModal.classList.remove('open'); });
+
+function renderBookingCalendar() {
+  const mini = document.getElementById('bookingCalMini');
+  mini.innerHTML = '';
+  const today = new Date();
+  const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+  const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).getDay();
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  ['S','M','T','W','T','F','S'].forEach(d => {
+    const dn = document.createElement('div');
+    dn.className = 'cal-day-name';
+    dn.textContent = d;
+    dn.style.fontSize = '10px';
+    mini.appendChild(dn);
+  });
+
+  for (let i = 0; i < firstDay; i++) {
+    const e = document.createElement('div');
+    e.className = 'cal-day empty';
+    mini.appendChild(e);
+  }
+
+  const busyDays = [3, 7, 12, 18, 22];
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dayEl = document.createElement('div');
+    dayEl.className = 'cal-day';
+    dayEl.textContent = d;
+    dayEl.style.fontSize = '12px'; dayEl.style.padding = '6px 2px';
+
+    if (d < today.getDate()) { dayEl.classList.add('past'); }
+    else if (busyDays.includes(d)) { dayEl.classList.add('busy'); }
+    else { dayEl.classList.add('available'); }
+
+    if (d === today.getDate()) dayEl.classList.add('today');
+
+    if (!dayEl.classList.contains('past') && !dayEl.classList.contains('busy')) {
+      dayEl.addEventListener('click', () => {
+        mini.querySelectorAll('.cal-day').forEach(el => el.classList.remove('selected'));
+        dayEl.classList.add('selected');
+        selectedBookingDate = months[today.getMonth()] + ' ' + d + ', ' + today.getFullYear();
+        renderBookingTimeSlots();
+      });
+    }
+    mini.appendChild(dayEl);
+  }
+}
+
+function renderBookingTimeSlots() {
+  const slots = ['9:00 AM','11:00 AM','2:00 PM','4:00 PM'];
+  const slotsDiv = document.getElementById('bookingTimeSlots');
+  slotsDiv.innerHTML = '<div class="time-slots-label">Choose a time:</div><div class="time-slots-grid">' +
+    slots.map(s => `<button class="time-slot-btn">${s}</button>`).join('') + '</div>';
+
+  slotsDiv.querySelectorAll('.time-slot-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      slotsDiv.querySelectorAll('.time-slot-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedBookingTime = btn.textContent;
+      showBookingSummary();
+    });
+  });
+}
+
+function showBookingSummary() {
+  if (!selectedBookingDate || !selectedBookingTime) return;
+  document.getElementById('bsService').textContent = currentBookingService;
+  document.getElementById('bsDate').textContent = selectedBookingDate;
+  document.getElementById('bsTime').textContent = selectedBookingTime;
+  document.getElementById('bsPrice').textContent = currentBookingPrice;
+  document.getElementById('bookingSummary').style.display = 'block';
+  document.getElementById('confirmBookingBtn').style.display = 'block';
+}
+
+document.getElementById('confirmBookingBtn').addEventListener('click', () => {
+  bookingModal.classList.remove('open');
+  setTimeout(() => {
+    alert(`✅ Booking confirmed!\n\nService: ${currentBookingService}\nDate: ${selectedBookingDate}\nTime: ${selectedBookingTime}\nPrice: ${currentBookingPrice}\n\nYou'll receive an SMS confirmation shortly.`);
+  }, 100);
+});
+
+
+// ── Star Rating (Write Review) ──
+let selectedRating = 0;
+document.querySelectorAll('.wr-star').forEach(star => {
+  star.addEventListener('mouseover', () => {
+    const val = parseInt(star.dataset.val);
+    document.querySelectorAll('.wr-star').forEach((s, i) => {
+      s.classList.toggle('active', i < val);
+    });
+  });
+  star.addEventListener('mouseout', () => {
+    document.querySelectorAll('.wr-star').forEach((s, i) => {
+      s.classList.toggle('active', i < selectedRating);
+    });
+  });
+  star.addEventListener('click', () => {
+    selectedRating = parseInt(star.dataset.val);
+  });
+});
+
+document.querySelector('.wr-submit').addEventListener('click', () => {
+  const textarea = document.querySelector('.wr-textarea');
+  if (!selectedRating) { alert('Please select a star rating.'); return; }
+  if (!textarea.value.trim()) { alert('Please write a review.'); return; }
+  alert(`Thank you for your ${selectedRating}-star review! It will appear after moderation.`);
+  textarea.value = '';
+  selectedRating = 0;
+  document.querySelectorAll('.wr-star').forEach(s => s.classList.remove('active'));
+});
+
+
+// ── Badge Progress Animation (on scroll) ──
+const badgeObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.badge-fill').forEach(fill => {
+        const w = fill.style.width;
+        fill.style.width = '0';
+        setTimeout(() => { fill.style.width = w; }, 100);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+
+const badgesGrid = document.querySelector('.badges-grid');
+if (badgesGrid) badgeObserver.observe(badgesGrid);
+
+
+// ── Emergency chip alerts ──
+document.querySelectorAll('.emg-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    alert(`Connecting you to a ${chip.textContent} provider...\n\nA verified provider will call you within 10 minutes.`);
+  });
+});
