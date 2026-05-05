@@ -1189,20 +1189,36 @@ function loadStats() {
 var currentCategory = '';
 
 function buildServiceCard(l) {
-  return '<div class="card" onclick="openBooking(\''+l._id+'\',\''+escHtml(l.title)+'\',\''+l.emoji+'\','+l.price+',\''+escHtml(l.unit||'visit')+'\')">'+
+  var cat = l.category ? escHtml(l.category) : '';
+  return '<div class="card" onclick="openBooking(\''+l._id+'\',\''+escHtml(l.title)+'\',\''+l.emoji+'\','+l.price+',\''+escHtml(l.unit||'visit')+'\', \'\', \'\', \''+cat+'\')">'+
     '<span class="card-emoji">'+(l.emoji||'🔧')+'</span>'+
     '<div class="card-body">'+
       '<div class="card-title">'+escHtml(l.title)+'</div>'+
       '<div class="card-meta">'+escHtml(l.locationLabel||'Dhaka')+'</div>'+
       '<div class="card-price">৳'+l.price+' <small>/'+escHtml(l.unit||'visit')+'</small></div>'+
       '<div class="card-footer">'+
-        '<span class="card-rating">★ <strong>'+l.averageRating+'</strong> ('+l.reviewCount+')</span>'+
-        '<button class="btn-book" onclick="event.stopPropagation();openBooking(\''+l._id+'\',\''+escHtml(l.title)+'\',\''+l.emoji+'\','+l.price+',\''+escHtml(l.unit||'visit')+'\')">Book Now</button>'+
+        '<span class="card-rating">★ <strong>'+(l.averageRating||0)+'</strong> ('+(l.reviewCount||0)+')</span>'+
+        '<button class="btn-book" onclick="event.stopPropagation();openBooking(\''+l._id+'\',\''+escHtml(l.title)+'\',\''+l.emoji+'\','+l.price+',\''+escHtml(l.unit||'visit')+'\', \'\', \'\', \''+cat+'\')">Book Now</button>'+
       '</div>'+
     '</div>'+
   '</div>';
 }
 
+function buildRentalCard(l) {
+  var cat = l.category ? escHtml(l.category) : '';
+  return '<div class="card" onclick="openBooking(\''+l._id+'\',\''+escHtml(l.title)+'\',\''+l.emoji+'\','+l.price+',\''+escHtml(l.unit||'day')+'\', \'\', \'\', \''+cat+'\')">'+
+    '<span class="card-emoji">'+(l.emoji||'📦')+'</span>'+
+    '<div class="card-body">'+
+      '<div class="card-title">'+escHtml(l.title)+'</div>'+
+      '<div class="card-meta">'+escHtml(l.locationLabel||'Dhaka')+'</div>'+
+      '<div class="card-price">৳'+l.price+' <small>/'+escHtml(l.unit||'day')+'</small></div>'+
+      '<div class="card-footer">'+
+        '<span class="card-rating">★ <strong>'+(l.averageRating||0)+'</strong> ('+(l.reviewCount||0)+')</span>'+
+        '<button class="btn-book orange" onclick="event.stopPropagation();openBooking(\''+l._id+'\',\''+escHtml(l.title)+'\',\''+l.emoji+'\','+l.price+',\''+escHtml(l.unit||'day')+'\', \'\', \'\', \''+cat+'\')">Rent Now</button>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+}
 function buildRentalCard(l) {
   return '<div class="card" onclick="openBooking(\''+l._id+'\',\''+escHtml(l.title)+'\',\''+l.emoji+'\','+l.price+',\''+escHtml(l.unit||'day')+'\')">'+
     '<span class="card-emoji">'+(l.emoji||'📦')+'</span>'+
@@ -1332,10 +1348,21 @@ function openBookingFromCalendar() {
 // ── Booking modal (multi-step) ──
 var activeBooking = { listingId: null, title: '', emoji: '', price: 0, unit: 'visit', date: '', slot: null, slotLabel: '' };
 
-function openBooking(listingId, title, emoji, price, unit, prefillDate, prefillSlot) {
+// Updated with 'category' as the 8th parameter
+function openBooking(listingId, title, emoji, price, unit, prefillDate, prefillSlot, category) {
   var user = getUser();
   if (!user) { openAuthModal('signin'); return; }
 
+  // 1. Silently track the category view for recommendations (Non-blocking)
+  if (category) {
+    fetch(API + '/api/recommendations/track-view', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ category: category })
+    }).catch(function(e) { console.warn("Tracking silently failed", e); });
+  }
+
+  // 2. Standard Booking Modal Logic
   activeBooking = { listingId: listingId, title: title, emoji: emoji||'🔧', price: price, unit: unit||'visit', date: prefillDate||'', slot: prefillSlot||null, slotLabel: prefillSlot||'' };
 
   document.getElementById('bmEmoji').textContent = activeBooking.emoji;
@@ -1343,7 +1370,7 @@ function openBooking(listingId, title, emoji, price, unit, prefillDate, prefillS
   document.getElementById('bmSub').textContent   = '৳'+price+' / '+unit;
   document.getElementById('bookError').style.display = 'none';
   document.getElementById('bmNotes').value   = '';
-  document.getElementById('bmAddress').value = '';
+  document.getElementById('bmAddress').value = user.location || ''; // Pre-fill saved address!
   document.getElementById('bmSuccess').style.display = 'none';
   document.querySelector('.bm-header').style.display = '';
   document.querySelector('.bm-body').style.display = '';
@@ -2124,20 +2151,72 @@ async function submitNid(btn) {
   }
 }
 
-function saveAddress() {
+async function saveAddress() {
     var address = document.getElementById('profAddress').value.trim();
-    // Save locally so UI feels instant.
-    var userJson = localStorage.getItem('khoj_user');
-    if(userJson) {
-        var user = JSON.parse(userJson);
-        user.location = address;
-        localStorage.setItem('khoj_user', JSON.stringify(user));
-    }
+    var btn = event.target || document.querySelector('#profileModal .btn-full:last-child');
     
-    alert('✅ Delivery address saved locally!');
-    closeProfileModal();
-}
+    // Original button styles to reset later
+    var originalBg = btn.style.background;
+    
+    btn.textContent = 'Saving...';
+    btn.disabled = true;
 
+    try {
+        var token = localStorage.getItem('khoj_token');
+        
+        var res = await fetch(API+'/api/users/profile', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({ location: address })
+        });
+        
+        var rawText = await res.text(); 
+        
+        try {
+            var data = JSON.parse(rawText);
+            
+            if(data.success) {
+                // Update local storage
+                var userJson = localStorage.getItem('khoj_user');
+                if(userJson) {
+                    var user = JSON.parse(userJson);
+                    user.location = data.user.location || address;
+                    localStorage.setItem('khoj_user', JSON.stringify(user));
+                }
+                
+                // Sleek UI Feedback instead of an alert!
+                btn.textContent = '✅ Saved!';
+                btn.style.background = 'var(--green-dark)';
+                
+                // Wait 800ms so the user sees the success, then close the modal
+                setTimeout(function() {
+                    closeProfileModal();
+                    // Reset button for next time they open it
+                    btn.textContent = 'Save Address';
+                    btn.style.background = originalBg;
+                    btn.disabled = false;
+                }, 800);
+                
+            } else {
+                alert(data.error || 'Failed to save address.');
+                btn.textContent = 'Save Address';
+                btn.disabled = false;
+            }
+        } catch(parseError) {
+            console.error("Backend sent HTML instead of JSON:", rawText);
+            alert("Backend Error: " + res.status + " " + res.statusText);
+            btn.textContent = 'Save Address';
+            btn.disabled = false;
+        }
+    } catch(e) {
+        alert('Network Error: The backend server is offline or crashed.');
+        btn.textContent = 'Save Address';
+        btn.disabled = false;
+    }
+}
 // ── Bootstrap ──
 function loadAll() {
   var user = getUser();
