@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>KHOJ — User Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#f4f3ef;color:#1a1a1a;}
+.navbar{background:#fff;border-bottom:1px solid #e5e4df;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:#0F6E56;}
+.logo span{color:#D85A30;}
+.nav-user{display:flex;align-items:center;gap:12px;}
+.avatar{width:36px;height:36px;border-radius:50%;background:#1D9E75;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;}
+.btn-sm{padding:6px 16px;border-radius:8px;font-size:13px;font-weight:600;border:none;cursor:pointer;}
+.btn-outline{background:#fff;border:1.5px solid #e5e4df;color:#1a1a1a;}
+.btn-outline:hover{background:#f4f3ef;}
+.container{max-width:900px;margin:0 auto;padding:32px 28px;}
+.header{display:flex;align-items:center;gap:20px;margin-bottom:40px;}
+.header-avatar{width:80px;height:80px;border-radius:50%;background:#1D9E75;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:32px;}
+.header-info h1{font-family:'Fraunces',serif;font-size:28px;font-weight:700;margin-bottom:4px;}
+.header-info p{font-size:14px;color:#6b6b6b;}
+.card{background:#fff;border:1px solid #e5e4df;border-radius:16px;padding:24px;margin-bottom:24px;}
+.card h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;margin-bottom:16px;color:#0F6E56;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.form-row.full{grid-template-columns:1fr;}
+.form-group{margin-bottom:0;}
+.form-group label{font-size:12px;font-weight:600;color:#6b6b6b;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.3px;}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 12px;border:1.5px solid #e5e4df;border-radius:8px;font-size:14px;font-family:inherit;}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:#1D9E75;}
+.form-group input:disabled{background:#f4f3ef;cursor:not-allowed;}
+.badge{display:inline-block;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:600;}
+.badge-verified{background:#D1FAE5;color:#065F46;}
+.badge-pending{background:#FEF3C7;color:#92400E;}
+.badge-unverified{background:#F3F4F6;color:#6B7280;}
+.badge-rejected{background:#FEE2E2;color:#991B1B;}
+.nid-section{background:#f4f3ef;border-radius:12px;padding:20px;margin-bottom:20px;}
+.nid-status{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.nid-status-info h4{font-size:14px;font-weight:600;margin-bottom:4px;}
+.nid-status-info p{font-size:12px;color:#6b6b6b;}
+.image-upload{border:2px dashed #e5e4df;border-radius:8px;padding:16px;text-align:center;cursor:pointer;transition:.2s;margin:8px 0;}
+.image-upload:hover{border-color:#1D9E75;background:#F0FDF4;}
+.image-upload.has-image{border-style:solid;background:#E1F5EE;border-color:#1D9E75;}
+.image-preview{width:100%;max-width:200px;border-radius:8px;margin:8px 0;}
+.btn-full{width:100%;padding:12px;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;}
+.btn-green{background:#1D9E75;color:#fff;}
+.btn-green:hover{background:#0F6E56;}
+.btn-green:disabled{background:#a0a0a0;cursor:not-allowed;}
+.btn-red{background:#dc2626;color:#fff;}
+.btn-red:hover{background:#991B1B;}
+.btn-row{display:flex;gap:12px;margin-top:20px;}
+.btn-row .btn-full{margin:0;}
+.alert{border-radius:10px;padding:12px 16px;font-size:13px;margin-bottom:16px;}
+.alert-success{background:#D1FAE5;color:#065F46;}
+.alert-error{background:#FEE2E2;color:#991B1B;}
+.alert-warning{background:#FEF3C7;color:#92400E;}
+.alert-info{background:#DBEAFE;color:#1E40AF;}
+.loading{text-align:center;padding:32px;color:#a0a0a0;font-size:14px;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;margin-bottom:20px;font-size:14px;font-weight:600;color:#0F6E56;cursor:pointer;text-decoration:none;}
+.back-btn:hover{color:#065F46;}
+@media(max-width:768px){
+  .container{padding:16px;}
+  .form-row{grid-template-columns:1fr;}
+  .header{flex-direction:column;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div style="display:flex;align-items:center;gap:14px;">
+    <a href="/" style="text-decoration:none;" class="logo">KHOJ<span>.</span></a>
+  </div>
+  <div class="nav-user">
+    <div class="avatar" id="userAvatar">U</div>
+    <button class="btn-sm btn-outline" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<div class="container">
+  <a class="back-btn" onclick="goBack()">← Back</a>
+
+  <div id="loadingContent" class="loading" style="display:none;">Loading profile...</div>
+
+  <div id="profileContent" style="display:none;">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-avatar" id="profileAvatar">U</div>
+      <div class="header-info">
+        <h1 id="profileName">User Name</h1>
+        <p id="profileRole">Customer</p>
+      </div>
+    </div>
+
+    <!-- Personal Information -->
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h3>👤 Personal Information</h3>
+        <button class="btn-sm btn-outline" id="editProfileBtn" onclick="toggleEditMode()">✏️ Edit</button>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="userName" disabled/>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="userEmail" disabled/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="text" id="userPhone" disabled/>
+        </div>
+        <div class="form-group">
+          <label>Location</label>
+          <input type="text" id="userLocation" disabled/>
+        </div>
+      </div>
+      <div id="editActions" style="display:none;margin-top:16px;display:flex;gap:10px;">
+        <button class="btn-full btn-green" style="flex:1;" onclick="saveProfileChanges()">✓ Save Changes</button>
+        <button class="btn-full btn-outline" style="flex:1;" onclick="cancelEditMode()">✕ Cancel</button>
+      </div>
+    </div>
+
+    <!-- NID Verification -->
+    <div class="card">
+      <h3>🆔 NID Verification</h3>
+      
+      <div class="nid-section">
+        <div class="nid-status">
+          <div class="nid-status-info">
+            <h4>Verification Status</h4>
+            <p id="nidStatusText">Not verified yet</p>
+          </div>
+          <div id="nidStatusBadge" class="badge badge-unverified">Unverified</div>
+        </div>
+
+        <div id="nidUnverifiedView" style="display:none;">
+          <p style="font-size:13px;color:#6b6b6b;margin-bottom:16px;">
+            Verify your identity with your National ID number. This helps us ensure trust and safety in our community.
+          </p>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>NID Number</label>
+              <input type="text" id="nidNumber" placeholder="Enter your 10 or 13 digit NID number"/>
+            </div>
+          </div>
+
+
+
+          <div id="submitError" class="alert alert-error" style="display:none;"></div>
+
+          <button class="btn-full btn-green" id="submitNidBtn" onclick="submitNidVerification()" style="margin-top:16px;">
+            Submit for Verification
+          </button>
+        </div>
+
+        <div id="nidPendingView" style="display:none;">
+          <div class="alert alert-warning">
+            ⏳ Your NID verification is pending review. Our admin team will review it within 24 hours.
+          </div>
+          <div style="background:#fff;border:1px solid #e5e4df;border-radius:8px;padding:12px;margin-top:12px;">
+            <div style="font-size:12px;color:#6b6b6b;margin-bottom:4px;">Submitted NID Number</div>
+            <div style="font-size:14px;font-weight:600;" id="pendingNidNumber">-</div>
+          </div>
+        </div>
+
+        <div id="nidVerifiedView" style="display:none;">
+          <div class="alert alert-success">
+            ✅ Your identity has been verified successfully!
+          </div>
+          <div style="background:#fff;border:1px solid #e5e4df;border-radius:8px;padding:12px;margin-top:12px;">
+            <div style="font-size:12px;color:#6b6b6b;margin-bottom:4px;">Verified NID Number</div>
+            <div style="font-size:14px;font-weight:600;" id="verifiedNidNumber">-</div>
+          </div>
+        </div>
+
+        <div id="nidRejectedView" style="display:none;">
+          <div class="alert alert-error">
+            ❌ Your NID verification was rejected. Please review the issue and resubmit.
+          </div>
+          <div style="background:#fff;border:1px solid #e5e4df;border-radius:8px;padding:12px;margin:12px 0;">
+            <div style="font-size:12px;color:#6b6b6b;margin-bottom:4px;">Rejection Reason</div>
+            <div style="font-size:14px;color:#991B1B;" id="rejectionReason">-</div>
+          </div>
+          <button class="btn-full btn-green" onclick="document.getElementById('nidRejectedView').style.display='none';document.getElementById('nidUnverifiedView').style.display='block';" style="margin-top:12px;">
+            Try Again
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin NID Verification Panel (Only for Admin) -->
+    <div class="card" id="adminNidPanel" style="display:none;border:2px solid #0F6E56;">
+      <h3>🔐 Admin: NID Verification Management</h3>
+      
+      <div id="nidPendingList" style="display:none;">
+        <p style="font-size:13px;color:#6b6b6b;margin-bottom:12px;">
+          Pending NID verifications waiting for review
+        </p>
+
+        <div style="max-height:400px;overflow-y:auto;">
+          <div id="pendingNidItems"></div>
+        </div>
+      </div>
+
+      <div id="adminNoContent" style="text-align:center;padding:20px;color:#a0a0a0;">
+        No pending NID verifications
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for viewing NID details -->
+<div id="nidModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center;padding:16px;">
+  <div style="background:#fff;border-radius:16px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto;padding:24px;position:relative;">
+    <button onclick="closeNidModal()" style="position:absolute;top:12px;right:12px;background:none;border:none;font-size:24px;cursor:pointer;">✕</button>
+    
+    <h3 style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;margin-bottom:16px;">NID Details - <span id="modalUserName"></span></h3>
+
+    <div style="margin-bottom:16px;">
+      <label style="font-size:12px;font-weight:600;color:#6b6b6b;display:block;margin-bottom:8px;">NID Number</label>
+      <div id="modalNidNumber" style="font-size:14px;font-weight:600;background:#f4f3ef;padding:10px 12px;border-radius:8px;"></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+      <div>
+        <label style="font-size:12px;font-weight:600;color:#6b6b6b;display:block;margin-bottom:8px;">Front Image</label>
+        <img id="modalFrontImage" style="width:100%;border-radius:8px;border:1px solid #e5e4df;"/>
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:600;color:#6b6b6b;display:block;margin-bottom:8px;">Back Image</label>
+        <img id="modalBackImage" style="width:100%;border-radius:8px;border:1px solid #e5e4df;"/>
+      </div>
+    </div>
+
+    <div id="adminActions" style="display:none;">
+      <div class="form-group" style="margin-bottom:16px;">
+        <label>Decision Notes (optional)</label>
+        <textarea id="decisionNotes" rows="3" style="resize:vertical;width:100%;padding:10px 12px;border:1.5px solid #e5e4df;border-radius:8px;font-size:14px;font-family:inherit;" placeholder="Add a note if rejecting..."></textarea>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-full btn-red" onclick="rejectNidVerification()" style="margin:0;">❌ Reject</button>
+        <button class="btn-full btn-green" onclick="approveNidVerification()" style="margin:0;">✅ Approve</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = 'http://localhost:3001';
+let token = localStorage.getItem('khoj_token');
+let currentUser = JSON.parse(localStorage.getItem('khoj_user') || 'null');
+let profileUser = null;
+let uploadedImages = { front: null, back: null };
+
+// Get user ID from URL
+const urlParams = new URLSearchParams(window.location.search);
+const userId = urlParams.get('id');
+
+if (!token || !userId) {
+  window.location.href = '/';
+}
+
+const headers = () => ({ 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` });
+const headersMultipart = () => ({ 'Authorization': `Bearer ${token}` });
+
+// Init
+document.getElementById('userAvatar').textContent = currentUser?.name?.charAt(0).toUpperCase() || 'U';
+loadProfile();
+
+async function loadProfile() {
+  try {
+    document.getElementById('loadingContent').style.display = 'block';
+    document.getElementById('profileContent').style.display = 'none';
+
+    const res = await fetch(`${API}/api/users/profile/${userId}`, { headers: headers() });
+    const data = await res.json();
+
+    if (!res.ok || !data.success) {
+      alert('User not found');
+      goBack();
+      return;
+    }
+
+    profileUser = data.user;
+
+    // Populate user info
+    document.getElementById('profileName').textContent = profileUser.name;
+    document.getElementById('profileRole').textContent = profileUser.role.charAt(0).toUpperCase() + profileUser.role.slice(1);
+    document.getElementById('profileAvatar').textContent = profileUser.name.charAt(0).toUpperCase();
+    document.getElementById('userName').value = profileUser.name;
+    document.getElementById('userEmail').value = profileUser.email;
+    document.getElementById('userPhone').value = profileUser.phone;
+    document.getElementById('userLocation').value = profileUser.location || 'Not set';
+
+    // Populate NID status
+    renderNidStatus();
+
+    // Show admin panel if current user is admin
+    if (currentUser?.role === 'admin') {
+      document.getElementById('adminNidPanel').style.display = 'block';
+    }
+
+    document.getElementById('loadingContent').style.display = 'none';
+    document.getElementById('profileContent').style.display = 'block';
+  } catch(e) {
+    console.error('Error loading profile:', e);
+    alert('Error loading profile');
+    goBack();
+  }
+}
+
+function renderNidStatus() {
+  const nid = profileUser.nidVerification;
+  const status = nid?.status || 'unverified';
+
+  // Hide all views
+  document.getElementById('nidUnverifiedView').style.display = 'none';
+  document.getElementById('nidPendingView').style.display = 'none';
+  document.getElementById('nidVerifiedView').style.display = 'none';
+  document.getElementById('nidRejectedView').style.display = 'none';
+
+  // Update badge
+  const badge = document.getElementById('nidStatusBadge');
+  badge.className = 'badge';
+  if (status === 'verified') {
+    badge.classList.add('badge-verified');
+    badge.textContent = '✅ Verified';
+    document.getElementById('nidStatusText').textContent = 'Your identity is verified';
+    document.getElementById('nidVerifiedView').style.display = 'block';
+    document.getElementById('verifiedNidNumber').textContent = maskNid(nid?.nidNumber);
+  } else if (status === 'pending') {
+    badge.classList.add('badge-pending');
+    badge.textContent = '⏳ Pending';
+    document.getElementById('nidStatusText').textContent = 'Awaiting admin review...';
+    document.getElementById('nidPendingView').style.display = 'block';
+    document.getElementById('pendingNidNumber').textContent = maskNid(nid?.nidNumber);
+  } else if (status === 'rejected') {
+    badge.classList.add('badge-rejected');
+    badge.textContent = '❌ Rejected';
+    document.getElementById('nidStatusText').textContent = 'Your submission was rejected';
+    document.getElementById('nidRejectedView').style.display = 'block';
+    document.getElementById('rejectionReason').textContent = nid?.rejectionReason || 'No reason provided';
+  } else {
+    badge.classList.add('badge-unverified');
+    badge.textContent = 'Not Verified';
+    document.getElementById('nidStatusText').textContent = 'Submit your NID for verification';
+    document.getElementById('nidUnverifiedView').style.display = 'block';
+  }
+
+  // Only allow editing if current user is viewing their own profile
+  if (currentUser?._id === userId) {
+    if (status === 'unverified' || status === 'rejected') {
+      document.getElementById('nidUnverifiedView').style.display = 'block';
+    }
+  }
+}
+
+function maskNid(nid) {
+  if (!nid) return 'N/A';
+  const visible = nid.slice(-4);
+  return '****' + visible;
+}
+
+function previewImage(side) {
+  const input = document.getElementById(side + 'ImageInput');
+  const preview = document.getElementById(side + 'ImagePreview');
+  const upload = document.getElementById(side + 'ImageUpload');
+
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      preview.src = e.target.result;
+      preview.style.display = 'block';
+      upload.classList.add('has-image');
+      uploadedImages[side] = e.target.result;
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+function toggleEditMode() {
+  const isEditing = document.getElementById('userName').disabled === false;
+  
+  if (isEditing) {
+    // Cancel edit mode
+    cancelEditMode();
+  } else {
+    // Enable edit mode
+    document.getElementById('userName').disabled = false;
+    document.getElementById('userPhone').disabled = false;
+    document.getElementById('userLocation').disabled = false;
+    
+    document.getElementById('editProfileBtn').textContent = '✕ Close';
+    document.getElementById('editActions').style.display = 'flex';
+  }
+}
+
+function cancelEditMode() {
+  // Disable fields
+  document.getElementById('userName').disabled = true;
+  document.getElementById('userPhone').disabled = true;
+  document.getElementById('userLocation').disabled = true;
+  
+  document.getElementById('editProfileBtn').textContent = '✏️ Edit';
+  document.getElementById('editActions').style.display = 'none';
+  
+  // Reload to discard changes
+  loadProfile();
+}
+
+async function saveProfileChanges() {
+  const name = document.getElementById('userName').value.trim();
+  const phone = document.getElementById('userPhone').value.trim();
+  const location = document.getElementById('userLocation').value.trim();
+
+  if (!name || !phone) {
+    alert('Please fill in name and phone');
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API}/api/users/update-profile`, {
+      method: 'POST',
+      headers: headers(),
+      body: JSON.stringify({
+        name: name,
+        phone: phone,
+        location: location
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      alert('✅ Profile updated successfully');
+      profileUser = data.user;
+      currentUser = data.user;
+      localStorage.setItem('khoj_user', JSON.stringify(data.user));
+      
+      // Disable edit mode
+      document.getElementById('userName').disabled = true;
+      document.getElementById('userPhone').disabled = true;
+      document.getElementById('userLocation').disabled = true;
+      
+      document.getElementById('editProfileBtn').textContent = '✏️ Edit';
+      document.getElementById('editActions').style.display = 'none';
+      
+      loadProfile();
+    } else {
+      alert('Error: ' + data.message);
+    }
+  } catch(e) {
+    alert('Server error: ' + e.message);
+  }
+}
+
+async function submitNidVerification() {
+  const nidNumber = document.getElementById('nidNumber').value.trim();
+  const errorDiv = document.getElementById('submitError');
+
+  errorDiv.style.display = 'none';
+
+  if (!nidNumber) {
+    errorDiv.textContent = 'Please enter your NID number';
+    errorDiv.style.display = 'block';
+    return;
+  }
+
+  if (!/^\d{10,13}$/.test(nidNumber)) {
+    errorDiv.textContent = 'NID number must be 10 or 13 digits';
+    errorDiv.style.display = 'block';
+    return;
+  }
+
+  const btn = document.getElementById('submitNidBtn');
+  btn.textContent = 'Submitting...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(`${API}/api/nid/verify-nid`, {
+      method: 'POST',
+      headers: headers(),
+      body: JSON.stringify({
+        nidNumber: nidNumber
+      })
+    });
+
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      profileUser.nidVerification = data.user.nidVerification;
+      renderNidStatus();
+      document.getElementById('nidNumber').value = '';
+    } else {
+      errorDiv.textContent = data.message || 'Error submitting NID';
+      errorDiv.style.display = 'block';
+    }
+  } catch(e) {
+    errorDiv.textContent = 'Server error: ' + e.message;
+    errorDiv.style.display = 'block';
+  }
+
+  btn.textContent = 'Submit for Verification';
+  btn.disabled = false;
+}
+
+function goBack() {
+  const role = currentUser?.role;
+  if (role === 'customer') {
+    window.location.href = '/customer';
+  } else if (role === 'provider') {
+    window.location.href = '/provider';
+  } else if (role === 'admin') {
+    window.location.href = '/admin';
+  } else {
+    window.location.href = '/';
+  }
+}
+
+function logout() {
+  localStorage.clear();
+  window.location.href = '/';
+}
+
+// Admin functions
+function showNidDetail(userId) {
+  // Find user in pending list and show modal
+  fetch(`${API}/api/admin/nid-verification/${userId}`, { headers: headers() })
+    .then(r => r.json())
+    .then(data => {
+      if (data.success) {
+        const user = data.user;
+        const nid = user.nidVerification;
+        document.getElementById('modalUserName').textContent = user.name;
+        document.getElementById('modalNidNumber').textContent = nid.nidNumber;
+        document.getElementById('modalFrontImage').src = nid.frontImageUrl;
+        document.getElementById('modalBackImage').src = nid.backImageUrl;
+        window.currentNidUserId = userId;
+        window.currentNidData = nid;
+        document.getElementById('adminActions').style.display = 'block';
+        document.getElementById('nidModal').style.display = 'flex';
+      }
+    })
+    .catch(e => alert('Error loading NID details'));
+}
+
+function closeNidModal() {
+  document.getElementById('nidModal').style.display = 'none';
+}
+
+async function approveNidVerification() {
+  const userId = window.currentNidUserId;
+  const notes = document.getElementById('decisionNotes').value;
+
+  try {
+    const res = await fetch(`${API}/api/admin/nid-verification/${userId}/approve`, {
+      method: 'POST',
+      headers: headers(),
+      body: JSON.stringify({ notes })
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      alert('✅ NID verified successfully');
+      closeNidModal();
+      loadProfile();
+    } else {
+      alert('Error: ' + data.message);
+    }
+  } catch(e) {
+    alert('Server error: ' + e.message);
+  }
+}
+
+async function rejectNidVerification() {
+  const userId = window.currentNidUserId;
+  const reason = document.getElementById('decisionNotes').value;
+
+  if (!reason.trim()) {
+    alert('Please provide a rejection reason');
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API}/api/admin/nid-verification/${userId}/reject`, {
+      method: 'POST',
+      headers: headers(),
+      body: JSON.stringify({ rejectionReason: reason })
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      alert('❌ NID rejected');
+      closeNidModal();
+      loadProfile();
+    } else {
+      alert('Error: ' + data.message);
+    }
+  } catch(e) {
+    alert('Server error: ' + e.message);
+  }
+}
+</script>
+</body>
+</html>

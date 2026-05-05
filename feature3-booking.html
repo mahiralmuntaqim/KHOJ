@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Feature 3 — Booking & Scheduling</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#fafaf8;color:#1a1a1a;}
+.header{background:#fff;border-bottom:1px solid #e5e4df;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:'Fraunces',serif;font-size:22px;color:#0F6E56;}
+.logo span{color:#D85A30;}
+.feature-badge{background:#F0F4FF;color:#4444cc;font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px;}
+.container{max-width:1100px;margin:0 auto;padding:32px 24px;}
+.hero{background:linear-gradient(135deg,#1e3a5f,#2d5f8f);color:#fff;border-radius:20px;padding:36px;margin-bottom:32px;}
+.hero h1{font-family:'Fraunces',serif;font-size:32px;margin-bottom:10px;}
+.hero p{font-size:15px;opacity:.85;line-height:1.7;max-width:600px;}
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:32px;}
+.step{background:#fff;border:1px solid #e5e4df;border-radius:14px;padding:16px;text-align:center;}
+.step-num{width:28px;height:28px;border-radius:50%;background:#F0F4FF;color:#4444cc;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;}
+.step h4{font-size:13px;font-weight:600;margin-bottom:4px;}
+.step p{font-size:12px;color:#6b6b6b;line-height:1.5;}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.card{background:#fff;border:1px solid #e5e4df;border-radius:16px;padding:22px;margin-bottom:16px;}
+.card h3{font-family:'Fraunces',serif;font-size:18px;margin-bottom:6px;}
+.card-sub{font-size:13px;color:#6b6b6b;margin-bottom:18px;}
+.form-group{margin-bottom:14px;}
+.form-group label{font-size:12px;font-weight:600;color:#6b6b6b;display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px;}
+.form-group input,.form-group select{width:100%;padding:10px 12px;border:1.5px solid #e5e4df;border-radius:8px;font-size:14px;font-family:inherit;}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:#1D9E75;}
+.btn{padding:10px 20px;border-radius:10px;font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:inherit;width:100%;}
+.btn-blue{background:#4444cc;color:#fff;}
+.btn-green{background:#1D9E75;color:#fff;}
+.response-box{margin-top:14px;background:#f4f3ef;border-radius:10px;padding:14px;font-size:13px;min-height:60px;white-space:pre-wrap;display:none;}
+.response-box.success{background:#E1F5EE;color:#0F6E56;border:1px solid #a7f3d0;}
+.response-box.error{background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;}
+.slots-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px;}
+.slot-btn{padding:8px 4px;font-size:12px;font-weight:600;border:1.5px solid #e5e4df;border-radius:8px;background:#fff;cursor:pointer;text-align:center;font-family:inherit;transition:.15s;}
+.slot-btn:hover:not(:disabled){border-color:#1D9E75;color:#1D9E75;background:#E1F5EE;}
+.slot-btn.taken{background:#f4f3ef;color:#a0a0a0;cursor:not-allowed;text-decoration:line-through;opacity:.6;}
+.role-note{font-size:12px;background:#FFF8E0;border:1px solid #f5e090;border-radius:8px;padding:10px 14px;margin-bottom:14px;color:#78350f;}
+.booking-item{background:#f4f3ef;border-radius:10px;padding:14px;margin-bottom:8px;}
+.booking-item .title{font-size:13px;font-weight:600;margin-bottom:4px;}
+.booking-item .detail{font-size:12px;color:#6b6b6b;}
+.booking-item .ref{font-size:11px;color:#1D9E75;font-weight:600;margin-top:4px;}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">KHOJ<span>.</span> <span style="font-size:14px;font-weight:500;color:#6b6b6b;margin-left:8px;">Feature Demo</span></div>
+  <span class="feature-badge">📅 Feature 3 — Booking & Scheduling</span>
+</div>
+<div class="container">
+  <div class="hero">
+    <h1>📅 Booking & Scheduling System</h1>
+    <p>Customers book services for specific dates and time slots. The system checks real-time availability in MongoDB, prevents double bookings, and instantly notifies the provider via in-app message when a booking is created.</p>
+  </div>
+
+  <div class="how-grid">
+    <div class="step"><div class="step-num">1</div><h4>Pick Date</h4><p>Customer selects a date — system loads available slots from MongoDB</p></div>
+    <div class="step"><div class="step-num">2</div><h4>Pick Time</h4><p>Booked slots are greyed out — real-time conflict check prevents double booking</p></div>
+    <div class="step"><div class="step-num">3</div><h4>Confirm</h4><p>Booking saved in MongoDB with auto-generated KHJ-XXXXX reference number</p></div>
+    <div class="step"><div class="step-num">4</div><h4>Provider Notified</h4><p>Provider receives an in-app booking notification message immediately</p></div>
+  </div>
+
+  <div class="cols">
+    <div>
+      <div class="card">
+        <h3>🔍 Check Available Slots</h3>
+        <div class="card-sub">See which time slots are free for a listing on a date</div>
+        <div class="form-group"><label>Listing ID</label><input id="slotListingId" placeholder="Paste listing _id from /api/listings"/></div>
+        <div class="form-group"><label>Date</label><input type="date" id="slotDate"/></div>
+        <button class="btn btn-blue" onclick="checkSlots()">Check Slots</button>
+        <div id="slotsResult" style="margin-top:14px;"></div>
+      </div>
+
+      <div class="card">
+        <h3>📅 Create a Booking</h3>
+        <div class="card-sub">Book a service as a customer — provider gets notified automatically</div>
+        <div class="role-note">🔑 Requires: customer login token</div>
+        <div class="form-group"><label>Customer JWT Token</label><input id="bookToken" placeholder="Paste your customer token"/></div>
+        <div class="form-group"><label>Listing ID</label><input id="bookListingId" placeholder="Paste listing _id"/></div>
+        <div class="form-group"><label>Date</label><input type="date" id="bookDate"/></div>
+        <div class="form-group"><label>Time Slot</label>
+          <select id="bookTime">
+            <option value="08:00">8 AM</option><option value="09:00">9 AM</option>
+            <option value="10:00">10 AM</option><option value="11:00">11 AM</option>
+            <option value="12:00">12 PM</option><option value="13:00">1 PM</option>
+            <option value="14:00">2 PM</option><option value="15:00">3 PM</option>
+            <option value="16:00">4 PM</option><option value="17:00">5 PM</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Address</label><input id="bookAddress" placeholder="Your address"/></div>
+        <div class="form-group"><label>Payment Method</label>
+          <select id="bookPayment"><option value="cash">Cash</option><option value="bkash">bKash</option><option value="nagad">Nagad</option></select>
+        </div>
+        <button class="btn btn-green" onclick="createBooking()">Create Booking + Notify Provider</button>
+        <div id="bookRes" class="response-box"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h3>📋 My Bookings (Customer)</h3>
+        <div class="card-sub">View all bookings made by this customer</div>
+        <div class="form-group"><label>Customer JWT Token</label><input id="myBookToken" placeholder="Paste your token"/></div>
+        <button class="btn btn-blue" onclick="getMyBookings()">Load My Bookings</button>
+        <div id="myBookings" style="margin-top:14px;max-height:400px;overflow-y:auto;"></div>
+      </div>
+
+      <div class="card">
+        <h3>🔧 Provider Bookings</h3>
+        <div class="card-sub">All bookings assigned to this provider</div>
+        <div class="role-note">🔑 Requires: provider login token</div>
+        <div class="form-group"><label>Provider JWT Token</label><input id="provToken" placeholder="Paste provider token"/></div>
+        <button class="btn btn-blue" onclick="getProviderBookings()">Load Provider Bookings</button>
+        <div id="provBookings" style="margin-top:14px;max-height:280px;overflow-y:auto;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = '';
+const LABELS = {'08:00':'8 AM','09:00':'9 AM','10:00':'10 AM','11:00':'11 AM','12:00':'12 PM','13:00':'1 PM','14:00':'2 PM','15:00':'3 PM','16:00':'4 PM','17:00':'5 PM','18:00':'6 PM','19:00':'7 PM'};
+const show = (id, msg, type) => {
+  const el = document.getElementById(id);
+  el.textContent = typeof msg === 'object' ? JSON.stringify(msg, null, 2) : msg;
+  el.className = `response-box ${type}`; el.style.display = 'block';
+};
+
+document.getElementById('slotDate').min = new Date().toISOString().split('T')[0];
+document.getElementById('bookDate').min  = new Date().toISOString().split('T')[0];
+
+async function checkSlots() {
+  const listingId = document.getElementById('slotListingId').value.trim();
+  const date      = document.getElementById('slotDate').value;
+  if (!listingId || !date) return alert('Fill in both fields.');
+  const el = document.getElementById('slotsResult');
+  el.innerHTML = '<div style="font-size:13px;color:#a0a0a0;">Loading slots...</div>';
+  try {
+    const res  = await fetch(`${API}/api/schedule/slots?listingId=${listingId}&date=${date}`);
+    const data = await res.json();
+    el.innerHTML = `
+      <div style="font-size:12px;font-weight:600;color:#6b6b6b;margin-bottom:8px;text-transform:uppercase;letter-spacing:.3px;">Slots for ${date}</div>
+      <div class="slots-grid">
+        ${data.availableSlots?.map(s => `
+          <div class="slot-btn ${s.available?'':'taken'}">${s.label || LABELS[s.time] || s.time}<br/><span style="font-size:10px;color:${s.available?'#1D9E75':'#dc2626'};">${s.available?'✓ Free':'✗ Taken'}</span></div>
+        `).join('') || '<div style="color:#dc2626;font-size:13px;">Error loading</div>'}
+      </div>
+    `;
+  } catch(e) { el.innerHTML = '<div style="color:#dc2626;font-size:13px;">Server error</div>'; }
+}
+
+async function createBooking() {
+  const token = document.getElementById('bookToken').value.trim();
+  const body  = {
+    listingId:     document.getElementById('bookListingId').value.trim(),
+    scheduledDate: document.getElementById('bookDate').value,
+    scheduledTime: document.getElementById('bookTime').value,
+    address:       document.getElementById('bookAddress').value.trim(),
+    paymentMethod: document.getElementById('bookPayment').value
+  };
+  if (!token) return show('bookRes', 'Please paste your JWT token.', 'error');
+  if (!body.listingId || !body.scheduledDate) return show('bookRes', 'Fill in all required fields.', 'error');
+  try {
+    const res  = await fetch(`${API}/api/schedule/book`, { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body: JSON.stringify(body) });
+    const data = await res.json();
+    show('bookRes', res.ok ? `✅ Booking created!\nRef: ${data.bookingRef}\nProvider notified: ${data.providerNotified}\n\n${JSON.stringify(data.booking?.serviceSnapshot, null, 2)}` : data.message, res.ok?'success':'error');
+  } catch(e) { show('bookRes', 'Server error.', 'error'); }
+}
+
+async function getMyBookings() {
+  const token = document.getElementById('myBookToken').value.trim();
+  if (!token) return;
+  try {
+    const res  = await fetch(`${API}/api/schedule/my-bookings`, { headers:{'Authorization':`Bearer ${token}`} });
+    const data = await res.json();
+    const el   = document.getElementById('myBookings');
+    if (!data.bookings?.length) { el.innerHTML = '<div style="font-size:13px;color:#a0a0a0;">No bookings yet</div>'; return; }
+    el.innerHTML = data.bookings.map(b => `
+      <div class="booking-item">
+        <div class="title">${b.serviceSnapshot?.title || 'Service'}</div>
+        <div class="detail">📅 ${new Date(b.scheduledDate).toLocaleDateString()} ${b.scheduledTime ? '• '+b.scheduledTime : ''}</div>
+        <div class="detail">Status: <strong>${b.status}</strong> • ৳${b.payment?.amount}</div>
+        <div class="ref">${b.bookingRef}</div>
+      </div>
+    `).join('');
+  } catch(e) { document.getElementById('myBookings').innerHTML = '<div style="color:#dc2626;font-size:13px;">Error</div>'; }
+}
+
+async function getProviderBookings() {
+  const token = document.getElementById('provToken').value.trim();
+  if (!token) return;
+  try {
+    const res  = await fetch(`${API}/api/schedule/provider-bookings`, { headers:{'Authorization':`Bearer ${token}`} });
+    const data = await res.json();
+    const el   = document.getElementById('provBookings');
+    if (!data.bookings?.length) { el.innerHTML = '<div style="font-size:13px;color:#a0a0a0;">No bookings yet</div>'; return; }
+    el.innerHTML = data.bookings.map(b => `
+      <div class="booking-item">
+        <div class="title">${b.serviceSnapshot?.title || 'Service'}</div>
+        <div class="detail">👤 ${b.customer?.name} • ${b.customer?.phone}</div>
+        <div class="detail">📅 ${new Date(b.scheduledDate).toLocaleDateString()} ${b.scheduledTime ? '• '+b.scheduledTime : ''}</div>
+        <div class="detail">Status: <strong>${b.status}</strong> • ৳${b.payment?.amount}</div>
+        <div class="ref">${b.bookingRef}</div>
+      </div>
+    `).join('');
+  } catch(e) { document.getElementById('provBookings').innerHTML = '<div style="color:#dc2626;font-size:13px;">Error</div>'; }
+}
+</script>
+</body>
+</html>
