@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KHOJ — Services & Rentals</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="new-features.css" />
+</head>
+<body>
+
+  <!-- ── NAVBAR ── -->
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="#" class="logo">KHOJ<span class="logo-dot">.</span></a>
+      <nav class="nav-links">
+        <a href="#services">Services</a>
+        <a href="#rentals">Rentals</a>
+        <a href="payment.html">Payment</a>
+        <a href="#how">How it works</a>
+        <a href="#" class="btn-outline" id="signInBtn">Sign In</a>
+        <a href="#" class="btn-primary" id="getStartedBtn">Get Started</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#services">Services</a>
+      <a href="#rentals">Rentals</a>
+      <a href="#how">How it works</a>
+      <a href="#" id="mobileSignIn">Sign In</a>
+      <a href="#" id="mobileGetStarted">Get Started</a>
+    </div>
+  </header>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-bg-shape"></div>
+    <div class="container hero-inner">
+      <div class="hero-text fade-up">
+        <span class="badge">🇧🇩 Bangladesh's Local Marketplace</span>
+        <h1>Find <em>trusted help</em><br>right in your city</h1>
+        <p>Book home repairs, tutors, event planners — or rent appliances, furniture, and electronics. Verified providers. Transparent pricing.</p>
+        <div class="hero-actions">
+          <a href="#services" class="btn-primary btn-lg">Explore Services</a>
+          <a href="#" class="btn-ghost btn-lg" id="listServiceBtn">List Your Service →</a>
+        </div>
+      </div>
+      <div class="hero-card-wrap fade-up delay-2">
+        <div class="floating-card card-1">
+          <span class="fc-icon">🔧</span>
+          <div>
+            <div class="fc-title">AC Servicing</div>
+            <div class="fc-sub">Booked just now</div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hv-ring ring-1"></div>
+          <div class="hv-ring ring-2"></div>
+          <div class="hv-center">
+            <span>খোঁজ</span>
+            <small>help · service · care</small>
+          </div>
+        </div>
+        <div class="floating-card card-2">
+          <span class="fc-icon">⭐</span>
+          <div>
+            <div class="fc-title">4.9 Rating</div>
+            <div class="fc-sub">2,400+ providers</div>
+          </div>
+        </div>
+      </div>
+      <div class="sos-panel">
+        <div class="sos-main">
+          <button class="sos-button" id="sosButton" type="button">SOS</button>
+          <div>
+            <h4>One-tap SOS</h4>
+            <p id="sosStatus">Tap SOS to share live GPS, notify saved contacts, and call the helpline.</p>
+          </div>
+        </div>
+        <div class="sos-tools">
+          <div class="sos-location">
+            <button class="btn-outline btn-sm" id="shareLocationBtn" type="button">Share Live GPS</button>
+            <span id="liveLocationText">Location not shared yet</span>
+          </div>
+          <div class="sos-contacts">
+            <div class="sos-contact-form">
+              <input type="text" id="sosContactName" placeholder="Contact name" />
+              <input type="tel" id="sosContactPhone" placeholder="Phone number" />
+              <button class="btn-primary btn-sm" id="saveSosContactBtn" type="button">Save Contact</button>
+            </div>
+            <div class="sos-contact-list" id="sosContactList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STATS ── -->
+  <div class="stats-strip">
+    <div class="container stats-inner">
+      <div class="stat-item">
+        <span class="stat-num">2,400<span class="stat-plus">+</span></span>
+        <span class="stat-label">Service Providers</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-num">18K<span class="stat-plus">+</span></span>
+        <span class="stat-label">Orders Completed</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-num">64</span>
+        <span class="stat-label">Districts Covered</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-num">4.8<span class="stat-plus">★</span></span>
+        <span class="stat-label">Avg. Rating</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SEARCH ── -->
+  <section class="search-section">
+    <div class="container">
+      <div class="search-box">
+        <select class="search-select" id="categorySelect">
+          <option value="">All Categories</option>
+          <option>Home Repair</option>
+          <option>Tutoring</option>
+          <option>Event Planning</option>
+          <option>Cleaning</option>
+          <option>Tech Support</option>
+          <option>Rentals</option>
+        </select>
+        <div class="search-divider"></div>
+        <input type="text" class="search-input" id="searchInput" placeholder="e.g. AC repair, physics tutor, camera rental..." />
+        <button class="search-btn" id="searchBtn">Search</button>
+      </div>
+      <div class="quick-tags">
+        <span class="qtag">AC Repair</span>
+        <span class="qtag">Home Tutor</span>
+        <span class="qtag">Plumbing</span>
+        <span class="qtag">Camera Rental</span>
+        <span class="qtag">Event Decoration</span>
+        <span class="qtag">Laptop Repair</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── LOCATION DISCOVERY ── (NEW) -->
+  <section class="section section-alt" id="location-discovery">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <p class="section-eyebrow">Near you</p>
+          <h2 class="section-title">Services in your area</h2>
+        </div>
+        <button class="btn-outline" id="detectLocationBtn">📍 Detect My Location</button>
+      </div>
+      <div class="location-bar" id="locationBar">
+        <span class="loc-icon">📍</span>
+        <span id="locationText">Enable location to see nearby services</span>
+        <div class="location-districts">
+          <button class="district-btn active" data-district="all">All Districts</button>
+          <button class="district-btn" data-district="dhaka">Dhaka</button>
+          <button class="district-btn" data-district="chittagong">Chittagong</button>
+          <button class="district-btn" data-district="sylhet">Sylhet</button>
+          <button class="district-btn" data-district="rajshahi">Rajshahi</button>
+          <button class="district-btn" data-district="khulna">Khulna</button>
+          <button class="district-btn" data-district="barisal">Barisal</button>
+        </div>
+      </div>
+      <div class="nearby-grid" id="nearbyGrid">
+        <div class="nearby-card">
+          <div class="nearby-map-pin">🔧</div>
+          <div class="nearby-info">
+            <h4>Reza's Tech Services</h4>
+            <p>AC Repair & Installation</p>
+            <span class="nearby-dist">0.8 km away • Mirpur</span>
+          </div>
+          <div class="nearby-meta">
+            <span class="nearby-rating">★ 4.9</span>
+            <button class="card-btn nearby-book-btn">Book</button>
+          </div>
+        </div>
+        <div class="nearby-card">
+          <div class="nearby-map-pin">🧹</div>
+          <div class="nearby-info">
+            <h4>CleanBD</h4>
+            <p>Deep Home Cleaning</p>
+            <span class="nearby-dist">1.2 km away • Uttara</span>
+          </div>
+          <div class="nearby-meta">
+            <span class="nearby-rating">★ 4.6</span>
+            <button class="card-btn nearby-book-btn">Book</button>
+          </div>
+        </div>
+        <div class="nearby-card">
+          <div class="nearby-map-pin">💻</div>
+          <div class="nearby-info">
+            <h4>TechFix BD</h4>
+            <p>Laptop & PC Repair</p>
+            <span class="nearby-dist">2.1 km away • Dhanmondi</span>
+          </div>
+          <div class="nearby-meta">
+            <span class="nearby-rating">★ 4.7</span>
+            <button class="card-btn nearby-book-btn">Book</button>
+          </div>
+        </div>
+        <div class="nearby-card">
+          <div class="nearby-map-pin">📚</div>
+          <div class="nearby-info">
+            <h4>Nadia Ahmed</h4>
+            <p>HSC Physics & Math Tutor</p>
+            <span class="nearby-dist">3.5 km away • Mirpur</span>
+          </div>
+          <div class="nearby-meta">
+            <span class="nearby-rating">★ 5.0</span>
+            <button class="card-btn nearby-book-btn">Book</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SERVICES ── -->
+  <section class="section" id="services">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <p class="section-eyebrow">What we offer</p>
+          <h2 class="section-title">Popular services</h2>
+        </div>
+        <a href="#" class="view-all">View all →</a>
+      </div>
+
+      <div class="category-tabs" id="categoryTabs">
+        <button class="ctab active" data-cat="all">All</button>
+        <button class="ctab" data-cat="repair">Home Repair</button>
+        <button class="ctab" data-cat="tutor">Tutoring</button>
+        <button class="ctab" data-cat="event">Events</button>
+        <button class="ctab" data-cat="tech">Tech Support</button>
+        <button class="ctab" data-cat="clean">Cleaning</button>
+      </div>
+
+      <div class="listings-grid" id="listingsGrid">
+
+        <div class="listing-card" data-cat="repair">
+          <div class="card-thumb thumb-repair">🔧</div>
+          <div class="card-body">
+            <span class="card-cat">Home Repair</span>
+            <h3 class="card-title">AC Installation & Servicing</h3>
+            <p class="card-provider">by Reza's Tech Services • Dhaka</p>
+            <div class="card-footer">
+              <span class="card-price">৳800 <small>/ visit</small></span>
+              <span class="card-rating">★ 4.9 <small>(42)</small></span>
+            </div>
+            <button class="card-btn" onclick="openBookingModal('AC Installation & Servicing', '৳800')">Book Now</button>
+          </div>
+        </div>
+
+        <div class="listing-card" data-cat="tutor">
+          <div class="card-thumb thumb-tutor">📚</div>
+          <div class="card-body">
+            <span class="card-cat">Tutoring</span>
+            <h3 class="card-title">HSC Physics & Math Tutor</h3>
+            <p class="card-provider">by Nadia Ahmed • Mirpur</p>
+            <div class="card-footer">
+              <span class="card-price">৳500 <small>/ hour</small></span>
+              <span class="card-rating">★ 5.0 <small>(18)</small></span>
+            </div>
+            <button class="card-btn" onclick="openBookingModal('HSC Physics & Math Tutor', '৳500')">Book Now</button>
+          </div>
+        </div>
+
+        <div class="listing-card" data-cat="event">
+          <div class="card-thumb thumb-event">🎉</div>
+          <div class="card-body">
+            <span class="card-cat">Events</span>
+            <h3 class="card-title">Birthday Party Decoration</h3>
+            <p class="card-provider">by DhakaDecor • Gulshan</p>
+            <div class="card-footer">
+              <span class="card-price">৳2,500 <small>/ event</small></span>
+              <span class="card-rating">★ 4.8 <small>(31)</small></span>
+            </div>
+            <button class="card-btn" onclick="openBookingModal('Birthday Party Decoration', '৳2,500')">Book Now</button>
+          </div>
+        </div>
+
+        <div class="listing-card" data-cat="tech">
+          <div class="card-thumb thumb-tech">💻</div>
+          <div class="card-body">
+            <span class="card-cat">Tech Support</span>
+            <h3 class="card-title">Laptop & PC Repair</h3>
+            <p class="card-provider">by TechFix BD • Dhanmondi</p>
+            <div class="card-footer">
+              <span class="card-price">৳600 <small>/ session</small></span>
+              <span class="card-rating">★ 4.7 <small>(56)</small></span>
+            </div>
+            <button class="card-btn" onclick="openBookingModal('Laptop & PC Repair', '৳600')">Book Now</button>
+          </div>
+        </div>
+
+        <div class="listing-card" data-cat="clean">
+          <div class="card-thumb thumb-clean">🧹</div>
+          <div class="card-body">
+            <span class="card-cat">Cleaning</span>
+            <h3 class="card-title">Deep Home Cleaning</h3>
+            <p class="card-provider">by CleanBD • Uttara</p>
+            <div class="card-footer">
+              <span class="card-price">৳1,200 <small>/ session</small></span>
+              <span class="card-rating">★ 4.6 <small>(73)</small></span>
+            </div>
+            <button class="card-btn" onclick="openBookingModal('Deep Home Cleaning', '৳1,200')">Book Now</button>
+          </div>
+        </div>
+
+        <div class="listing-card" data-cat="repair">
+          <div class="card-thumb thumb-repair">🚿</div>
+          <div class="card-body">
+            <span class="card-cat">Home Repair</span>
+            <h3 class="card-title">Plumbing & Pipe Fixing</h3>
+            <p class="card-provider">by Karim Plumbers • Mohammadpur</p>
+            <div class="card-footer">
+              <span class="card-price">৳700 <small>/ visit</small></span>
+              <span class="card-rating">★ 4.8 <small>(29)</small></span>
+            </div>
+            <button class="card-btn" onclick="openBookingModal('Plumbing & Pipe Fixing', '৳700')">Book Now</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── AVAILABILITY CALENDAR ── (NEW) -->
+  <section class="section section-alt" id="availability">
+    <div class="container">
+      <div class="section-header center">
+        <div>
+          <p class="section-eyebrow">Book a slot</p>
+          <h2 class="section-title">Check availability & schedule</h2>
+        </div>
+      </div>
+      <div class="calendar-widget">
+        <div class="cal-header">
+          <button class="cal-nav" id="calPrev">‹</button>
+          <span class="cal-month-label" id="calMonthLabel"></span>
+          <button class="cal-nav" id="calNext">›</button>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="cal-legend">
+          <span class="leg-item"><span class="leg-dot available"></span>Available</span>
+          <span class="leg-item"><span class="leg-dot busy"></span>Busy</span>
+          <span class="leg-item"><span class="leg-dot selected"></span>Selected</span>
+        </div>
+        <div class="cal-time-slots" id="timeSlots">
+          <p class="cal-hint">Select a date to see available time slots</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── RENTALS ── -->
+  <section class="section" id="rentals">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <p class="section-eyebrow">Rent, don't buy</p>
+          <h2 class="section-title">Popular rentals</h2>
+        </div>
+        <a href="#" class="view-all">View all →</a>
+      </div>
+      <div class="rentals-grid">
+
+        <div class="rental-card">
+          <div class="rental-emoji">❄️</div>
+          <div class="rental-info">
+            <h3>Air Conditioner</h3>
+            <p>1.5 Ton • Dhaka</p>
+          </div>
+          <div class="rental-price">৳1,200<span>/day</span></div>
+          <button class="rental-btn">Rent</button>
+        </div>
+
+        <div class="rental-card">
+          <div class="rental-emoji">📷</div>
+          <div class="rental-info">
+            <h3>DSLR Camera Kit</h3>
+            <p>Canon 90D • Dhanmondi</p>
+          </div>
+          <div class="rental-price">৳1,500<span>/day</span></div>
+          <button class="rental-btn">Rent</button>
+        </div>
+
+        <div class="rental-card">
+          <div class="rental-emoji">🎤</div>
+          <div class="rental-info">
+            <h3>PA Sound System</h3>
+            <p>500W • Gulshan</p>
+          </div>
+          <div class="rental-price">৳2,000<span>/day</span></div>
+          <button class="rental-btn">Rent</button>
+        </div>
+
+        <div class="rental-card">
+          <div class="rental-emoji">🪑</div>
+          <div class="rental-info">
+            <h3>Folding Chairs (50pc)</h3>
+            <p>Event Ready • Mirpur</p>
+          </div>
+          <div class="rental-price">৳800<span>/day</span></div>
+          <button class="rental-btn">Rent</button>
+        </div>
+
+        <div class="rental-card">
+          <div class="rental-emoji">🖥️</div>
+          <div class="rental-info">
+            <h3>Projector + Screen</h3>
+            <p>Full HD • Banani</p>
+          </div>
+          <div class="rental-price">৳900<span>/day</span></div>
+          <button class="rental-btn">Rent</button>
+        </div>
+
+        <div class="rental-card">
+          <div class="rental-emoji">🧺</div>
+          <div class="rental-info">
+            <h3>Washing Machine</h3>
+            <p>Samsung 7kg • Uttara</p>
+          </div>
+          <div class="rental-price">৳500<span>/day</span></div>
+          <button class="rental-btn">Rent</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ORDER STATUS & TRACKING ── (NEW) -->
+  <section class="section" id="tracking">
+    <div class="container">
+      <div class="section-header center">
+        <div>
+          <p class="section-eyebrow">Always in the loop</p>
+          <h2 class="section-title">Track your order</h2>
+        </div>
+      </div>
+      <div class="tracking-widget">
+        <div class="tracking-input-row">
+          <input type="text" class="tracking-input" id="trackingInput" placeholder="Enter Order ID or Parcel ID (e.g. KHJ-2025-0042)" />
+          <button class="btn-primary" id="trackBtn">Track Now</button>
+        </div>
+        <div class="tracking-result" id="trackingResult" style="display:none;">
+          <div class="track-order-id">
+            Order <strong id="trackOrderId"></strong>
+            <span class="track-badge" id="trackStatusBadge"></span>
+          </div>
+          <div class="track-current-location" id="trackCurrentLocation">Current location: <strong>Farmgate, Dhaka</strong></div>
+          <div class="track-steps">
+            <div class="track-step completed" id="tStep1">
+              <div class="track-step-icon">✅</div>
+              <div class="track-step-info">
+                <div class="track-step-title">Order Confirmed</div>
+                <div class="track-step-time" id="tTime1"></div>
+              </div>
+            </div>
+            <div class="track-connector" id="tConn1"></div>
+            <div class="track-step" id="tStep2">
+              <div class="track-step-icon">🔄</div>
+              <div class="track-step-info">
+                <div class="track-step-title">Provider Assigned</div>
+                <div class="track-step-time" id="tTime2"></div>
+              </div>
+            </div>
+            <div class="track-connector" id="tConn2"></div>
+            <div class="track-step" id="tStep3">
+              <div class="track-step-icon">🚗</div>
+              <div class="track-step-info">
+                <div class="track-step-title">In Progress</div>
+                <div class="track-step-time" id="tTime3"></div>
+              </div>
+            </div>
+            <div class="track-connector" id="tConn3"></div>
+            <div class="track-step" id="tStep4">
+              <div class="track-step-icon">🎉</div>
+              <div class="track-step-info">
+                <div class="track-step-title">Completed</div>
+                <div class="track-step-time" id="tTime4"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Parcel Tracking -->
+        <div class="parcel-track-section">
+          <div class="parcel-track-label">📦 Parcel Tracking</div>
+          <div class="parcel-track-row">
+            <div class="parcel-map-mock">
+              <div class="parcel-route-line"></div>
+              <div class="parcel-origin">🏠<span>Warehouse</span></div>
+              <div class="parcel-dot parcel-moving" id="parcelDot">📦</div>
+              <div class="parcel-dest">🏡<span>Your Address</span></div>
+            </div>
+            <div class="parcel-status-info">
+              <div class="parcel-eta">Estimated arrival: <strong>Today, 4–6 PM</strong></div>
+              <div class="parcel-current">Current location: <strong>Farmgate, Dhaka</strong></div>
+              <div class="parcel-id">Parcel ID: <strong>KHJ-PCL-8841</strong></div>
+              <button class="btn-outline btn-sm" style="margin-top:12px;">Get SMS Updates</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HOW IT WORKS ── -->
+  <section class="section section-alt" id="how">
+    <div class="container">
+      <div class="section-header center">
+        <div>
+          <p class="section-eyebrow">Simple process</p>
+          <h2 class="section-title">How KHOJ works</h2>
+        </div>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">01</div>
+          <div class="step-icon">🔍</div>
+          <h3>Browse & Search</h3>
+          <p>Find services or rentals by category, location, or keyword across all 64 districts.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">02</div>
+          <div class="step-icon">👤</div>
+          <h3>Review Providers</h3>
+          <p>Check verified ratings, portfolios, and transparent pricing before committing.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">03</div>
+          <div class="step-icon">🛒</div>
+          <h3>Add to Cart</h3>
+          <p>Bundle multiple services or rentals into a single seamless order.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">04</div>
+          <div class="step-icon">✅</div>
+          <h3>Confirm & Track</h3>
+          <p>Secure checkout with real-time order tracking and digital receipts.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BADGE SYSTEM ── (NEW) -->
+  <section class="section" id="badges">
+    <div class="container">
+      <div class="section-header center">
+        <div>
+          <p class="section-eyebrow">Loyalty rewards</p>
+          <h2 class="section-title">Earn badges, unlock perks</h2>
+        </div>
+      </div>
+      <div class="badges-grid">
+        <div class="badge-card badge-bronze">
+          <div class="badge-icon">🥉</div>
+          <div class="badge-name">Newcomer</div>
+          <div class="badge-desc">Complete your first booking</div>
+          <div class="badge-perk">5% off next order</div>
+          <div class="badge-progress-bar"><div class="badge-fill" style="width:100%"></div></div>
+        </div>
+        <div class="badge-card badge-silver">
+          <div class="badge-icon">🥈</div>
+          <div class="badge-name">Regular</div>
+          <div class="badge-desc">5+ bookings completed</div>
+          <div class="badge-perk">Priority support + 8% off</div>
+          <div class="badge-progress-bar"><div class="badge-fill" style="width:60%"></div></div>
+        </div>
+        <div class="badge-card badge-gold">
+          <div class="badge-icon">🥇</div>
+          <div class="badge-name">Trusted</div>
+          <div class="badge-desc">15+ bookings + 4.5★ avg rating</div>
+          <div class="badge-perk">Free delivery + 12% off</div>
+          <div class="badge-progress-bar"><div class="badge-fill" style="width:30%"></div></div>
+        </div>
+        <div class="badge-card badge-platinum">
+          <div class="badge-icon">💎</div>
+          <div class="badge-name">KHOJ Elite</div>
+          <div class="badge-desc">50+ orders, verified NID</div>
+          <div class="badge-perk">Dedicated manager + 20% off</div>
+          <div class="badge-progress-bar"><div class="badge-fill" style="width:10%"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PROVIDER DASHBOARD PREVIEW ── (NEW) -->
+  <section class="section section-alt" id="provider-dashboard">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <p class="section-eyebrow">For providers</p>
+          <h2 class="section-title">Your earning dashboard</h2>
+        </div>
+        <a href="#" class="btn-primary">Go to Dashboard →</a>
+      </div>
+      <div class="dashboard-preview">
+        <div class="dash-stats-row">
+          <div class="dash-stat-card">
+            <div class="dash-stat-icon">💰</div>
+            <div class="dash-stat-val">৳24,500</div>
+            <div class="dash-stat-label">This Month</div>
+            <div class="dash-stat-trend up">↑ 14% vs last month</div>
+          </div>
+          <div class="dash-stat-card">
+            <div class="dash-stat-icon">📋</div>
+            <div class="dash-stat-val">38</div>
+            <div class="dash-stat-label">Orders Completed</div>
+            <div class="dash-stat-trend up">↑ 6 this week</div>
+          </div>
+          <div class="dash-stat-card">
+            <div class="dash-stat-icon">⭐</div>
+            <div class="dash-stat-val">4.87</div>
+            <div class="dash-stat-label">Avg. Rating</div>
+            <div class="dash-stat-trend neutral">Stable</div>
+          </div>
+          <div class="dash-stat-card">
+            <div class="dash-stat-icon">⏳</div>
+            <div class="dash-stat-val">৳6,200</div>
+            <div class="dash-stat-label">Pending Payout</div>
+            <div class="dash-stat-trend">Next: 15 Jan</div>
+          </div>
+        </div>
+        <div class="dash-orders-table">
+          <div class="dash-table-header">
+            <span>Recent Orders</span>
+            <a href="#" class="view-all">View all →</a>
+          </div>
+          <div class="dash-table">
+            <div class="dash-row dash-row-head">
+              <span>Order ID</span><span>Service</span><span>Customer</span><span>Amount</span><span>Status</span>
+            </div>
+            <div class="dash-row">
+              <span>#KHJ-4821</span><span>AC Servicing</span><span>Rafiq M.</span><span>৳800</span><span class="status-pill completed">Completed</span>
+            </div>
+            <div class="dash-row">
+              <span>#KHJ-4820</span><span>AC Servicing</span><span>Sara K.</span><span>৳800</span><span class="status-pill in-progress">In Progress</span>
+            </div>
+            <div class="dash-row">
+              <span>#KHJ-4818</span><span>Installation</span><span>Tanvir H.</span><span>৳1,200</span><span class="status-pill pending">Pending</span>
+            </div>
+            <div class="dash-row">
+              <span>#KHJ-4815</span><span>AC Servicing</span><span>Meem R.</span><span>৳800</span><span class="status-pill completed">Completed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── IN-APP MESSAGES PREVIEW ── (NEW) -->
+  <section class="section" id="messages">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <p class="section-eyebrow">Stay connected</p>
+          <h2 class="section-title">Chat with your provider</h2>
+        </div>
+      </div>
+      <div class="messages-preview">
+        <div class="chat-sidebar">
+          <div class="chat-search-bar">
+            <input type="text" placeholder="Search conversations..." class="chat-search-input" />
+          </div>
+          <div class="chat-list">
+            <div class="chat-item active">
+              <div class="chat-avatar">RT</div>
+              <div class="chat-item-info">
+                <div class="chat-item-name">Reza's Tech Services</div>
+                <div class="chat-item-preview">I'll arrive at 2 PM ✓✓</div>
+              </div>
+              <div class="chat-item-meta">
+                <div class="chat-item-time">2m ago</div>
+                <div class="chat-unread">2</div>
+              </div>
+            </div>
+            <div class="chat-item">
+              <div class="chat-avatar">ND</div>
+              <div class="chat-item-info">
+                <div class="chat-item-name">Nadia Ahmed</div>
+                <div class="chat-item-preview">Sure, Saturday works!</div>
+              </div>
+              <div class="chat-item-meta">
+                <div class="chat-item-time">1h ago</div>
+              </div>
+            </div>
+            <div class="chat-item">
+              <div class="chat-avatar">DD</div>
+              <div class="chat-item-info">
+                <div class="chat-item-name">DhakaDecor</div>
+                <div class="chat-item-preview">Please send the venue details</div>
+              </div>
+              <div class="chat-item-meta">
+                <div class="chat-item-time">Yesterday</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chat-window">
+          <div class="chat-win-header">
+            <div class="chat-win-avatar">RT</div>
+            <div>
+              <div class="chat-win-name">Reza's Tech Services</div>
+              <div class="chat-win-status">🟢 Online</div>
+            </div>
+          </div>
+          <div class="chat-messages" id="chatMessages">
+            <div class="msg-bubble them">Hi! Your AC service is booked for today at 2 PM.</div>
+            <div class="msg-bubble me">Great! Please bring the filter replacement too.</div>
+            <div class="msg-bubble them">Sure, will do! I'll arrive at 2 PM ✓✓</div>
+            <div class="msg-time">Just now</div>
+          </div>
+          <div class="chat-input-row">
+            <input type="text" class="chat-type-input" id="chatTypeInput" placeholder="Type a message..." />
+            <button class="chat-send-btn" id="chatSendBtn">➤</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ORDER HISTORY & INVOICING ── (NEW) -->
+  <section class="section section-alt" id="order-history">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <p class="section-eyebrow">Your records</p>
+          <h2 class="section-title">Order history & invoices</h2>
+        </div>
+        <button class="btn-outline" id="exportAllBtn">⬇ Export All</button>
+      </div>
+      <div class="history-table">
+        <div class="history-filters">
+          <button class="ctab active" data-hfilter="all">All</button>
+          <button class="ctab" data-hfilter="completed">Completed</button>
+          <button class="ctab" data-hfilter="in-progress">In Progress</button>
+          <button class="ctab" data-hfilter="cancelled">Cancelled</button>
+        </div>
+        <div class="history-list" id="historyList">
+          <div class="history-item" data-hstatus="completed">
+            <div class="history-icon">🔧</div>
+            <div class="history-info">
+              <div class="history-title">AC Installation & Servicing</div>
+              <div class="history-meta">by Reza's Tech Services • Jan 10, 2025</div>
+            </div>
+            <div class="history-amount">৳800</div>
+            <span class="status-pill completed">Completed</span>
+            <button class="history-invoice-btn" onclick="downloadInvoice('KHJ-4821')">🧾 Invoice</button>
+          </div>
+          <div class="history-item" data-hstatus="completed">
+            <div class="history-icon">📚</div>
+            <div class="history-info">
+              <div class="history-title">HSC Physics & Math Tutor</div>
+              <div class="history-meta">by Nadia Ahmed • Jan 5, 2025</div>
+            </div>
+            <div class="history-amount">৳500</div>
+            <span class="status-pill completed">Completed</span>
+            <button class="history-invoice-btn" onclick="downloadInvoice('KHJ-4780')">🧾 Invoice</button>
+          </div>
+          <div class="history-item" data-hstatus="in-progress">
+            <div class="history-icon">🎉</div>
+            <div class="history-info">
+              <div class="history-title">Birthday Party Decoration</div>
+              <div class="history-meta">by DhakaDecor • Jan 15, 2025</div>
+            </div>
+            <div class="history-amount">৳2,500</div>
+            <span class="status-pill in-progress">In Progress</span>
+            <button class="history-invoice-btn" onclick="downloadInvoice('KHJ-4830')">🧾 Invoice</button>
+          </div>
+          <div class="history-item" data-hstatus="cancelled">
+            <div class="history-icon">🧹</div>
+            <div class="history-info">
+              <div class="history-title">Deep Home Cleaning</div>
+              <div class="history-meta">by CleanBD • Dec 28, 2024</div>
+            </div>
+            <div class="history-amount">৳1,200</div>
+            <span class="status-pill cancelled">Cancelled</span>
+            <button class="history-invoice-btn" onclick="downloadInvoice('KHJ-4760')">🧾 Invoice</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── EMERGENCY SERVICES ── (NEW) -->
+  <section class="section emergency-section" id="emergency">
+    <div class="container">
+      <div class="emergency-banner">
+        <div class="emergency-left">
+          <div class="emergency-pulse">🚨</div>
+          <div class="emergency-text">
+            <h3>Emergency Services</h3>
+            <p>Need urgent help? Our verified emergency providers are available 24/7 across all major cities.</p>
+          </div>
+        </div>
+        <div class="emergency-right">
+          <a href="tel:09609000000" class="emergency-btn" id="emergencyHelplineLink">
+            <span>📞</span> Call Emergency Helpline
+          </a>
+          <div class="emergency-services-row">
+            <button class="emg-chip" data-service="Electric Emergency">⚡ Electric Emergency</button>
+            <button class="emg-chip" data-service="Plumbing Emergency">🚿 Plumbing Emergency</button>
+            <button class="emg-chip" data-service="Locksmith">🔒 Locksmith</button>
+            <button class="emg-chip" data-service="Gas Leak">🔥 Gas Leak</button>
+          </div>
+          <div class="emergency-panel hidden" id="emergencyPanel">
+            <div class="emergency-card">
+              <div class="emergency-card-header">
+                <div>
+                  <h4 id="emergencyPanelTitle">Select a category for instant help</h4>
+                  <p id="emergencyProviderName" class="emergency-provider-name">24/7 ready provider on standby</p>
+                  <p id="emergencyPanelSubtext" class="emergency-panel-text">Live status, map preview, and one-tap SOS are ready once you choose a service.</p>
+                </div>
+                <span id="emergencyPriorityBadge" class="priority-badge normal">Priority: Normal</span>
+              </div>
+              <div class="emergency-details">
+                <p id="emergencyPanelDescription">Choose a category to see provider details and call options.</p>
+                <div class="emergency-actions">
+                  <button id="emergencyCategoryCallBtn" class="emergency-btn emergency-small">Call Provider</button>
+                  <button id="emergencyCategoryChatBtn" class="btn-primary btn-sm">Chat Provider</button>
+                  <button id="emergencyPanelSosBtn" class="emergency-btn emergency-sos">ONE-TAP SOS</button>
+                </div>
+                <div class="emergency-map-preview" id="liveMapPreview">
+                  <div class="map-info">
+                    <strong>Live location</strong>
+                    <span id="liveLocationText">Not available</span>
+                  </div>
+                  <a id="mapPreviewLink" class="map-link hidden" href="#" target="_blank" rel="noreferrer">Open in Google Maps</a>
+                </div>
+                <div id="sosCountdown" class="emergency-countdown"></div>
+                <div class="emergency-chat-panel hidden" id="emergencyChatPanel">
+                  <div class="chat-messages" id="chatMessages">
+                    <div class="chat-bubble helper">Provider chat will appear here once a service is selected.</div>
+                  </div>
+                  <div class="chat-input-row">
+                    <input type="text" id="chatInput" placeholder="Message provider..." />
+                    <button id="chatSendBtn" class="btn-primary btn-sm">Send</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA BANNER ── -->
+  <section class="cta-section">
+    <div class="container cta-inner">
+      <div class="cta-text">
+        <h2>Are you a service provider?</h2>
+        <p>Join thousands of professionals earning through KHOJ. List your service for free.</p>
+      </div>
+      <div class="cta-actions">
+        <a href="#" class="btn-white btn-lg" id="ctaProviderBtn">Start Listing Free</a>
+        <a href="#" class="btn-ghost-white btn-lg">Learn More →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TESTIMONIALS ── -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header center">
+        <div>
+          <p class="section-eyebrow">Customer love</p>
+          <h2 class="section-title">What people say</h2>
+        </div>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p>"Found an AC technician in 20 minutes. Professional, on time, and the price was exactly as listed. Will use KHOJ again."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">RM</div>
+            <div>
+              <div class="testi-name">Rafiq Mahmud</div>
+              <div class="testi-loc">Dhaka, Mirpur</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p>"Rented a camera and projector for my brother's wedding. Setup was hassle-free and saved us a lot compared to buying."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">SK</div>
+            <div>
+              <div class="testi-name">Sumaiya Khanam</div>
+              <div class="testi-loc">Chittagong</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★☆</div>
+          <p>"My daughter's HSC tutor from KHOJ helped her improve from a C to an A grade in just 3 months. Great platform!"</p>
+          <div class="testi-author">
+            <div class="testi-avatar">TA</div>
+            <div>
+              <div class="testi-name">Tahmina Akter</div>
+              <div class="testi-loc">Sylhet</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Write a Review (NEW) -->
+      <div class="write-review-section">
+        <h3 class="wr-title">Share your experience</h3>
+        <div class="wr-stars" id="wrStars">
+          <span class="wr-star" data-val="1">★</span>
+          <span class="wr-star" data-val="2">★</span>
+          <span class="wr-star" data-val="3">★</span>
+          <span class="wr-star" data-val="4">★</span>
+          <span class="wr-star" data-val="5">★</span>
+        </div>
+        <textarea class="wr-textarea" placeholder="Write your review here..."></textarea>
+        <button class="btn-primary wr-submit">Submit Review</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <div class="logo footer-logo">KHOJ<span class="logo-dot">.</span></div>
+        <p>Bangladesh's trusted marketplace for local services and rentals.</p>
+        <div class="footer-socials">
+          <a href="#" class="social-link">FB</a>
+          <a href="#" class="social-link">IG</a>
+          <a href="#" class="social-link">YT</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <a href="#">About Us</a>
+          <a href="#">How it Works</a>
+          <a href="#">Blog</a>
+          <a href="#">Careers</a>
+        </div>
+        <div class="footer-col">
+          <h4>For Customers</h4>
+          <a href="#">Browse Services</a>
+          <a href="#">Browse Rentals</a>
+          <a href="#">Track Order</a>
+          <a href="#">My Account</a>
+        </div>
+        <div class="footer-col">
+          <h4>For Providers</h4>
+          <a href="#">List a Service</a>
+          <a href="#">Post a Rental</a>
+          <a href="#">Seller Dashboard</a>
+          <a href="#">Pricing</a>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <a href="#">Help Center</a>
+          <a href="#">Contact Us</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <span>© 2025 KHOJ. Built with ❤ in Bangladesh.</span>
+        <span>All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── AUTH MODAL (OTP + Role Selection) ── (NEW) -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-box">
+      <button class="modal-close" id="modalClose">✕</button>
+
+      <!-- Step 1: Role Selection -->
+      <div class="auth-step" id="authStep1">
+        <div class="modal-logo">KHOJ<span class="logo-dot">.</span></div>
+        <h2 class="modal-title">Join KHOJ</h2>
+        <p class="modal-sub">Who are you joining as?</p>
+        <div class="role-cards">
+          <div class="role-card" data-role="customer" id="roleCustomer">
+            <div class="role-icon">👤</div>
+            <div class="role-name">Customer</div>
+            <div class="role-desc">Book services & rentals</div>
+          </div>
+          <div class="role-card" data-role="provider" id="roleProvider">
+            <div class="role-icon">🔧</div>
+            <div class="role-name">Service Provider</div>
+            <div class="role-desc">List & earn from services</div>
+          </div>
+        </div>
+        <button class="btn-primary btn-lg w-full" id="roleNextBtn" disabled>Continue →</button>
+        <p class="modal-footer-text">Already have an account? <a href="#" id="switchToSignIn">Sign in</a></p>
+      </div>
+
+      <!-- Step 2: Phone Input -->
+      <div class="auth-step hidden" id="authStep2">
+        <div class="modal-logo">KHOJ<span class="logo-dot">.</span></div>
+        <h2 class="modal-title">Enter your phone</h2>
+        <p class="modal-sub">We'll send a one-time password to verify</p>
+        <div class="phone-input-wrap">
+          <span class="phone-flag">🇧🇩 +880</span>
+          <input type="tel" class="phone-input" id="phoneInput" placeholder="01XXXXXXXXX" maxlength="11" />
+        </div>
+        <!-- NID Verification -->
+        <div class="nid-section">
+          <label class="nid-label">
+            <input type="checkbox" id="nidCheck" /> Verify with National ID (NID) for trusted badge
+          </label>
+          <div class="nid-input-wrap hidden" id="nidInputWrap">
+            <input type="text" class="phone-input" id="nidInput" placeholder="Enter NID number (17 digits)" maxlength="17" />
+          </div>
+        </div>
+        <button class="btn-primary btn-lg w-full" id="sendOtpBtn">Send OTP</button>
+        <p class="modal-footer-text"><a href="#" id="backToRole">← Back</a></p>
+      </div>
+
+      <!-- Step 3: OTP Verification -->
+      <div class="auth-step hidden" id="authStep3">
+        <div class="modal-logo">KHOJ<span class="logo-dot">.</span></div>
+        <h2 class="modal-title">Verify OTP</h2>
+        <p class="modal-sub">Enter the 6-digit code sent to <strong id="otpPhone"></strong></p>
+        <div class="otp-inputs" id="otpInputs">
+          <input type="text" class="otp-box" maxlength="1" />
+          <input type="text" class="otp-box" maxlength="1" />
+          <input type="text" class="otp-box" maxlength="1" />
+          <input type="text" class="otp-box" maxlength="1" />
+          <input type="text" class="otp-box" maxlength="1" />
+          <input type="text" class="otp-box" maxlength="1" />
+        </div>
+        <p class="otp-hint" id="otpHint">Didn't receive it? <a href="#" id="resendOtp">Resend</a> (available in <span id="otpTimer">30</span>s)</p>
+        <button class="btn-primary btn-lg w-full" id="verifyOtpBtn">Verify & Continue</button>
+      </div>
+
+      <!-- Step 4: Success -->
+      <div class="auth-step hidden" id="authStep4">
+        <div class="auth-success-icon">🎉</div>
+        <h2 class="modal-title">Welcome to KHOJ!</h2>
+        <p class="modal-sub" id="successMessage"></p>
+        <button class="btn-primary btn-lg w-full" id="authDoneBtn">Start Exploring →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── BOOKING MODAL (Availability Calendar) ── (NEW) -->
+  <div class="modal-overlay" id="bookingModal">
+    <div class="modal-box booking-modal-box">
+      <button class="modal-close" id="bookingModalClose">✕</button>
+      <h2 class="modal-title" id="bookingServiceName">Book Service</h2>
+      <p class="modal-sub">Choose your preferred date and time</p>
+      <div class="booking-cal-mini" id="bookingCalMini"></div>
+      <div class="booking-time-slots" id="bookingTimeSlots"></div>
+      <div class="booking-summary" id="bookingSummary" style="display:none;">
+        <div class="booking-sum-row"><span>Service:</span><strong id="bsService"></strong></div>
+        <div class="booking-sum-row"><span>Date:</span><strong id="bsDate"></strong></div>
+        <div class="booking-sum-row"><span>Time:</span><strong id="bsTime"></strong></div>
+        <div class="booking-sum-row"><span>Price:</span><strong id="bsPrice"></strong></div>
+        <div class="booking-sum-row"><span>Next step:</span><strong>Proceed to separate payment page</strong></div>
+      </div>
+      <button class="btn-primary btn-lg w-full" id="confirmBookingBtn" style="display:none;">Proceed to Payment</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="features/payment-refund/frontend.js"></script>
+  <script src="features/reviews-ratings/frontend.js"></script>
+  <script src="features/emergency-services/frontend.js"></script>
+  <script src="features/order-status-tracking/frontend.js"></script>
+  <script src="features/parcel-tracking/frontend.js"></script>
+  <script src="features/feature-collaboration.js"></script>
+</body>
+</html>

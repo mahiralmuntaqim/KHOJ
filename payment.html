@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KHOJ Payment Method</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="payment-page.css" />
+</head>
+<body class="payment-page">
+  <header class="payment-nav">
+    <a href="index.html" class="logo">KHOJ<span class="logo-dot">.</span></a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="index.html#tracking">Track Order</a>
+      <a href="payment.html" class="active">Payment</a>
+    </nav>
+  </header>
+
+  <main class="payment-shell">
+    <section class="payment-workspace">
+      <div class="payment-copy">
+        <p class="section-eyebrow">Secure checkout</p>
+        <h1>Payment Method</h1>
+        <p>Choose online payment through bKash, Nagad, or Rocket for instant paid status. Choose offline to keep the booking as payment due.</p>
+      </div>
+
+      <div class="payment-flow">
+        <div class="payment-stepper">
+          <span class="step-dot active" data-step-dot="1">1</span>
+          <span class="step-line"></span>
+          <span class="step-dot" data-step-dot="2">2</span>
+          <span class="step-line"></span>
+          <span class="step-dot" data-step-dot="3">3</span>
+        </div>
+
+        <form class="payment-card active" id="paymentDetailsCard">
+          <h2>Booking Details</h2>
+          <label>
+            Service
+            <input type="text" id="payService" value="AC Installation & Servicing" />
+          </label>
+          <label>
+            Amount
+            <input type="number" id="payAmount" value="800" min="1" />
+          </label>
+          <label>
+            Customer phone
+            <input type="text" id="payPhone" value="01700000000" />
+          </label>
+          <button type="submit" class="btn-primary btn-lg w-full">Continue</button>
+        </form>
+
+        <section class="payment-card" id="paymentMethodCard">
+          <h2>Select Payment Method</h2>
+          <div class="method-grid">
+            <button type="button" class="method-card selected" data-method="online">
+              <strong>Online Payment</strong>
+              <span>Instantly mark as paid</span>
+            </button>
+            <button type="button" class="method-card" data-method="offline">
+              <strong>Offline Payment</strong>
+              <span>Keep as payment due</span>
+            </button>
+          </div>
+
+          <div class="gateway-panel" id="gatewayPanel">
+            <div class="gateway-title">Choose gateway</div>
+            <div class="gateway-grid">
+              <button type="button" class="gateway-card selected" data-gateway="bkash">bKash</button>
+              <button type="button" class="gateway-card" data-gateway="nagad">Nagad</button>
+              <button type="button" class="gateway-card" data-gateway="rocket">Rocket</button>
+            </div>
+          </div>
+
+          <button type="button" class="btn-primary btn-lg w-full" id="reviewPaymentBtn">Review Payment</button>
+        </section>
+
+        <section class="payment-card" id="paymentConfirmCard">
+          <div class="confirm-icon" id="confirmIcon">OK</div>
+          <h2 id="confirmTitle">Ready to confirm</h2>
+          <p id="confirmText"></p>
+          <div class="confirm-summary" id="confirmSummary"></div>
+          <button type="button" class="btn-primary btn-lg w-full" id="finalizePaymentBtn">OK</button>
+          <button type="button" class="btn-outline btn-lg w-full" id="editPaymentBtn">Edit</button>
+        </section>
+      </div>
+    </section>
+
+    <aside class="payment-status-panel">
+      <div class="status-header">
+        <div>
+          <p class="section-eyebrow">Dashboard</p>
+          <h2>Paid / Unpaid Tracking</h2>
+        </div>
+        <button class="btn-outline" id="clearPaymentHistoryBtn">Clear</button>
+      </div>
+      <div class="payment-status-list standalone" id="paymentStatusList"></div>
+    </aside>
+  </main>
+
+  <script src="features/payment-method-page.js"></script>
+</body>
+</html>
