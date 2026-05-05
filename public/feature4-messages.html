@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Feature 4 — In-App Messages</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#fafaf8;color:#1a1a1a;}
+.header{background:#fff;border-bottom:1px solid #e5e4df;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:'Fraunces',serif;font-size:22px;color:#0F6E56;}
+.logo span{color:#D85A30;}
+.feature-badge{background:#F0FFF4;color:#166534;font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px;}
+.container{max-width:1100px;margin:0 auto;padding:32px 24px;}
+.hero{background:linear-gradient(135deg,#166534,#16a34a);color:#fff;border-radius:20px;padding:36px;margin-bottom:32px;}
+.hero h1{font-family:'Fraunces',serif;font-size:32px;margin-bottom:10px;}
+.hero p{font-size:15px;opacity:.85;line-height:1.7;max-width:600px;}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:32px;}
+.step{background:#fff;border:1px solid #e5e4df;border-radius:14px;padding:18px;text-align:center;}
+.step-icon{font-size:32px;margin-bottom:10px;}
+.step h4{font-size:13px;font-weight:600;margin-bottom:4px;}
+.step p{font-size:12px;color:#6b6b6b;line-height:1.5;}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.card{background:#fff;border:1px solid #e5e4df;border-radius:16px;padding:22px;margin-bottom:16px;}
+.card h3{font-family:'Fraunces',serif;font-size:18px;margin-bottom:6px;}
+.card-sub{font-size:13px;color:#6b6b6b;margin-bottom:18px;}
+.form-group{margin-bottom:14px;}
+.form-group label{font-size:12px;font-weight:600;color:#6b6b6b;display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px;}
+.form-group input,.form-group textarea{width:100%;padding:10px 12px;border:1.5px solid #e5e4df;border-radius:8px;font-size:14px;font-family:inherit;}
+.form-group input:focus,.form-group textarea:focus{outline:none;border-color:#16a34a;}
+.btn{padding:10px 20px;border-radius:10px;font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:inherit;width:100%;}
+.btn-msg{background:#16a34a;color:#fff;}
+.btn-msg:hover{background:#166534;}
+.response-box{margin-top:14px;background:#f4f3ef;border-radius:10px;padding:14px;font-size:13px;min-height:60px;white-space:pre-wrap;display:none;}
+.response-box.success{background:#F0FFF4;color:#166534;border:1px solid #a7f3d0;}
+.response-box.error{background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;}
+.msg-item{background:#f4f3ef;border-radius:10px;padding:12px;margin-bottom:8px;}
+.msg-sender{font-size:12px;font-weight:600;margin-bottom:4px;color:#166534;}
+.msg-content{font-size:13px;color:#1a1a1a;line-height:1.5;}
+.msg-meta{font-size:11px;color:#a0a0a0;margin-top:4px;}
+.msg-notif{background:#FFF8E0;border:1px solid #f5e090;}
+.chat-sim{background:#f4f3ef;border-radius:12px;padding:14px;}
+.chat-messages{min-height:180px;max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.bubble{max-width:70%;padding:10px 14px;border-radius:16px;font-size:13px;line-height:1.5;}
+.bubble.me{background:#16a34a;color:#fff;align-self:flex-end;border-bottom-right-radius:4px;}
+.bubble.them{background:#fff;color:#1a1a1a;align-self:flex-start;border-bottom-left-radius:4px;}
+.bubble.system{background:#E1F5EE;color:#0F6E56;align-self:center;font-size:12px;border-radius:20px;max-width:90%;text-align:center;}
+.chat-input{display:flex;gap:8px;}
+.chat-input input{flex:1;padding:10px;border:1.5px solid #e5e4df;border-radius:8px;font-size:14px;font-family:inherit;}
+.chat-input input:focus{outline:none;border-color:#16a34a;}
+.chat-input button{padding:10px 16px;background:#16a34a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;}
+.role-note{font-size:12px;background:#FFF8E0;border:1px solid #f5e090;border-radius:8px;padding:10px 14px;margin-bottom:14px;color:#78350f;}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">KHOJ<span>.</span> <span style="font-size:14px;font-weight:500;color:#6b6b6b;margin-left:8px;">Feature Demo</span></div>
+  <span class="feature-badge">💬 Feature 4 — In-App Messages</span>
+</div>
+<div class="container">
+  <div class="hero">
+    <h1>💬 In-App Messaging System</h1>
+    <p>Secure communication between customers and providers. Booking notifications are automatically sent to providers as messages when a booking is created. Both sides can chat in real-time within the platform.</p>
+  </div>
+
+  <div class="how-grid">
+    <div class="step"><div class="step-icon">📬</div><h4>Auto Booking Notifications</h4><p>When a customer books, a system message is instantly sent to the provider's inbox</p></div>
+    <div class="step"><div class="step-icon">💬</div><h4>Two-Way Chat</h4><p>Customer and provider can message each other directly, linked to a booking</p></div>
+    <div class="step"><div class="step-icon">🔔</div><h4>Unread Count</h4><p>Unread badge shown in the navbar — updates every 30 seconds automatically</p></div>
+  </div>
+
+  <div class="cols">
+    <div>
+      <div class="card">
+        <h3>📤 Send a Message</h3>
+        <div class="card-sub">Send a text message from one user to another</div>
+        <div class="role-note">🔑 Requires: sender's JWT token</div>
+        <div class="form-group"><label>Your JWT Token (Sender)</label><input id="sendToken" placeholder="Paste your token"/></div>
+        <div class="form-group"><label>Receiver User ID</label><input id="receiverId" placeholder="Paste receiver's MongoDB _id"/></div>
+        <div class="form-group"><label>Message</label><textarea id="msgContent" rows="3" placeholder="Type your message..."></textarea></div>
+        <div class="form-group"><label>Booking ID (optional — links message to booking)</label><input id="msgBookingId" placeholder="Paste booking _id if relevant"/></div>
+        <button class="btn btn-msg" onclick="sendMessage()">Send Message</button>
+        <div id="sendRes" class="response-box"></div>
+      </div>
+
+      <div class="card">
+        <h3>📥 Get Inbox</h3>
+        <div class="card-sub">All conversations — latest message per person</div>
+        <div class="form-group"><label>Your JWT Token</label><input id="inboxToken" placeholder="Paste your token"/></div>
+        <button class="btn btn-msg" onclick="getInbox()">Load Inbox</button>
+        <div id="inboxRes" style="margin-top:14px;max-height:300px;overflow-y:auto;"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h3>💬 View Conversation</h3>
+        <div class="card-sub">Full message thread between you and another user</div>
+        <div class="form-group"><label>Your JWT Token</label><input id="convToken" placeholder="Paste your token"/></div>
+        <div class="form-group"><label>Other User's ID</label><input id="otherUserId" placeholder="Paste their MongoDB _id"/></div>
+        <button class="btn btn-msg" onclick="loadConversation()">Load Conversation</button>
+        <div class="chat-sim" style="margin-top:14px;">
+          <div class="chat-messages" id="chatMessages"><div style="font-size:13px;color:#a0a0a0;text-align:center;padding:40px 0;">Load a conversation to see messages</div></div>
+          <div class="chat-input">
+            <input id="chatInput" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendFromChat()"/>
+            <button onclick="sendFromChat()">Send</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📬 Booking Notifications (Provider)</h3>
+        <div class="card-sub">All booking notification messages received</div>
+        <div class="role-note">🔑 Requires: provider JWT token</div>
+        <div class="form-group"><label>Provider JWT Token</label><input id="notifToken" placeholder="Paste provider token"/></div>
+        <button class="btn btn-msg" onclick="getNotifications()">Load Notifications</button>
+        <div id="notifList" style="margin-top:14px;max-height:260px;overflow-y:auto;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = '';
+const show = (id, msg, type) => {
+  const el = document.getElementById(id);
+  el.textContent = typeof msg === 'object' ? JSON.stringify(msg, null, 2) : msg;
+  el.className = `response-box ${type}`; el.style.display = 'block';
+};
+
+let currentConvToken = '', currentOtherUser = '';
+
+async function sendMessage() {
+  const token = document.getElementById('sendToken').value.trim();
+  const body  = {
+    receiverId: document.getElementById('receiverId').value.trim(),
+    content:    document.getElementById('msgContent').value.trim(),
+    bookingId:  document.getElementById('msgBookingId').value.trim() || undefined
+  };
+  if (!token) return show('sendRes', 'Please paste your token.', 'error');
+  if (!body.receiverId || !body.content) return show('sendRes', 'Receiver ID and content are required.', 'error');
+  try {
+    const res  = await fetch(`${API}/api/messages/send`, { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body: JSON.stringify(body) });
+    const data = await res.json();
+    show('sendRes', res.ok ? `✅ Message sent!\nTo: ${data.message?.receiver?.name}\nContent: "${data.message?.content}"` : data.message, res.ok?'success':'error');
+  } catch(e) { show('sendRes', 'Server error.', 'error'); }
+}
+
+async function getInbox() {
+  const token = document.getElementById('inboxToken').value.trim();
+  if (!token) return;
+  try {
+    const res  = await fetch(`${API}/api/messages/inbox`, { headers:{'Authorization':`Bearer ${token}`} });
+    const data = await res.json();
+    const el   = document.getElementById('inboxRes');
+    if (!data.conversations?.length) { el.innerHTML = '<div style="font-size:13px;color:#a0a0a0;">No conversations yet</div>'; return; }
+    el.innerHTML = data.conversations.map(c => `
+      <div class="msg-item">
+        <div class="msg-sender">💬 ${c.otherUser?.name} (${c.otherUser?.role})</div>
+        <div class="msg-content">${c.lastMessage?.content || ''}</div>
+        <div class="msg-meta">Unread: ${c.unreadCount} • ID: ${c.otherUser?._id}</div>
+      </div>
+    `).join('');
+  } catch(e) { document.getElementById('inboxRes').innerHTML = '<div style="color:#dc2626;font-size:13px;">Error</div>'; }
+}
+
+async function loadConversation() {
+  currentConvToken = document.getElementById('convToken').value.trim();
+  currentOtherUser = document.getElementById('otherUserId').value.trim();
+  if (!currentConvToken || !currentOtherUser) return;
+  try {
+    const res  = await fetch(`${API}/api/messages/conversation/${currentOtherUser}`, { headers:{'Authorization':`Bearer ${currentConvToken}`} });
+    const data = await res.json();
+    const msgs = document.getElementById('chatMessages');
+
+    // Need to know current user to distinguish me/them
+    const meRes  = await fetch(`${API}/api/auth/me`, { headers:{'Authorization':`Bearer ${currentConvToken}`} });
+    const meData = await meRes.json();
+    const myId   = meData.user?._id;
+
+    msgs.innerHTML = data.messages?.length ? data.messages.map(m => {
+      const isMe     = m.sender._id === myId;
+      const isSystem = m.messageType === 'system' || m.messageType === 'booking_notification';
+      return `<div class="bubble ${isSystem?'system':isMe?'me':'them'}">${m.content}</div>`;
+    }).join('') : '<div style="color:#a0a0a0;font-size:13px;text-align:center;">No messages yet</div>';
+    msgs.scrollTop = msgs.scrollHeight;
+  } catch(e) { document.getElementById('chatMessages').innerHTML = '<div style="color:#dc2626;font-size:13px;">Error loading</div>'; }
+}
+
+async function sendFromChat() {
+  if (!currentConvToken || !currentOtherUser) return alert('Load a conversation first.');
+  const input   = document.getElementById('chatInput');
+  const content = input.value.trim();
+  if (!content) return;
+  input.value = '';
+  const msgs = document.getElementById('chatMessages');
+  msgs.innerHTML += `<div class="bubble me">${content}</div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+  await fetch(`${API}/api/messages/send`, { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${currentConvToken}`}, body: JSON.stringify({ receiverId: currentOtherUser, content }) });
+}
+
+async function getNotifications() {
+  const token = document.getElementById('notifToken').value.trim();
+  if (!token) return;
+  try {
+    const res  = await fetch(`${API}/api/messages/booking-notifications`, { headers:{'Authorization':`Bearer ${token}`} });
+    const data = await res.json();
+    const el   = document.getElementById('notifList');
+    if (!data.notifications?.length) { el.innerHTML = '<div style="font-size:13px;color:#a0a0a0;">No booking notifications</div>'; return; }
+    el.innerHTML = data.notifications.map(n => `
+      <div class="msg-item msg-notif">
+        <div class="msg-sender">📅 Booking Notification from ${n.sender?.name}</div>
+        <div class="msg-content">${n.content}</div>
+        <div class="msg-meta">${new Date(n.createdAt).toLocaleString()}</div>
+      </div>
+    `).join('');
+  } catch(e) { document.getElementById('notifList').innerHTML = '<div style="color:#dc2626;font-size:13px;">Error</div>'; }
+}
+</script>
+</body>
+</html>

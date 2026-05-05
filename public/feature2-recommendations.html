@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Feature 2 — Smart Recommendations</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#fafaf8;color:#1a1a1a;}
+.header{background:#fff;border-bottom:1px solid #e5e4df;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:'Fraunces',serif;font-size:22px;color:#0F6E56;}
+.logo span{color:#D85A30;}
+.feature-badge{background:#E1F5EE;color:#0F6E56;font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px;}
+.container{max-width:1100px;margin:0 auto;padding:32px 24px;}
+.hero{background:linear-gradient(135deg,#0F6E56,#1D9E75);color:#fff;border-radius:20px;padding:36px;margin-bottom:32px;}
+.hero h1{font-family:'Fraunces',serif;font-size:32px;margin-bottom:10px;}
+.hero p{font-size:15px;opacity:.85;line-height:1.7;max-width:600px;}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:32px;}
+.step{background:#fff;border:1px solid #e5e4df;border-radius:14px;padding:18px;text-align:center;}
+.step-icon{font-size:32px;margin-bottom:10px;}
+.step h4{font-size:13px;font-weight:600;margin-bottom:6px;}
+.step p{font-size:12px;color:#6b6b6b;line-height:1.5;}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.card{background:#fff;border:1px solid #e5e4df;border-radius:16px;padding:22px;}
+.card h3{font-family:'Fraunces',serif;font-size:18px;margin-bottom:6px;}
+.card-sub{font-size:13px;color:#6b6b6b;margin-bottom:18px;}
+.form-group{margin-bottom:14px;}
+.form-group label{font-size:12px;font-weight:600;color:#6b6b6b;display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px;}
+.form-group input,.form-group select{width:100%;padding:10px 12px;border:1.5px solid #e5e4df;border-radius:8px;font-size:14px;font-family:inherit;}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:#1D9E75;}
+.btn{padding:10px 20px;border-radius:10px;font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:inherit;width:100%;}
+.btn-green{background:#1D9E75;color:#fff;}
+.btn-green:hover{background:#0F6E56;}
+.response-box{margin-top:14px;background:#f4f3ef;border-radius:10px;padding:14px;font-size:13px;min-height:60px;white-space:pre-wrap;display:none;}
+.response-box.success{background:#E1F5EE;color:#0F6E56;border:1px solid #a7f3d0;}
+.response-box.error{background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;}
+.rec-card{background:#fff;border:1px solid #e5e4df;border-radius:12px;overflow:hidden;margin-bottom:10px;}
+.rec-thumb{height:60px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;background:#E1F5EE;color:#0F6E56;}
+.rec-body{padding:12px;}
+.rec-title{font-size:13px;font-weight:600;margin-bottom:2px;}
+.rec-cat{font-size:11px;color:#1D9E75;font-weight:600;text-transform:uppercase;}
+.rec-price{font-size:13px;font-weight:700;color:#0F6E56;}
+.based-on{background:#FFF8E0;border:1px solid #f5e090;border-radius:10px;padding:12px 14px;font-size:13px;color:#78350f;margin-bottom:14px;display:none;}
+.role-note{font-size:12px;background:#FFF8E0;border:1px solid #f5e090;border-radius:8px;padding:10px 14px;margin-bottom:16px;color:#78350f;}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">KHOJ<span>.</span> <span style="font-size:14px;font-weight:500;color:#6b6b6b;margin-left:8px;">Feature Demo</span></div>
+  <span class="feature-badge">✨ Feature 2 — Smart Recommendations</span>
+</div>
+<div class="container">
+  <div class="hero">
+    <h1>✨ Smart Recommendation Engine</h1>
+    <p>Suggests relevant services using user behavior, past bookings, and browsing preferences. The more you use KHOJ, the smarter it gets at recommending the right services for you.</p>
+  </div>
+
+  <div class="how-grid">
+    <div class="step"><div class="step-icon">📚</div><h4>Signal 1 — Past Bookings</h4><p>Categories you've previously booked are weighted higher in future recommendations</p></div>
+    <div class="step"><div class="step-icon">👁️</div><h4>Signal 2 — Browsing Behaviour</h4><p>Every time you view a category, it's tracked and used to personalize results</p></div>
+    <div class="step"><div class="step-icon">⭐</div><h4>Signal 3 — Top Rated</h4><p>High-rated services fill any gaps when browsing history is limited</p></div>
+  </div>
+
+  <div class="cols">
+    <div>
+      <div class="card" style="margin-bottom:20px;">
+        <h3>🎯 Get My Recommendations</h3>
+        <div class="card-sub">Personalized recommendations based on your behaviour</div>
+        <div class="role-note">🔑 Requires: customer login token</div>
+        <div class="form-group"><label>Your JWT Token</label><input id="recToken" placeholder="Paste token from /api/auth/signin"/></div>
+        <button class="btn btn-green" onclick="getRecommendations()">Get Recommendations</button>
+        <div id="basedOn" class="based-on"></div>
+        <div id="recList" style="margin-top:10px;max-height:360px;overflow-y:auto;"></div>
+      </div>
+
+      <div class="card">
+        <h3>📡 Track Category View</h3>
+        <div class="card-sub">Simulate browsing a category — this trains the recommendation engine</div>
+        <div class="form-group"><label>Your JWT Token</label><input id="trackToken" placeholder="Paste your token"/></div>
+        <div class="form-group"><label>Category you're browsing</label>
+          <select id="trackCat">
+            <option value="repair">Home Repair</option>
+            <option value="tutor">Tutoring</option>
+            <option value="event">Events</option>
+            <option value="tech">Tech Support</option>
+            <option value="clean">Cleaning</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Search term (optional)</label><input id="trackSearch" placeholder="e.g. AC repair"/></div>
+        <button class="btn btn-green" onclick="trackView()">Track This View</button>
+        <div id="trackRes" class="response-box"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h3>🌟 Popular Services (No Login)</h3>
+        <div class="card-sub">Top-rated services — anyone can see these without signing in</div>
+        <div class="form-group"><label>Filter by category</label>
+          <select id="popCat">
+            <option value="">All</option>
+            <option value="repair">Repair</option>
+            <option value="tutor">Tutor</option>
+            <option value="event">Event</option>
+            <option value="tech">Tech</option>
+            <option value="clean">Clean</option>
+          </select>
+        </div>
+        <button class="btn btn-green" onclick="getPopular()">Load Popular</button>
+        <div id="popList" style="margin-top:14px;max-height:480px;overflow-y:auto;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = '';
+const show = (id, msg, type) => {
+  const el = document.getElementById(id);
+  el.textContent = typeof msg === 'object' ? JSON.stringify(msg, null, 2) : msg;
+  el.className = `response-box ${type}`;
+  el.style.display = 'block';
+};
+
+function renderListings(listings, containerId) {
+  const el = document.getElementById(containerId);
+  if (!listings?.length) { el.innerHTML = '<div style="font-size:13px;color:#a0a0a0;padding:12px;">No listings found</div>'; return; }
+  el.innerHTML = listings.map(s => `
+    <div class="rec-card">
+      <div class="rec-thumb">${s.title.charAt(0)}</div>
+      <div class="rec-body">
+        <div class="rec-cat">${s.category}</div>
+        <div class="rec-title">${s.title}</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+          <div class="rec-price">৳${s.price}/${s.unit}</div>
+          <div style="font-size:11px;color:#6b6b6b;">⭐ ${s.averageRating || 0}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function getRecommendations() {
+  const token = document.getElementById('recToken').value.trim();
+  if (!token) return show('recList', 'Please paste your JWT token.', 'error');
+  document.getElementById('recList').innerHTML = '<div style="font-size:13px;color:#a0a0a0;padding:12px;">Loading...</div>';
+  try {
+    const res  = await fetch(`${API}/api/recommendations`, { headers:{'Authorization':`Bearer ${token}`} });
+    const data = await res.json();
+    if (!res.ok) { document.getElementById('recList').innerHTML = `<div style="color:#dc2626;font-size:13px;">${data.message}</div>`; return; }
+    const bo = data.basedOn;
+    const cats = [...new Set([...(bo?.pastBookings||[]),...(bo?.viewedCategories||[])])];
+    const basedOnEl = document.getElementById('basedOn');
+    basedOnEl.style.display = 'block';
+    basedOnEl.textContent = cats.length
+      ? `Algorithm: ${data.fromCache?'cached':'fresh'} • Based on: ${cats.join(', ')}`
+      : `Algorithm: ${data.fromCache?'cached':'fresh'} • Showing top-rated services`;
+    renderListings(data.recommendations, 'recList');
+  } catch(e) { document.getElementById('recList').innerHTML = '<div style="color:#dc2626;font-size:13px;">Server error</div>'; }
+}
+
+async function trackView() {
+  const token = document.getElementById('trackToken').value.trim();
+  const body  = { category: document.getElementById('trackCat').value, searchTerm: document.getElementById('trackSearch').value };
+  if (!token) return show('trackRes', 'Please paste your JWT token.', 'error');
+  try {
+    const res  = await fetch(`${API}/api/recommendations/track-view`, { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body: JSON.stringify(body) });
+    const data = await res.json();
+    show('trackRes', `✅ ${data.message} — "${body.category}" added to your behaviour profile. Recommendations will refresh on next load.`, res.ok?'success':'error');
+  } catch(e) { show('trackRes', 'Server error.', 'error'); }
+}
+
+async function getPopular() {
+  const cat = document.getElementById('popCat').value;
+  document.getElementById('popList').innerHTML = '<div style="font-size:13px;color:#a0a0a0;padding:12px;">Loading...</div>';
+  try {
+    const res  = await fetch(`${API}/api/recommendations/popular${cat?'?category='+cat:''}`);
+    const data = await res.json();
+    renderListings(data.listings, 'popList');
+  } catch(e) { document.getElementById('popList').innerHTML = '<div style="color:#dc2626;font-size:13px;">Server error</div>'; }
+}
+
+// Auto-load popular on page load
+getPopular();
+</script>
+</body>
+</html>

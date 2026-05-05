@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Feature 5 — Badge System</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#fafaf8;color:#1a1a1a;}
+.header{background:#fff;border-bottom:1px solid #e5e4df;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:'Fraunces',serif;font-size:22px;color:#0F6E56;}
+.logo span{color:#D85A30;}
+.feature-badge{background:#FEF3C7;color:#92400E;font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px;}
+.container{max-width:1100px;margin:0 auto;padding:32px 24px;}
+.hero{background:linear-gradient(135deg,#78350f,#b45309);color:#fff;border-radius:20px;padding:36px;margin-bottom:32px;}
+.hero h1{font-family:'Fraunces',serif;font-size:32px;margin-bottom:10px;}
+.hero p{font-size:15px;opacity:.85;line-height:1.7;max-width:600px;}
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:32px;}
+.step{background:#fff;border:1px solid #e5e4df;border-radius:14px;padding:16px;text-align:center;}
+.step-num{width:28px;height:28px;border-radius:50%;background:#FEF3C7;color:#92400E;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;}
+.step h4{font-size:13px;font-weight:600;margin-bottom:4px;}
+.step p{font-size:12px;color:#6b6b6b;line-height:1.5;}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.card{background:#fff;border:1px solid #e5e4df;border-radius:16px;padding:22px;margin-bottom:16px;}
+.card h3{font-family:'Fraunces',serif;font-size:18px;margin-bottom:6px;}
+.card-sub{font-size:13px;color:#6b6b6b;margin-bottom:18px;}
+.form-group{margin-bottom:14px;}
+.form-group label{font-size:12px;font-weight:600;color:#6b6b6b;display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px;}
+.form-group input,.form-group select{width:100%;padding:10px 12px;border:1.5px solid #e5e4df;border-radius:8px;font-size:14px;font-family:inherit;}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:#b45309;}
+.btn{padding:10px 20px;border-radius:10px;font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:inherit;width:100%;}
+.btn-gold{background:#b45309;color:#fff;}
+.btn-gold:hover{background:#78350f;}
+.response-box{margin-top:14px;background:#f4f3ef;border-radius:10px;padding:14px;font-size:13px;min-height:60px;white-space:pre-wrap;display:none;}
+.response-box.success{background:#FEF3C7;color:#78350f;border:1px solid #fcd34d;}
+.response-box.error{background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;}
+.badge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px;}
+.badge-card{background:#fff;border:1px solid #e5e4df;border-radius:12px;padding:16px;text-align:center;transition:.2s;}
+.badge-card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.08);}
+.badge-emoji{font-size:36px;display:block;margin-bottom:8px;}
+.badge-name{font-size:13px;font-weight:600;margin-bottom:4px;}
+.badge-desc{font-size:11px;color:#6b6b6b;line-height:1.5;margin-bottom:8px;}
+.tier-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;display:inline-block;}
+.tier-bronze{background:#FFF4E0;color:#B45309;}
+.tier-silver{background:#F1F5F9;color:#475569;}
+.tier-gold{background:#FEF3C7;color:#92400E;}
+.tier-platinum{background:#EDE9FE;color:#5B21B6;}
+.badge-card.earned{border-color:#b45309;background:#FFFBEB;}
+.badge-card.locked{opacity:.55;}
+.badge-card.locked .badge-emoji{filter:grayscale(1);}
+.points-display{font-family:'Fraunces',serif;font-size:48px;font-weight:700;color:#b45309;text-align:center;display:block;margin:8px 0;}
+.role-note{font-size:12px;background:#FFF8E0;border:1px solid #f5e090;border-radius:8px;padding:10px 14px;margin-bottom:14px;color:#78350f;}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">KHOJ<span>.</span> <span style="font-size:14px;font-weight:500;color:#6b6b6b;margin-left:8px;">Feature Demo</span></div>
+  <span class="feature-badge">🏆 Feature 5 — Badge System</span>
+</div>
+<div class="container">
+  <div class="hero">
+    <h1>🏆 Badge System Based on Loyalty</h1>
+    <p>Rewards active and trusted users with badges based on engagement and performance. Badges are awarded automatically when thresholds are reached — first booking, 5 bookings, 10 reviews, and more.</p>
+  </div>
+
+  <div class="how-grid">
+    <div class="step"><div class="step-num">1</div><h4>User Takes Action</h4><p>Customer completes a booking or submits a review</p></div>
+    <div class="step"><div class="step-num">2</div><h4>System Checks</h4><p>Auto-check runs against all badge thresholds in MongoDB</p></div>
+    <div class="step"><div class="step-num">3</div><h4>Badge Awarded</h4><p>UserBadge document created — duplicate prevention via unique index</p></div>
+    <div class="step"><div class="step-num">4</div><h4>Points Added</h4><p>Loyalty points added to user account based on badge tier</p></div>
+  </div>
+
+  <div class="cols">
+    <div>
+      <div class="card">
+        <h3>📋 All Badge Definitions</h3>
+        <div class="card-sub">The complete list of badges users can earn on KHOJ</div>
+        <button class="btn btn-gold" onclick="loadDefinitions()">Load All Badges</button>
+        <div id="definitionsList" class="badge-grid" style="margin-top:16px;"></div>
+      </div>
+
+      <div class="card">
+        <h3>🌱 Seed Badge Definitions</h3>
+        <div class="card-sub">Create the 9 default KHOJ badges in MongoDB (run once)</div>
+        <button class="btn btn-gold" onclick="seedBadges()">Seed Badges to MongoDB</button>
+        <div id="seedRes" class="response-box"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h3>🏅 My Badges</h3>
+        <div class="card-sub">Badges earned and loyalty points for the logged-in user</div>
+        <div class="role-note">🔑 Requires: any user's JWT token</div>
+        <div class="form-group"><label>Your JWT Token</label><input id="myBadgeToken" placeholder="Paste your token"/></div>
+        <button class="btn btn-gold" onclick="getMyBadges()">Load My Badges</button>
+        <div id="loyaltyDisplay" style="display:none;margin-top:16px;text-align:center;">
+          <div style="font-size:13px;font-weight:600;color:#6b6b6b;">Loyalty Points</div>
+          <span class="points-display" id="pointsNum">0</span>
+          <div style="font-size:12px;color:#6b6b6b;" id="progressText"></div>
+        </div>
+        <div style="font-size:13px;font-weight:600;color:#b45309;margin:16px 0 8px;">✅ Earned</div>
+        <div id="earnedList" class="badge-grid"></div>
+        <div style="font-size:13px;font-weight:600;color:#a0a0a0;margin:16px 0 8px;">🔒 Locked</div>
+        <div id="lockedList" class="badge-grid"></div>
+      </div>
+
+      <div class="card">
+        <h3>🎖️ Admin — Award Badge Manually</h3>
+        <div class="card-sub">Award any badge to any user (admin only)</div>
+        <div class="role-note">🔑 Requires: admin JWT token</div>
+        <div class="form-group"><label>Admin JWT Token</label><input id="awardAdminToken" placeholder="Paste admin token"/></div>
+        <div class="form-group"><label>User ID to award</label><input id="awardUserId" placeholder="User's MongoDB _id"/></div>
+        <div class="form-group"><label>Badge Definition ID</label><input id="awardBadgeId" placeholder="BadgeDefinition MongoDB _id"/></div>
+        <div class="form-group"><label>Reason</label><input id="awardReason" placeholder="Why are you awarding this badge?"/></div>
+        <button class="btn btn-gold" onclick="awardBadge()">Award Badge</button>
+        <div id="awardRes" class="response-box"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = '';
+const show = (id, msg, type) => {
+  const el = document.getElementById(id);
+  el.textContent = typeof msg === 'object' ? JSON.stringify(msg, null, 2) : msg;
+  el.className = `response-box ${type}`; el.style.display = 'block';
+};
+
+function renderBadgeCards(badges, containerId, earned = false) {
+  const el = document.getElementById(containerId);
+  if (!badges?.length) { el.innerHTML = `<div style="font-size:13px;color:#a0a0a0;grid-column:1/-1;">${earned?'No badges earned yet':'All badges unlocked!'}</div>`; return; }
+  el.innerHTML = badges.map(b => {
+    const def = b.badgeDefinition || b;
+    return `
+      <div class="badge-card ${earned?'earned':'locked'}">
+        <span class="badge-emoji">${def.emoji}</span>
+        <div class="badge-name">${def.name}</div>
+        <div class="badge-desc">${def.description}</div>
+        <span class="tier-badge tier-${def.tier}">${def.tier}</span>
+        ${earned ? `<div style="font-size:11px;color:#b45309;margin-top:6px;">+${def.pointsReward || 0} pts • ${new Date(b.awardedAt).toLocaleDateString()}</div>` : `<div style="font-size:11px;color:#a0a0a0;margin-top:4px;">+${def.pointsReward || 0} pts</div>`}
+      </div>
+    `;
+  }).join('');
+}
+
+async function loadDefinitions() {
+  try {
+    const res  = await fetch(`${API}/api/badges/definitions`);
+    const data = await res.json();
+    renderBadgeCards(data.badges, 'definitionsList', false);
+  } catch(e) { document.getElementById('definitionsList').innerHTML = '<div style="color:#dc2626;font-size:13px;grid-column:1/-1;">Server error — is the backend running?</div>'; }
+}
+
+async function seedBadges() {
+  try {
+    const res  = await fetch(`${API}/api/badges/seed`, { method:'POST' });
+    const data = await res.json();
+    show('seedRes', res.ok ? `✅ ${data.message}` : data.message, res.ok?'success':'error');
+    if (res.ok) loadDefinitions();
+  } catch(e) { show('seedRes', 'Server error.', 'error'); }
+}
+
+async function getMyBadges() {
+  const token = document.getElementById('myBadgeToken').value.trim();
+  if (!token) return;
+  try {
+    const res  = await fetch(`${API}/api/badges/my-badges`, { headers:{'Authorization':`Bearer ${token}`} });
+    const data = await res.json();
+    if (!res.ok) { show('earnedList', data.message, 'error'); return; }
+
+    document.getElementById('loyaltyDisplay').style.display = 'block';
+    document.getElementById('pointsNum').textContent = data.loyaltyPoints || 0;
+    document.getElementById('progressText').textContent = `${data.progress?.bookings || 0} bookings • ${data.progress?.reviews || 0} reviews`;
+
+    renderBadgeCards(data.earned, 'earnedList', true);
+    renderBadgeCards(data.unearned, 'lockedList', false);
+  } catch(e) { console.error(e); }
+}
+
+async function awardBadge() {
+  const token = document.getElementById('awardAdminToken').value.trim();
+  const body  = {
+    userId:            document.getElementById('awardUserId').value.trim(),
+    badgeDefinitionId: document.getElementById('awardBadgeId').value.trim(),
+    reason:            document.getElementById('awardReason').value.trim()
+  };
+  if (!token) return show('awardRes', 'Please paste admin token.', 'error');
+  if (!body.userId || !body.badgeDefinitionId) return show('awardRes', 'User ID and Badge ID are required.', 'error');
+  try {
+    const res  = await fetch(`${API}/api/badges/award`, { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body: JSON.stringify(body) });
+    const data = await res.json();
+    show('awardRes', res.ok ? `✅ ${data.message}` : data.message, res.ok?'success':'error');
+  } catch(e) { show('awardRes', 'Server error.', 'error'); }
+}
+
+// Auto-load definitions on page load
+loadDefinitions();
+</script>
+</body>
+</html>
