@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Feature 1 — Fraud Detection</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#fafaf8;color:#1a1a1a;}
+.header{background:#fff;border-bottom:1px solid #e5e4df;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:'Fraunces',serif;font-size:22px;color:#0F6E56;}
+.logo span{color:#D85A30;}
+.feature-badge{background:#fee2e2;color:#dc2626;font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px;}
+.container{max-width:1100px;margin:0 auto;padding:32px 24px;}
+.hero{background:linear-gradient(135deg,#1a1a1a,#2d2d2d);color:#fff;border-radius:20px;padding:36px;margin-bottom:32px;}
+.hero h1{font-family:'Fraunces',serif;font-size:32px;margin-bottom:10px;}
+.hero p{font-size:15px;opacity:.75;line-height:1.7;max-width:600px;}
+.how-it-works{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:32px;}
+.step{background:#fff;border:1px solid #e5e4df;border-radius:14px;padding:18px;text-align:center;}
+.step-num{width:32px;height:32px;border-radius:50%;background:#fee2e2;color:#dc2626;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;}
+.step h4{font-size:13px;font-weight:600;margin-bottom:6px;}
+.step p{font-size:12px;color:#6b6b6b;line-height:1.5;}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.card{background:#fff;border:1px solid #e5e4df;border-radius:16px;padding:22px;}
+.card h3{font-family:'Fraunces',serif;font-size:18px;margin-bottom:6px;}
+.card-sub{font-size:13px;color:#6b6b6b;margin-bottom:18px;}
+.form-group{margin-bottom:14px;}
+.form-group label{font-size:12px;font-weight:600;color:#6b6b6b;display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px;}
+.form-group select,.form-group input,.form-group textarea{width:100%;padding:10px 12px;border:1.5px solid #e5e4df;border-radius:8px;font-size:14px;font-family:inherit;}
+.form-group select:focus,.form-group input:focus,.form-group textarea:focus{outline:none;border-color:#dc2626;box-shadow:0 0 0 3px rgba(220,38,38,.1);}
+.btn{padding:10px 20px;border-radius:10px;font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:inherit;}
+.btn-red{background:#dc2626;color:#fff;width:100%;}
+.btn-red:hover{background:#b91c1c;}
+.response-box{margin-top:14px;background:#f4f3ef;border-radius:10px;padding:14px;font-size:13px;color:#1a1a1a;min-height:60px;white-space:pre-wrap;display:none;}
+.response-box.success{background:#E1F5EE;color:#0F6E56;border:1px solid #a7f3d0;}
+.response-box.error{background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;}
+.flag-item{background:#fff;border:1px solid #e5e4df;border-radius:10px;padding:14px;margin-bottom:8px;}
+.flag-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.flag-reason{font-size:13px;color:#6b6b6b;}
+.sev{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;}
+.sev-high{background:#fee2e2;color:#dc2626;}
+.sev-medium{background:#FFF4E0;color:#B45309;}
+.sev-low{background:#F1F5F9;color:#475569;}
+.role-note{font-size:12px;background:#FFF8E0;border:1px solid #f5e090;border-radius:8px;padding:10px 14px;margin-bottom:16px;color:#78350f;}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">KHOJ<span>.</span> <span style="font-size:14px;font-weight:500;color:#6b6b6b;margin-left:8px;">Feature Demo</span></div>
+  <span class="feature-badge">🚨 Feature 1 — Fraud Detection</span>
+</div>
+<div class="container">
+  <div class="hero">
+    <h1>🚨 Fraud Detection & Flag System</h1>
+    <p>Automatically identifies and flags suspicious activities to prevent misuse. Customers can report issues manually. The system also auto-detects patterns like spam bookings and high cancellation rates.</p>
+  </div>
+
+  <div class="how-it-works">
+    <div class="step"><div class="step-num">1</div><h4>Customer Reports</h4><p>Customer submits a report about a suspicious listing or user</p></div>
+    <div class="step"><div class="step-num">2</div><h4>Auto Detection</h4><p>System checks booking patterns, cancellation rate, and repeat reports</p></div>
+    <div class="step"><div class="step-num">3</div><h4>Flag Created</h4><p>MongoDB stores the flag with severity level and details</p></div>
+    <div class="step"><div class="step-num">4</div><h4>Admin Reviews</h4><p>Admin resolves or dismisses — user may be banned or cleared</p></div>
+  </div>
+
+  <div class="cols">
+    <div>
+      <div class="card" style="margin-bottom:20px;">
+        <h3>👤 Customer — Report Issue</h3>
+        <div class="card-sub">Report a suspicious listing, user, or booking</div>
+        <div class="role-note">🔑 Requires: customer login token in the box below</div>
+        <div class="form-group"><label>Your JWT Token</label><input id="custToken" placeholder="Paste your token from /api/auth/signin"/></div>
+        <div class="form-group"><label>What are you reporting?</label>
+          <select id="targetType"><option value="listing">A Listing</option><option value="user">A User</option><option value="booking">A Booking</option></select>
+        </div>
+        <div class="form-group"><label>ID of the target</label><input id="targetId" placeholder="Paste the MongoDB _id"/></div>
+        <div class="form-group"><label>Type of fraud</label>
+          <select id="flagType">
+            <option value="fake_listing">Fake Listing</option>
+            <option value="payment_fraud">Payment Fraud</option>
+            <option value="abuse">Abusive Behaviour</option>
+            <option value="fake_review">Fake Review</option>
+            <option value="price_manipulation">Price Changed After Booking</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Describe the issue</label><textarea id="reason" rows="3" placeholder="What happened?"></textarea></div>
+        <button class="btn btn-red" onclick="submitReport()">Submit Report</button>
+        <div id="reportRes" class="response-box"></div>
+      </div>
+
+      <div class="card">
+        <h3>🔍 Check My Flag Status</h3>
+        <div class="card-sub">See if your account has any active flags</div>
+        <div class="form-group"><label>Your JWT Token</label><input id="statusToken" placeholder="Paste your token"/></div>
+        <button class="btn btn-red" onclick="checkStatus()">Check Status</button>
+        <div id="statusRes" class="response-box"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:20px;">
+        <h3>🛡️ Admin — View All Flags</h3>
+        <div class="card-sub">See all open fraud flags in the system</div>
+        <div class="role-note">🔑 Requires: admin login token</div>
+        <div class="form-group"><label>Admin JWT Token</label><input id="adminToken" placeholder="Paste admin token"/></div>
+        <div class="form-group"><label>Filter by status</label>
+          <select id="flagStatus"><option value="">All</option><option value="open">Open</option><option value="under_review">Under Review</option><option value="resolved">Resolved</option></select>
+        </div>
+        <button class="btn btn-red" onclick="getFlags()">Load Flags</button>
+        <div id="flagsList" style="margin-top:14px;max-height:300px;overflow-y:auto;"></div>
+      </div>
+
+      <div class="card">
+        <h3>⚙️ Run Auto-Detection</h3>
+        <div class="card-sub">Trigger automatic fraud pattern check on a user</div>
+        <div class="form-group"><label>Admin JWT Token</label><input id="autoAdminToken" placeholder="Paste admin token"/></div>
+        <div class="form-group"><label>User ID to check</label><input id="autoUserId" placeholder="User MongoDB _id"/></div>
+        <button class="btn btn-red" onclick="runAuto()">Run Auto-Detect</button>
+        <div id="autoRes" class="response-box"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = '';
+const show = (id, msg, type) => {
+  const el = document.getElementById(id);
+  el.textContent = typeof msg === 'object' ? JSON.stringify(msg, null, 2) : msg;
+  el.className = `response-box ${type}`;
+  el.style.display = 'block';
+};
+
+async function submitReport() {
+  const token = document.getElementById('custToken').value.trim();
+  const body  = {
+    targetId:   document.getElementById('targetId').value.trim(),
+    targetType: document.getElementById('targetType').value,
+    reason:     document.getElementById('reason').value.trim(),
+    flagType:   document.getElementById('flagType').value
+  };
+  if (!token) return show('reportRes', 'Please paste your JWT token.', 'error');
+  if (!body.targetId || !body.reason) return show('reportRes', 'Fill in all fields.', 'error');
+  try {
+    const res  = await fetch(`${API}/api/fraud/report`, { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body: JSON.stringify(body) });
+    const data = await res.json();
+    show('reportRes', data, res.ok ? 'success' : 'error');
+  } catch(e) { show('reportRes', 'Server error — is the backend running?', 'error'); }
+}
+
+async function checkStatus() {
+  const token = document.getElementById('statusToken').value.trim();
+  if (!token) return show('statusRes', 'Please paste your JWT token.', 'error');
+  try {
+    const res  = await fetch(`${API}/api/fraud/my-status`, { headers:{'Authorization':`Bearer ${token}`} });
+    const data = await res.json();
+    show('statusRes', data, res.ok ? 'success' : 'error');
+  } catch(e) { show('statusRes', 'Server error.', 'error'); }
+}
+
+async function getFlags() {
+  const token  = document.getElementById('adminToken').value.trim();
+  const status = document.getElementById('flagStatus').value;
+  if (!token) return;
+  try {
+    const res  = await fetch(`${API}/api/fraud/flags${status?'?status='+status:''}`, { headers:{'Authorization':`Bearer ${token}`} });
+    const data = await res.json();
+    const list = document.getElementById('flagsList');
+    if (!data.flags?.length) { list.innerHTML = '<div style="font-size:13px;color:#a0a0a0;padding:12px;">No flags found</div>'; return; }
+    list.innerHTML = data.flags.map(f => `
+      <div class="flag-item">
+        <div class="flag-header">
+          <strong style="font-size:13px;">${f.flagType?.replace(/_/g,' ')}</strong>
+          <span class="sev sev-${f.severity}">${f.severity}</span>
+        </div>
+        <div class="flag-reason">${f.reason}</div>
+        <div style="font-size:11px;color:#a0a0a0;margin-top:4px;">Status: ${f.status} • ${new Date(f.createdAt).toLocaleDateString()}</div>
+      </div>
+    `).join('');
+  } catch(e) { document.getElementById('flagsList').innerHTML = '<div style="color:#dc2626;font-size:13px;">Error loading flags</div>'; }
+}
+
+async function runAuto() {
+  const token  = document.getElementById('autoAdminToken').value.trim();
+  const userId = document.getElementById('autoUserId').value.trim();
+  if (!token || !userId) return show('autoRes', 'Both fields required.', 'error');
+  try {
+    const res  = await fetch(`${API}/api/fraud/auto-check`, { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body: JSON.stringify({ userId }) });
+    const data = await res.json();
+    show('autoRes', data, res.ok ? 'success' : 'error');
+  } catch(e) { show('autoRes', 'Server error.', 'error'); }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>KHOJ — Provider Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#f4f3ef;color:#1a1a1a;}
+.navbar{background:#fff;border-bottom:1px solid #e5e4df;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:#0F6E56;}
+.logo span{color:#D85A30;}
+.layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 64px);}
+.sidebar{background:#fff;border-right:1px solid #e5e4df;padding:24px 0;}
+.sidebar a{display:flex;align-items:center;gap:10px;padding:11px 20px;font-size:14px;font-weight:500;color:#6b6b6b;text-decoration:none;cursor:pointer;transition:.15s;}
+.sidebar a:hover,.sidebar a.active{background:#FFF4F0;color:#D85A30;}
+.sidebar a .badge-count{background:#D85A30;color:#fff;font-size:10px;font-weight:700;padding:2px 6px;border-radius:20px;margin-left:auto;}
+.main{padding:32px 28px;}
+.page{display:none;}
+.page.active{display:block;}
+.page-title{font-family:'Fraunces',serif;font-size:28px;font-weight:700;margin-bottom:6px;}
+.page-sub{font-size:14px;color:#6b6b6b;margin-bottom:28px;}
+.card{background:#fff;border:1px solid #e5e4df;border-radius:16px;padding:20px;}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+.stat-card{background:#fff;border:1px solid #e5e4df;border-radius:14px;padding:18px;}
+.stat-num{font-family:'Fraunces',serif;font-size:30px;font-weight:700;}
+.stat-label{font-size:12px;color:#6b6b6b;margin-top:4px;}
+.notif-banner{background:#E1F5EE;border-radius:12px;padding:14px 18px;font-size:14px;color:#0F6E56;font-weight:500;margin-bottom:20px;display:none;cursor:pointer;}
+.notif-banner span{font-weight:700;}
+.booking-row{display:flex;align-items:center;gap:14px;padding:14px;border:1px solid #e5e4df;border-radius:12px;margin-bottom:10px;background:#fff;}
+.booking-row.new{border-color:#1D9E75;background:#f0fdf8;}
+.br-info{flex:1;}
+.br-service{font-size:14px;font-weight:600;}
+.br-customer{font-size:12px;color:#6b6b6b;}
+.br-time{font-size:12px;color:#6b6b6b;}
+.br-amount{font-size:15px;font-weight:700;color:#0F6E56;}
+.status-select{padding:6px 12px;border-radius:8px;border:1px solid #e5e4df;font-size:12px;font-family:inherit;cursor:pointer;}
+.msg-item{display:flex;gap:10px;padding:12px;border-radius:10px;background:#f4f3ef;cursor:pointer;margin-bottom:8px;transition:.15s;}
+.msg-item:hover{background:#FFF4F0;}
+.msg-item.notif{background:#FFF8E0;border:1px solid #f5e090;}
+.msg-avatar{width:36px;height:36px;border-radius:50%;background:#D85A30;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;}
+.msg-name{font-size:13px;font-weight:600;}
+.msg-preview{font-size:12px;color:#6b6b6b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;}
+.chat-wrap{background:#f4f3ef;border-radius:12px;padding:14px;margin-top:12px;}
+.chat-messages{min-height:160px;max-height:240px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.bubble{max-width:70%;padding:10px 14px;border-radius:16px;font-size:13px;line-height:1.5;}
+.bubble.me{background:#D85A30;color:#fff;align-self:flex-end;border-bottom-right-radius:4px;}
+.bubble.them{background:#fff;color:#1a1a1a;align-self:flex-start;border-bottom-left-radius:4px;}
+.bubble.system{background:#E1F5EE;color:#0F6E56;align-self:center;font-size:12px;border-radius:20px;max-width:90%;text-align:center;}
+.chat-input{display:flex;gap:8px;margin-top:8px;}
+.chat-input input{flex:1;padding:10px 14px;border:1.5px solid #e5e4df;border-radius:10px;font-size:14px;font-family:inherit;}
+.chat-input button{padding:10px 18px;background:#D85A30;color:#fff;border:none;border-radius:10px;cursor:pointer;font-family:inherit;font-weight:600;}
+.badge-card{background:#fff;border:1px solid #e5e4df;border-radius:12px;padding:16px;text-align:center;}
+.badge-emoji{font-size:36px;display:block;margin-bottom:8px;}
+.badge-name{font-size:13px;font-weight:600;margin-bottom:4px;}
+.badge-tier{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;display:inline-block;}
+.tier-bronze{background:#FFF4E0;color:#B45309;}
+.tier-silver{background:#F1F5F9;color:#475569;}
+.tier-gold{background:#FEF3C7;color:#92400E;}
+.tier-platinum{background:#EDE9FE;color:#5B21B6;}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.loading{text-align:center;padding:32px;color:#a0a0a0;font-size:14px;}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div style="display:flex;align-items:center;gap:14px;">
+    <span class="logo">KHOJ<span>.</span></span>
+    <span style="font-size:12px;background:#FFF4F0;color:#D85A30;padding:3px 10px;border-radius:20px;font-weight:600;">Provider</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <span id="unseenBadge" style="background:#D85A30;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;display:none;">0 new</span>
+    <div style="width:36px;height:36px;border-radius:50%;background:#D85A30;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;" id="userAvatar">P</div>
+    <span id="userName" style="font-size:14px;font-weight:600;">Provider</span>
+    <button onclick="logout()" style="padding:6px 16px;border-radius:8px;font-size:13px;font-weight:600;border:1.5px solid #e5e4df;background:#fff;cursor:pointer;">Logout</button>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <a class="active" onclick="showPage('overview')"><span>📊</span> Overview</a>
+    <a onclick="showPage('bookings')"><span>📅</span> Bookings <span class="badge-count" id="newBookCount" style="display:none;">0</span></a>
+    <a onclick="showPage('messages')"><span>💬</span> Messages <span class="badge-count" id="msgCount">0</span></a>
+    <a onclick="showPage('badges')"><span>🏆</span> My Badges</a>
+  </aside>
+
+  <main class="main">
+
+    <!-- OVERVIEW -->
+    <div class="page active" id="page-overview">
+      <div class="page-title" id="welcomeTitle">Provider Dashboard</div>
+      <div class="page-sub">Manage your bookings and grow your business</div>
+
+      <div id="newBookBanner" class="notif-banner" onclick="showPage('bookings')">
+        📬 You have <span id="newBookNum">0</span> new booking(s)! Click to view →
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-num" id="statTotal">-</div><div class="stat-label">Total Bookings</div></div>
+        <div class="stat-card"><div class="stat-num" id="statPending">-</div><div class="stat-label">Pending</div></div>
+        <div class="stat-card"><div class="stat-num" id="statCompleted">-</div><div class="stat-label">Completed</div></div>
+        <div class="stat-card"><div class="stat-num" id="statEarnings" style="color:#0F6E56;">৳0</div><div class="stat-label">Total Earnings</div></div>
+      </div>
+
+      <div class="card">
+        <div style="font-size:15px;font-weight:600;margin-bottom:14px;">Recent Bookings</div>
+        <div id="recentBookings"><div class="loading">Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- BOOKINGS -->
+    <div class="page" id="page-bookings">
+      <div class="page-title">📅 All Bookings</div>
+      <div class="page-sub">Manage and update your customer bookings</div>
+
+      <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
+        <button onclick="filterBookings('')"      style="padding:7px 16px;border-radius:20px;border:1.5px solid #e5e4df;background:#fff;font-size:13px;font-weight:600;cursor:pointer;" id="fAll">All</button>
+        <button onclick="filterBookings('pending')"     style="padding:7px 16px;border-radius:20px;border:1.5px solid #e5e4df;background:#fff;font-size:13px;font-weight:600;cursor:pointer;">Pending</button>
+        <button onclick="filterBookings('confirmed')"   style="padding:7px 16px;border-radius:20px;border:1.5px solid #e5e4df;background:#fff;font-size:13px;font-weight:600;cursor:pointer;">Confirmed</button>
+        <button onclick="filterBookings('completed')"   style="padding:7px 16px;border-radius:20px;border:1.5px solid #e5e4df;background:#fff;font-size:13px;font-weight:600;cursor:pointer;">Completed</button>
+      </div>
+
+      <div id="allBookingsList"><div class="loading">Loading...</div></div>
+    </div>
+
+    <!-- MESSAGES -->
+    <div class="page" id="page-messages">
+      <div class="page-title">💬 Messages</div>
+      <div class="page-sub">Chat with your customers and view booking notifications</div>
+
+      <!-- Booking Notifications -->
+      <div class="card" style="margin-bottom:20px;">
+        <div style="font-size:14px;font-weight:600;margin-bottom:12px;color:#D85A30;">📬 Booking Notifications</div>
+        <div id="bookingNotifications"><div class="loading" style="padding:12px;">No notifications</div></div>
+      </div>
+
+      <!-- Chat -->
+      <div style="display:grid;grid-template-columns:260px 1fr;gap:16px;">
+        <div class="card" style="padding:0;overflow:hidden;">
+          <div style="padding:14px;border-bottom:1px solid #e5e4df;font-size:13px;font-weight:600;">Conversations</div>
+          <div id="inboxList" style="padding:8px;max-height:400px;overflow-y:auto;"></div>
+        </div>
+        <div class="card" id="chatPanel" style="display:flex;flex-direction:column;">
+          <div style="font-size:14px;color:#a0a0a0;text-align:center;padding:40px 0;">Select a conversation</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BADGES -->
+    <div class="page" id="page-badges">
+      <div class="page-title">🏆 My Badges</div>
+      <div class="page-sub">Badges earned through excellent service and customer satisfaction</div>
+      <div class="card" style="margin-bottom:20px;display:flex;gap:20px;align-items:center;">
+        <div style="text-align:center;">
+          <div style="font-family:'Fraunces',serif;font-size:36px;font-weight:700;color:#D85A30;" id="loyaltyPoints">0</div>
+          <div style="font-size:12px;color:#6b6b6b;">Loyalty Points</div>
+        </div>
+        <div><div style="font-size:13px;font-weight:600;margin-bottom:4px;">Provider Status</div>
+        <div style="font-size:12px;color:#6b6b6b;" id="badgeProgress">Complete more bookings to unlock badges</div></div>
+      </div>
+      <div style="font-size:14px;font-weight:600;margin-bottom:12px;color:#D85A30;">Earned</div>
+      <div id="earnedBadges" class="grid-3" style="margin-bottom:24px;"></div>
+      <div style="font-size:14px;font-weight:600;margin-bottom:12px;color:#a0a0a0;">Locked</div>
+      <div id="lockedBadges" class="grid-3"></div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const API = '';
+let token = localStorage.getItem('khoj_token');
+let currentUser = JSON.parse(localStorage.getItem('khoj_user') || 'null');
+let allBookings = [], currentChatUser = null;
+
+if (!currentUser || currentUser.role !== 'provider') window.location.href = '/';
+
+document.getElementById('userAvatar').textContent = currentUser?.name?.charAt(0).toUpperCase() || 'P';
+document.getElementById('userName').textContent   = currentUser?.name || '';
+document.getElementById('welcomeTitle').textContent = `Welcome, ${currentUser?.name?.split(' ')[0]}! 🔧`;
+
+function logout() { localStorage.clear(); window.location.href = '/'; }
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  event?.target?.closest('a')?.classList.add('active');
+  if (id === 'overview')  { loadBookings(); loadUnseenCount(); }
+  if (id === 'bookings')  loadBookings();
+  if (id === 'messages')  { loadInbox(); loadBookingNotifications(); }
+  if (id === 'badges')    loadBadges();
+}
+
+const headers = () => ({ 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` });
+
+async function loadBookings() {
+  try {
+    const res  = await fetch(`${API}/api/schedule/provider-bookings`, { headers: headers() });
+    const data = await res.json();
+    allBookings = data.bookings || [];
+    renderBookings(allBookings);
+    updateStats(allBookings);
+  } catch(e) { console.error('loadBookings:', e.message); }
+}
+
+function renderBookings(list) {
+  const html = list.length ? list.map(b => `
+    <div class="booking-row ${!b.providerNotified?'new':''}">
+      <div style="font-size:24px;">📅</div>
+      <div class="br-info">
+        <div class="br-service">${b.serviceSnapshot?.title || 'Service'}</div>
+        <div class="br-customer">👤 ${b.customer?.name || 'Customer'} • ${b.customer?.phone || ''}</div>
+        <div class="br-time">📅 ${new Date(b.scheduledDate).toLocaleDateString('en-BD',{weekday:'short',month:'short',day:'numeric'})} ${b.scheduledTime ? '• ' + b.scheduledTime : ''}</div>
+        <div style="font-size:11px;color:#a0a0a0;margin-top:2px;">${b.bookingRef}</div>
+      </div>
+      <div style="text-align:right;">
+        <div class="br-amount">৳${b.payment?.amount || 0}</div>
+        <select class="status-select" onchange="updateStatus('${b._id}', this.value)">
+          <option value="pending"     ${b.status==='pending'    ?'selected':''}>Pending</option>
+          <option value="confirmed"   ${b.status==='confirmed'  ?'selected':''}>Confirmed</option>
+          <option value="in-progress" ${b.status==='in-progress'?'selected':''}>In Progress</option>
+          <option value="completed"   ${b.status==='completed'  ?'selected':''}>Completed</option>
+          <option value="cancelled"   ${b.status==='cancelled'  ?'selected':''}>Cancelled</option>
+        </select>
+      </div>
+    </div>
+  `).join('') : '<div class="loading">No bookings yet</div>';
+
+  const containers = ['recentBookings', 'allBookingsList'];
+  containers.forEach(id => { if (document.getElementById(id)) document.getElementById(id).innerHTML = html; });
+}
+
+function filterBookings(status) {
+  const filtered = status ? allBookings.filter(b => b.status === status) : allBookings;
+  document.getElementById('allBookingsList').innerHTML = filtered.length ? filtered.map(b => `
+    <div class="booking-row ${!b.providerNotified?'new':''}">
+      <div style="font-size:24px;">📅</div>
+      <div class="br-info">
+        <div class="br-service">${b.serviceSnapshot?.title || 'Service'}</div>
+        <div class="br-customer">👤 ${b.customer?.name || 'Customer'} • ${b.customer?.phone || ''}</div>
+        <div class="br-time">📅 ${new Date(b.scheduledDate).toLocaleDateString('en-BD',{weekday:'short',month:'short',day:'numeric'})} ${b.scheduledTime ? '• ' + b.scheduledTime : ''}</div>
+      </div>
+      <div style="text-align:right;">
+        <div class="br-amount">৳${b.payment?.amount || 0}</div>
+        <select class="status-select" onchange="updateStatus('${b._id}', this.value)">
+          <option value="pending"     ${b.status==='pending'    ?'selected':''}>Pending</option>
+          <option value="confirmed"   ${b.status==='confirmed'  ?'selected':''}>Confirmed</option>
+          <option value="in-progress" ${b.status==='in-progress'?'selected':''}>In Progress</option>
+          <option value="completed"   ${b.status==='completed'  ?'selected':''}>Completed</option>
+          <option value="cancelled"   ${b.status==='cancelled'  ?'selected':''}>Cancelled</option>
+        </select>
+      </div>
+    </div>
+  `).join('') : '<div class="loading">No bookings</div>';
+}
+
+async function updateStatus(bookingId, status) {
+  try {
+    await fetch(`${API}/api/schedule/${bookingId}/status`, { method:'PATCH', headers: headers(), body: JSON.stringify({ status }) });
+    loadBookings();
+  } catch(e) { alert('Could not update status.'); }
+}
+
+function updateStats(bookings) {
+  document.getElementById('statTotal').textContent     = bookings.length;
+  document.getElementById('statPending').textContent   = bookings.filter(b => b.status === 'pending').length;
+  document.getElementById('statCompleted').textContent = bookings.filter(b => b.status === 'completed').length;
+  const earnings = bookings.filter(b => b.payment?.status === 'paid').reduce((s,b) => s + (b.payment?.amount || 0), 0);
+  document.getElementById('statEarnings').textContent  = `৳${earnings.toLocaleString()}`;
+
+  const newCount = bookings.filter(b => !b.providerNotified).length;
+  if (newCount > 0) {
+    document.getElementById('newBookBanner').style.display = 'block';
+    document.getElementById('newBookNum').textContent = newCount;
+    document.getElementById('newBookCount').style.display = 'inline';
+    document.getElementById('newBookCount').textContent = newCount;
+  }
+}
+
+async function loadUnseenCount() {
+  try {
+    const res  = await fetch(`${API}/api/schedule/unseen-count`, { headers: headers() });
+    const data = await res.json();
+    const count = data.unseenCount || 0;
+    document.getElementById('unseenBadge').textContent = `${count} new`;
+    document.getElementById('unseenBadge').style.display = count > 0 ? 'inline' : 'none';
+  } catch(e) {}
+}
+
+async function loadBookingNotifications() {
+  try {
+    const res  = await fetch(`${API}/api/messages/booking-notifications`, { headers: headers() });
+    const data = await res.json();
+    const el   = document.getElementById('bookingNotifications');
+    if (!data.notifications?.length) { el.innerHTML = '<div style="font-size:13px;color:#a0a0a0;padding:8px;">No booking notifications yet</div>'; return; }
+    el.innerHTML = data.notifications.map(n => `
+      <div class="msg-item notif">
+        <div class="msg-avatar">📅</div>
+        <div style="flex:1;">
+          <div class="msg-name">${n.sender?.name || 'Customer'}</div>
+          <div class="msg-preview">${n.content}</div>
+        </div>
+        <div style="font-size:11px;color:#a0a0a0;">${new Date(n.createdAt).toLocaleDateString()}</div>
+      </div>
+    `).join('');
+  } catch(e) {}
+}
+
+async function loadInbox() {
+  try {
+    const res  = await fetch(`${API}/api/messages/inbox`, { headers: headers() });
+    const data = await res.json();
+    const list = document.getElementById('inboxList');
+    if (!data.conversations?.length) { list.innerHTML = '<div style="padding:12px;font-size:13px;color:#a0a0a0;">No conversations yet</div>'; return; }
+    list.innerHTML = data.conversations.map(c => `
+      <div class="msg-item" onclick="openChat('${c.otherUser._id}','${c.otherUser.name}')">
+        <div class="msg-avatar">${c.otherUser.name.charAt(0)}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div class="msg-name">${c.otherUser.name}</div>
+            ${c.unreadCount ? `<span style="background:#D85A30;color:#fff;font-size:10px;font-weight:700;padding:2px 6px;border-radius:20px;">${c.unreadCount}</span>` : ''}
+          </div>
+          <div class="msg-preview">${c.lastMessage?.content || ''}</div>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) {}
+}
+
+async function openChat(userId, name) {
+  currentChatUser = userId;
+  const panel = document.getElementById('chatPanel');
+  panel.innerHTML = `
+    <div style="padding:14px;border-bottom:1px solid #e5e4df;font-size:14px;font-weight:600;">${name}</div>
+    <div id="chatMessages" style="flex:1;min-height:200px;max-height:280px;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;"></div>
+    <div style="padding:12px;border-top:1px solid #e5e4df;">
+      <div class="chat-input">
+        <input id="chatInput" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+        <button onclick="sendMsg()">Send</button>
+      </div>
+    </div>
+  `;
+  panel.style.display = 'flex'; panel.style.flexDirection = 'column';
+  const res  = await fetch(`${API}/api/messages/conversation/${userId}`, { headers: headers() });
+  const data = await res.json();
+  const msgs = document.getElementById('chatMessages');
+  msgs.innerHTML = data.messages?.map(m => {
+    const isMe   = m.sender._id === currentUser._id;
+    const isSystem = m.messageType === 'system' || m.messageType === 'booking_notification';
+    return `<div class="bubble ${isSystem?'system':isMe?'me':'them'}">${m.content}</div>`;
+  }).join('') || '<div style="color:#a0a0a0;font-size:13px;text-align:center;">No messages yet</div>';
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+async function sendMsg() {
+  if (!currentChatUser) return;
+  const input   = document.getElementById('chatInput');
+  const content = input.value.trim();
+  if (!content) return;
+  input.value = '';
+  const msgs = document.getElementById('chatMessages');
+  msgs.innerHTML += `<div class="bubble me">${content}</div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+  await fetch(`${API}/api/messages/send`, { method:'POST', headers: headers(), body: JSON.stringify({ receiverId: currentChatUser, content }) });
+}
+
+async function loadBadges() {
+  try {
+    const res  = await fetch(`${API}/api/badges/my-badges`, { headers: headers() });
+    const data = await res.json();
+    document.getElementById('loyaltyPoints').textContent = data.loyaltyPoints || 0;
+    document.getElementById('badgeProgress').textContent = `${data.progress?.bookings || 0} completed bookings`;
+    const earned = document.getElementById('earnedBadges');
+    earned.innerHTML = data.earned?.length ? data.earned.map(b => `
+      <div class="badge-card">
+        <span class="badge-emoji">${b.badgeDefinition?.emoji || '🏆'}</span>
+        <div class="badge-name">${b.badgeDefinition?.name}</div>
+        <span class="badge-tier tier-${b.badgeDefinition?.tier}">${b.badgeDefinition?.tier}</span>
+        <div style="font-size:11px;color:#a0a0a0;">Earned ${new Date(b.awardedAt).toLocaleDateString()}</div>
+      </div>
+    `).join('') : '<div style="color:#a0a0a0;font-size:13px;">No badges yet</div>';
+    document.getElementById('lockedBadges').innerHTML = data.unearned?.map(b => `
+      <div class="badge-card" style="opacity:.5;">
+        <span class="badge-emoji" style="filter:grayscale(1);">${b.emoji}</span>
+        <div class="badge-name">${b.name}</div>
+        <span class="badge-tier tier-${b.tier}">${b.tier}</span>
+        <div style="font-size:11px;color:#a0a0a0;">${b.description}</div>
+      </div>
+    `).join('') || '';
+  } catch(e) {}
+}
+
+// Init
+loadBookings();
+loadUnseenCount();
+setInterval(loadUnseenCount, 30000);
+</script>
+</body>
+</html>
