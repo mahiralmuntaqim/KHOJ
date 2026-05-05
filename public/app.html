@@ -376,10 +376,12 @@ footer{background:#1a1a1a;color:#fff;padding:48px 32px 24px;}
       <button class="btn-nav primary" style="margin-left:6px" onclick="openAuthModal('signup')">Get Started</button>
     </div>
 
-    <!-- Logged-in badge -->
+    <!-- Logged-in badge WITH PROFILE CLICK -->
     <div id="userBadge">
-      <div class="avatar" id="userAvatar">M</div>
-      <span class="uname" id="userName">User</span>
+      <div onclick="openProfileModal()" style="display:flex; align-items:center; gap:10px; cursor:pointer; padding:4px 8px; border-radius:8px; transition:0.2s;" onmouseover="this.style.background='var(--light-bg)'" onmouseout="this.style.background='transparent'">
+        <div class="avatar" id="userAvatar">M</div>
+        <span class="uname" id="userName">User</span>
+      </div>
       <button id="logoutBtn" onclick="handleLogout()">Logout</button>
     </div>
   </div>
@@ -394,8 +396,8 @@ footer{background:#1a1a1a;color:#fff;padding:48px 32px 24px;}
   <h1>Find trusted <em>local help</em>, instantly</h1>
   <p>Book verified home services, tutors, event planners and more — or rent equipment without commitment.</p>
   <div class="hero-btns">
-    <button class="btn-hero-primary" onclick="scrollTo('services')">Browse Services ↓</button>
-    <button class="btn-hero-outline" onclick="scrollTo('track')">Track My Order</button>
+    <button class="btn-hero-primary" onclick="scrollToId('services')">Browse Services ↓</button>
+    <button class="btn-hero-outline" onclick="scrollToId('track')">Track My Order</button>
   </div>
 </section>
 
@@ -817,7 +819,7 @@ footer{background:#1a1a1a;color:#fff;padding:48px 32px 24px;}
   <p>Join 18,000+ Bangladeshis who trust KHOJ for home services and rentals</p>
   <div class="cta-btns">
     <button class="btn-cta-white" onclick="openAuthModal('signup')">Create Free Account</button>
-    <button class="btn-cta-outline" onclick="scrollTo('services')">Browse Services</button>
+    <button class="btn-cta-outline" onclick="scrollToId('services')">Browse Services</button>
   </div>
 </section>
 
@@ -907,7 +909,7 @@ footer{background:#1a1a1a;color:#fff;padding:48px 32px 24px;}
 
 
 <!-- ══════════════════════════════════════════
-     AUTH MODAL
+     AUTH MODAL (NOW WITH OTP!)
 ══════════════════════════════════════════ -->
 <div class="modal-overlay" id="authModal">
   <div class="modal">
@@ -943,8 +945,25 @@ footer{background:#1a1a1a;color:#fff;padding:48px 32px 24px;}
       <p>Sign in to your KHOJ account</p>
       <div class="form-group"><label>Phone or Email</label><input id="signinId" placeholder="01XXXXXXXXX or email"/></div>
       <div class="form-group"><label>Password</label><input id="signinPassword" type="password" placeholder="Your password"/></div>
-      <button class="btn-full" onclick="handleSignin()">Sign In</button>
+      <button class="btn-full" id="signinBtn" onclick="handleSignin()">Sign In</button>
       <div class="modal-footer">No account? <a onclick="switchAuthTab('signup')">Sign up free</a></div>
+    </div>
+
+    <!-- NEW: OTP Form -->
+    <div id="authOtpForm" style="display:none; text-align:center;">
+      <div style="font-size: 40px; margin-bottom: 12px;">📱</div>
+      <h2 style="margin-bottom: 8px;">Check your phone</h2>
+      <p style="font-size: 14px; color: var(--muted); margin-bottom: 24px;">We've sent a 6-digit code to verify your account.</p>
+      
+      <div class="form-group">
+        <input id="otpInput" type="text" placeholder="------" maxlength="6" style="text-align:center; font-size:24px; letter-spacing:12px; font-family:monospace; padding: 16px;"/>
+      </div>
+      
+      <button class="btn-full" id="verifyOtpBtn" onclick="verifyOtp()">Verify & Continue</button>
+      <div class="modal-footer" style="margin-top:20px;">
+        Didn't receive it? <a onclick="resendOtp()">Resend Code</a><br><br>
+        <a onclick="switchAuthTab('signin')" style="color:var(--muted); font-size:12px;">← Cancel & Go Back</a>
+      </div>
     </div>
 
     <!-- Success -->
@@ -953,6 +972,53 @@ footer{background:#1a1a1a;color:#fff;padding:48px 32px 24px;}
       <h3 id="authSuccessTitle">Welcome!</h3>
       <p id="authSuccessMsg">You're signed in.</p>
     </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     USER PROFILE MODAL
+══════════════════════════════════════════ -->
+<div class="modal-overlay" id="profileModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeProfileModal()">✕</button>
+    <h2 style="text-align:center; margin-bottom: 24px;">My Account</h2>
+    
+    <div style="text-align:center; margin-bottom: 24px;">
+      <div style="font-size: 56px; margin-bottom: 8px;">👤</div>
+      <h2 id="profName" style="margin-bottom: 4px; font-size: 20px;">User Name</h2>
+      <span id="profRole" style="display:inline-block; font-size:11px; text-transform:uppercase; background:var(--light-bg); color:var(--muted); padding:3px 10px; border-radius:10px; font-weight:700;">ROLE</span>
+    </div>
+
+    <div class="form-group">
+      <label>Email Address</label>
+      <div style="padding: 11px 14px; background: var(--light-bg); border-radius: 10px; font-size: 14px; color: var(--text);" id="profEmail">-</div>
+    </div>
+    
+    <div class="form-group">
+      <label>Phone Number</label>
+      <div style="padding: 11px 14px; background: var(--light-bg); border-radius: 10px; font-size: 14px; color: var(--text);" id="profPhone">-</div>
+    </div>
+      
+    <!-- NID Section -->
+    <div class="form-group" style="padding-top: 16px; border-top: 1px solid var(--border);">
+      <label>NID Verification Status</label>
+      <div id="profNidStatus" style="font-weight: 700; font-size: 14px; margin-bottom: 12px; color: var(--orange);">UNVERIFIED</div>
+      
+      <!-- Hidden by default, shows if unverified -->
+      <div id="nidSubmitBlock" style="display: none;">
+          <input type="text" id="nidInput" placeholder="Enter 17-digit NID Number" style="width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; margin-bottom: 8px; font-family: inherit;">
+          <button class="btn-full" onclick="submitNid(this)">Submit for Verification</button>
+      </div>
+    </div>
+
+    <!-- Address Section -->
+    <div class="form-group" style="padding-top: 16px; border-top: 1px solid var(--border);">
+      <label>Delivery Address</label>
+      <textarea id="profAddress" placeholder="Enter your full address..." rows="3" style="width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; font-family: inherit; resize: vertical;"></textarea>
+    </div>
+
+    <button class="btn-full" onclick="saveAddress()">Save Address</button>
   </div>
 </div>
 
@@ -1796,7 +1862,11 @@ function quickBook(title, cat) {
   });
 }
 
-// ── Auth modal ──
+// ══════════════════════════════════════════
+// ── AUTH MODAL WITH OTP LOGIC ──
+// ══════════════════════════════════════════
+let pendingAuthUserId = null;
+
 function openAuthModal(tab, role) {
   document.getElementById('authModal').classList.add('open');
   switchAuthTab(tab || 'signup');
@@ -1806,13 +1876,23 @@ function openAuthModal(tab, role) {
 function closeAuthModal() { document.getElementById('authModal').classList.remove('open'); }
 document.getElementById('authModal').addEventListener('click', function(e){ if (e.target===e.currentTarget) closeAuthModal(); });
 document.getElementById('bookingModal').addEventListener('click', function(e){ if (e.target===e.currentTarget) closeBookingModal(); });
+document.getElementById('profileModal').addEventListener('click', function(e){ if (e.target===e.currentTarget) closeProfileModal(); });
 
 function switchAuthTab(tab) {
   document.getElementById('authSignupForm').style.display = tab==='signup' ? 'block' : 'none';
   document.getElementById('authSigninForm').style.display = tab==='signin' ? 'block' : 'none';
+  document.getElementById('authOtpForm').style.display    = 'none';
   document.getElementById('authSuccess').style.display    = 'none';
   document.getElementById('authTabBtns').style.display    = 'flex';
   document.querySelectorAll('.tab-btn').forEach(function(b,i){ b.classList.toggle('active', (i===0&&tab==='signup')||(i===1&&tab==='signin')); });
+  hideAuthError();
+}
+
+function showOtpForm() {
+  document.getElementById('authSignupForm').style.display = 'none';
+  document.getElementById('authSigninForm').style.display = 'none';
+  document.getElementById('authTabBtns').style.display    = 'none';
+  document.getElementById('authOtpForm').style.display    = 'block';
   hideAuthError();
 }
 
@@ -1840,13 +1920,17 @@ async function handleSignup() {
     var res  = await fetch(API+'/api/auth/signup', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
     var data = await res.json();
     if (!res.ok) { showAuthError(data.error||'Signup failed.'); btn.textContent='Create Account'; btn.disabled=false; return; }
-    localStorage.setItem('khoj_token', data.token);
-    localStorage.setItem('khoj_user',  JSON.stringify(data.user));
-    onAuthSuccess(data.user);
+    
+    // Switch to OTP Form
+    pendingAuthUserId = data.userId;
+    showOtpForm();
+    btn.textContent='Create Account'; btn.disabled=false;
   } catch(e) { showAuthError('Server error.'); btn.textContent='Create Account'; btn.disabled=false; }
 }
 
 async function handleSignin() {
+  var btn = document.getElementById('signinBtn');
+  btn.textContent = 'Checking...'; btn.disabled = true;
   hideAuthError();
   var body = {
     identifier: document.getElementById('signinId').value.trim(),
@@ -1855,30 +1939,73 @@ async function handleSignin() {
   try {
     var res  = await fetch(API+'/api/auth/signin', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
     var data = await res.json();
-    if (!res.ok) { showAuthError(data.error||'Login failed.'); return; }
-    localStorage.setItem('khoj_token', data.token);
-    localStorage.setItem('khoj_user',  JSON.stringify(data.user));
-    onAuthSuccess(data.user);
-  } catch(e) { showAuthError('Server error.'); }
+    if (!res.ok) { showAuthError(data.error||'Login failed.'); btn.textContent='Sign In'; btn.disabled=false; return; }
+    
+    // Switch to OTP Form
+    pendingAuthUserId = data.userId;
+    showOtpForm();
+    btn.textContent='Sign In'; btn.disabled=false;
+  } catch(e) { showAuthError('Server error.'); btn.textContent='Sign In'; btn.disabled=false; }
+}
+
+async function verifyOtp() {
+  var btn = document.getElementById('verifyOtpBtn');
+  btn.textContent = 'Verifying...'; btn.disabled = true;
+  hideAuthError();
+  
+  var otp = document.getElementById('otpInput').value.trim();
+  if(!otp || otp.length < 6) {
+      showAuthError('Please enter the 6-digit code.');
+      btn.textContent = 'Verify & Continue'; btn.disabled = false; return;
+  }
+  
+  try {
+    var res = await fetch(API+'/api/auth/verify-otp', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ userId: pendingAuthUserId, otp: otp })
+    });
+    var data = await res.json();
+    
+    if(res.ok && data.success) {
+        localStorage.setItem('khoj_token', data.token);
+        localStorage.setItem('khoj_user',  JSON.stringify(data.user));
+        document.getElementById('authOtpForm').style.display = 'none';
+        onAuthSuccess(data.user);
+    } else {
+        showAuthError(data.error || 'Invalid OTP.');
+        btn.textContent = 'Verify & Continue'; btn.disabled = false;
+    }
+  } catch(e) { showAuthError('Server error.'); btn.textContent = 'Verify & Continue'; btn.disabled = false; }
+}
+
+async function resendOtp() {
+    if(!pendingAuthUserId) return;
+    try {
+        await fetch(API+'/api/auth/resend-otp', {
+            method:'POST', headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({ userId: pendingAuthUserId })
+        });
+        alert('✅ A new OTP has been sent! Check your terminal.');
+    } catch(e) {
+        alert('Failed to resend OTP.');
+    }
 }
 
 function onAuthSuccess(user) {
-  document.getElementById('authSignupForm').style.display = 'none';
-  document.getElementById('authSigninForm').style.display = 'none';
-  document.getElementById('authTabBtns').style.display    = 'none';
-  document.getElementById('authSuccess').style.display    = 'block';
+  document.getElementById('authSuccess').style.display = 'block';
   document.getElementById('authSuccessEmoji').textContent = user.role==='provider' ? '🔧' : '🏠';
   document.getElementById('authSuccessTitle').textContent = 'Welcome, '+user.name+'!';
   document.getElementById('authSuccessMsg').textContent   = 'You\'re now signed in as '+(user.role==='provider'?'a Provider':'a Customer')+'.';
   updateNav();
   setTimeout(function(){
     closeAuthModal();
+    updateNav();
     loadAll();
-    if (user.role === 'provider') {
-      setTimeout(function(){
-        document.getElementById('providerDash').scrollIntoView({ behavior:'smooth' });
-      }, 600);
-    }
+    setTimeout(function(){
+      if (user.role === 'admin') window.location.href = '/admin';
+      else if (user.role === 'provider') window.location.href = '/provider';
+      else window.location.href = '/customer';
+    }, 1500);
   }, 1400);
 }
 
@@ -1907,6 +2034,110 @@ function scrollTo(id) {
   if (el) el.scrollIntoView({ behavior:'smooth' });
 }
 
+// ══════════════════════════════════════════
+// ── PROFILE MODAL LOGIC ──
+// ══════════════════════════════════════════
+
+async function openProfileModal() {
+  document.getElementById('profileModal').classList.add('open');
+  
+  try {
+    var token = localStorage.getItem('khoj_token');
+    if (!token) return;
+    var res = await fetch(API+'/api/users/profile', { 
+        headers: { 'Authorization': 'Bearer ' + token } 
+    });
+    var data = await res.json();
+    
+    if (data.success) {
+      var user = data.user;
+      document.getElementById('profName').textContent = user.name || 'User';
+      document.getElementById('profRole').textContent = user.role || 'Customer';
+      document.getElementById('profEmail').textContent = user.email || '-';
+      document.getElementById('profPhone').textContent = user.phone || '-';
+      
+      // Load saved address
+      document.getElementById('profAddress').value = user.location || '';
+
+      // Handle NID Status UI
+      var nidStat = (user.nidVerification && user.nidVerification.status) ? user.nidVerification.status : 'unverified';
+      var statEl = document.getElementById('profNidStatus');
+      statEl.textContent = nidStat.toUpperCase();
+      
+      if (nidStat === 'verified') statEl.style.color = 'var(--green)';
+      else if (nidStat === 'pending') statEl.style.color = 'var(--orange)';
+      else if (nidStat === 'rejected') statEl.style.color = 'red';
+      else statEl.style.color = 'var(--text-faint, #6b6b6b)';
+
+      // Show NID input block only if unverified or rejected
+      var nidBlock = document.getElementById('nidSubmitBlock');
+      if (nidStat === 'unverified' || nidStat === 'rejected') {
+        nidBlock.style.display = 'block';
+      } else {
+        nidBlock.style.display = 'none';
+      }
+    }
+  } catch(e) {
+    console.error("Failed to load profile", e);
+  }
+}
+
+function closeProfileModal() {
+  document.getElementById('profileModal').classList.remove('open');
+}
+
+async function submitNid(btn) {
+  var nidNumber = document.getElementById('nidInput').value.trim();
+  if (!nidNumber) return alert('Please enter your NID number.');
+
+  btn.textContent = 'Submitting...'; 
+  btn.disabled = true;
+
+  try {
+    var token = localStorage.getItem('khoj_token');
+    var res = await fetch(API+'/api/users/verify-nid', {
+      method: 'POST',
+      headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token 
+      },
+      body: JSON.stringify({ 
+        nidNumber: nidNumber, 
+        frontImageUrl: 'pending.jpg', 
+        backImageUrl: 'pending.jpg' 
+      })
+    });
+    var data = await res.json();
+    
+    if (data.success) {
+      alert('✅ NID submitted successfully! Pending admin approval.');
+      document.getElementById('nidInput').value = '';
+      openProfileModal(); // Refresh modal to show "PENDING"
+    } else {
+      alert(data.error || 'Failed to submit NID.');
+    }
+  } catch(e) {
+    alert('Server error.');
+  } finally {
+    btn.textContent = 'Submit for Verification'; 
+    btn.disabled = false;
+  }
+}
+
+function saveAddress() {
+    var address = document.getElementById('profAddress').value.trim();
+    // Save locally so UI feels instant.
+    var userJson = localStorage.getItem('khoj_user');
+    if(userJson) {
+        var user = JSON.parse(userJson);
+        user.location = address;
+        localStorage.setItem('khoj_user', JSON.stringify(user));
+    }
+    
+    alert('✅ Delivery address saved locally!');
+    closeProfileModal();
+}
+
 // ── Bootstrap ──
 function loadAll() {
   var user = getUser();
@@ -1924,8 +2155,13 @@ function loadAll() {
   }
 }
 
-updateNav();
-loadAll();
+var user = getUser();
+if (user && user.role === 'admin') {
+  window.location.href = '/admin';
+} else {
+  updateNav();
+  loadAll();
+}
 
 // Poll provider bookings every 30 seconds so new ones appear automatically
 setInterval(function() {

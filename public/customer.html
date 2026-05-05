@@ -9,7 +9,7 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:#f4f3ef;color:#1a1a1a;}
 .navbar{background:#fff;border-bottom:1px solid #e5e4df;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
-.logo{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:#0F6E56;}
+.logo{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:#0F6E56;text-decoration:none;}
 .logo span{color:#D85A30;}
 .nav-user{display:flex;align-items:center;gap:12px;}
 .avatar{width:36px;height:36px;border-radius:50%;background:#1D9E75;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;}
@@ -31,7 +31,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#f4f3ef;color:#1a1a1a
 .card{background:#fff;border:1px solid #e5e4df;border-radius:16px;padding:20px;}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
-/* Service cards */
 .service-card{background:#fff;border:1px solid #e5e4df;border-radius:16px;overflow:hidden;transition:.2s;cursor:pointer;}
 .service-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.08);}
 .sc-thumb{height:80px;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;}
@@ -50,7 +49,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#f4f3ef;color:#1a1a1a
 .sc-rating{font-size:12px;color:#6b6b6b;}
 .sc-btn{width:100%;padding:8px;border-radius:8px;background:#E1F5EE;color:#0F6E56;border:none;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:.2s;}
 .sc-btn:hover{background:#1D9E75;color:#fff;}
-/* Badge cards */
 .badge-card{background:#fff;border:1px solid #e5e4df;border-radius:12px;padding:16px;text-align:center;}
 .badge-emoji{font-size:36px;display:block;margin-bottom:8px;}
 .badge-name{font-size:13px;font-weight:600;margin-bottom:4px;}
@@ -61,7 +59,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#f4f3ef;color:#1a1a1a
 .tier-platinum{background:#EDE9FE;color:#5B21B6;}
 .badge-card.locked{opacity:.5;}
 .badge-card.locked .badge-emoji{filter:grayscale(1);}
-/* Messages */
 .msg-list{display:flex;flex-direction:column;gap:8px;max-height:320px;overflow-y:auto;padding:4px 0;}
 .msg-item{display:flex;gap:10px;padding:12px;border-radius:10px;background:#f4f3ef;cursor:pointer;transition:.15s;}
 .msg-item:hover,.msg-item.active{background:#E1F5EE;}
@@ -78,7 +75,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#f4f3ef;color:#1a1a1a
 .chat-input input{flex:1;padding:10px 14px;border:1.5px solid #e5e4df;border-radius:10px;font-size:14px;font-family:inherit;}
 .chat-input input:focus{outline:none;border-color:#1D9E75;}
 .chat-input button{padding:10px 18px;background:#1D9E75;color:#fff;border:none;border-radius:10px;cursor:pointer;font-family:inherit;font-weight:600;}
-/* Booking modal */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);z-index:9999;align-items:center;justify-content:center;padding:16px;}
 .modal-overlay.open{display:flex;}
 .modal{background:#fff;border-radius:24px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;padding:28px;position:relative;}
@@ -121,9 +117,14 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#f4f3ef;color:#1a1a1a
   </div>
   <div class="nav-user">
     <span id="unreadBadge" class="nav-badge">0</span>
-    <div class="avatar" id="userAvatar">U</div>
-    <span id="userName" style="font-size:14px;font-weight:600;">Loading...</span>
-    <button class="btn-sm btn-outline" onclick="logout()">Logout</button>
+    
+    <!-- Properly Closed Clickable Profile Area -->
+    <div onclick="openProfileModal()" style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 4px 8px; border-radius: 8px; transition: 0.2s;" onmouseover="this.style.background='#f4f3ef'" onmouseout="this.style.background='transparent'">
+      <div class="avatar" id="userAvatar">U</div>
+      <span id="userName" style="font-size:14px;font-weight:600;">Loading...</span>
+    </div>
+    
+    <button class="btn-sm btn-outline" style="margin-left:8px;" onclick="logout()">Logout</button>
   </div>
 </nav>
 
@@ -138,13 +139,10 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#f4f3ef;color:#1a1a1a
   </aside>
 
   <main class="main">
-
     <!-- HOME -->
     <div class="page active" id="page-home">
       <div class="page-title" id="welcomeTitle">Welcome back! 👋</div>
       <div class="page-sub">Browse and book trusted services near you</div>
-
-      <!-- Search -->
       <div style="display:flex;gap:10px;margin-bottom:24px;">
         <select id="catFilter" style="padding:10px 14px;border:1.5px solid #e5e4df;border-radius:10px;font-size:14px;font-family:inherit;">
           <option value="">All Categories</option>
@@ -157,9 +155,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#f4f3ef;color:#1a1a1a
         <input id="searchInput" placeholder="Search services..." style="flex:1;padding:10px 14px;border:1.5px solid #e5e4df;border-radius:10px;font-size:14px;font-family:inherit;"/>
         <button class="btn-sm btn-green" onclick="loadListings()">Search</button>
       </div>
-
       <div id="fraudAlertBanner" class="fraud-alert">⚠️ Your account has been flagged. Some features may be restricted. Contact support.</div>
-
       <div id="listingsGrid" class="grid-3"><div class="loading">Loading services...</div></div>
     </div>
 
@@ -251,7 +247,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#f4f3ef;color:#1a1a1a
   </main>
 </div>
 
-<!-- Booking Modal -->
+<!-- ── BOOKING MODAL ── -->
 <div class="modal-overlay" id="bookingModal">
   <div class="modal">
     <button class="modal-close" onclick="closeBooking()">✕</button>
@@ -263,8 +259,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#f4f3ef;color:#1a1a1a
       <div class="step-line"></div>
       <div class="step" id="bkStep3Ind"><div class="sn">3</div>Confirm</div>
     </div>
-
-    <!-- Step 1: Date + Slot -->
     <div id="bkPanel1">
       <div class="form-group"><label>Select Date</label><input type="date" id="bkDate"/></div>
       <div class="form-group">
@@ -287,8 +281,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#f4f3ef;color:#1a1a1a
       </div>
       <button class="btn-full btn-green-full" style="margin-top:20px;" onclick="bkNext(1)">Continue →</button>
     </div>
-
-    <!-- Step 2: Details -->
     <div id="bkPanel2" style="display:none;">
       <div class="grid-2">
         <div class="form-group"><label>Full Name</label><input id="bkName" placeholder="Rafiq Mahmud"/></div>
@@ -310,8 +302,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#f4f3ef;color:#1a1a1a
         <button class="btn-full btn-green-full" onclick="bkNext(2)">Review →</button>
       </div>
     </div>
-
-    <!-- Step 3: Confirm -->
     <div id="bkPanel3" style="display:none;">
       <div id="bkSummary" style="background:#f4f3ef;border-radius:12px;padding:16px;margin-bottom:16px;"></div>
       <div class="btn-row">
@@ -319,8 +309,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#f4f3ef;color:#1a1a1a
         <button class="btn-full btn-green-full" id="bkConfirmBtn" onclick="confirmBooking()">Confirm Booking</button>
       </div>
     </div>
-
-    <!-- Success -->
     <div id="bkSuccess" style="display:none;text-align:center;padding:12px 0;">
       <div style="font-size:56px;margin-bottom:12px;">✅</div>
       <h3 style="font-family:'Fraunces',serif;margin-bottom:8px;">Booking Confirmed!</h3>
@@ -328,8 +316,41 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#f4f3ef;color:#1a1a1a
       <p style="font-size:13px;color:#6b6b6b;margin-bottom:20px;">Provider has been notified via in-app message 📬</p>
       <button class="btn-full btn-green-full" onclick="closeBooking()">Done</button>
     </div>
-
     <div id="bkError" style="color:#dc2626;font-size:13px;background:#fee2e2;border-radius:8px;padding:8px 12px;margin-top:12px;display:none;"></div>
+  </div>
+</div>
+
+<!-- ── USER PROFILE MODAL ── -->
+<div class="modal-overlay" id="profileModal">
+  <div class="modal" style="max-width: 400px; padding: 24px;">
+    <button class="modal-close" onclick="closeProfileModal()">✕</button>
+    <h3 style="text-align: center; margin-bottom: 24px;">My Profile</h3>
+    
+    <div style="text-align: center; margin-bottom: 24px;">
+      <div style="font-size: 48px; margin-bottom: 8px;">👤</div>
+      <div style="font-size: 18px; font-weight: 700;" id="profName">Loading...</div>
+      <div style="font-size: 12px; color: var(--muted); text-transform: uppercase; margin-top: 4px;" id="profRole">Role</div>
+    </div>
+
+    <div class="form-group">
+      <label>Email Address</label>
+      <div style="padding: 10px 12px; background: #f4f3ef; border-radius: 8px; font-size: 14px;" id="profEmail">-</div>
+    </div>
+    <div class="form-group">
+      <label>Phone Number</label>
+      <div style="padding: 10px 12px; background: #f4f3ef; border-radius: 8px; font-size: 14px;" id="profPhone">-</div>
+    </div>
+
+    <!-- NID Section -->
+    <div class="form-group" style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #e5e4df;">
+      <label>NID Verification Status</label>
+      <div id="profNidStatus" style="font-weight: 700; margin-bottom: 12px;">UNVERIFIED</div>
+      
+      <div id="nidSubmitBlock" style="display: none;">
+        <input type="text" id="nidInput" placeholder="Enter 17-digit NID Number" style="width: 100%; padding: 10px 12px; border: 1.5px solid #e5e4df; border-radius: 8px; font-size: 14px; margin-bottom: 8px;">
+        <button onclick="submitNid()" style="width: 100%; padding: 10px; background: #1D9E75; color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Submit for Verification</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -339,21 +360,14 @@ let token = localStorage.getItem('khoj_token');
 let currentUser = JSON.parse(localStorage.getItem('khoj_user') || 'null');
 let activeListing = null, bkQty = 1, selectedSlot = null, currentChatUser = null;
 
-// Auth check
-if (!currentUser || currentUser.role !== 'customer') {
-  window.location.href = '/';
-}
+if (!currentUser || currentUser.role !== 'customer') window.location.href = '/';
 
-// Init
 document.getElementById('userAvatar').textContent = currentUser?.name?.charAt(0).toUpperCase() || 'U';
 document.getElementById('userName').textContent    = currentUser?.name || '';
 document.getElementById('welcomeTitle').textContent = `Welcome back, ${currentUser?.name?.split(' ')[0]}! 👋`;
 document.getElementById('bkDate').min = new Date().toISOString().split('T')[0];
 
-function logout() {
-  localStorage.clear();
-  window.location.href = '/';
-}
+function logout() { localStorage.clear(); window.location.href = '/'; }
 
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -365,12 +379,10 @@ function showPage(id) {
   if (id === 'bookings')        loadBookings();
   if (id === 'messages')        loadInbox();
   if (id === 'badges')          loadBadges();
-  if (id === 'fraud')           {}
 }
 
 const headers = () => ({ 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` });
 
-// ── LISTINGS ──
 async function loadListings() {
   const cat    = document.getElementById('catFilter')?.value || '';
   const search = document.getElementById('searchInput')?.value || '';
@@ -381,9 +393,7 @@ async function loadListings() {
     const res  = await fetch(url);
     const data = await res.json();
     renderListings(data.listings || [], 'listingsGrid');
-  } catch(e) { document.getElementById('listingsGrid').innerHTML = '<div class="loading">Could not load services. Is the server running?</div>'; }
-
-  // Check fraud status
+  } catch(e) { document.getElementById('listingsGrid').innerHTML = '<div class="loading">Could not load services.</div>'; }
   checkFraudStatus();
 }
 
@@ -407,56 +417,43 @@ function renderListings(listings, gridId) {
   `).join('');
 }
 
-// ── RECOMMENDATIONS ──
 async function loadRecommendations() {
-  document.getElementById('recGrid').innerHTML = '<div class="loading">Building your recommendations...</div>';
+  document.getElementById('recGrid').innerHTML = '<div class="loading">Building recommendations...</div>';
   try {
     const res  = await fetch(`${API}/api/recommendations`, { headers: headers() });
     const data = await res.json();
     if (data.basedOn) {
-      const el = document.getElementById('recBasedOn');
-      el.style.display = 'block';
+      const el = document.getElementById('recBasedOn'); el.style.display = 'block';
       const cats = [...new Set([...(data.basedOn.pastBookings||[]),...(data.basedOn.viewedCategories||[])])];
-      el.textContent = cats.length
-        ? `Based on your interest in: ${cats.join(', ')}`
-        : 'Showing top-rated services in your area';
+      el.textContent = cats.length ? `Based on your interest in: ${cats.join(', ')}` : 'Top-rated services in your area';
     }
     renderListings(data.recommendations || [], 'recGrid');
-  } catch(e) {
-    document.getElementById('recGrid').innerHTML = '<div class="loading">Sign in to see recommendations</div>';
-  }
+  } catch(e) { document.getElementById('recGrid').innerHTML = '<div class="loading">Failed to load</div>'; }
 }
 
-// ── BOOKINGS ──
 async function loadBookings() {
   try {
     const res  = await fetch(`${API}/api/schedule/my-bookings`, { headers: headers() });
     const data = await res.json();
     const list = document.getElementById('bookingsList');
-    if (!data.bookings?.length) { list.innerHTML = '<div class="loading">No bookings yet. Book a service to get started!</div>'; return; }
+    if (!data.bookings?.length) { list.innerHTML = '<div class="loading">No bookings yet.</div>'; return; }
     list.innerHTML = data.bookings.map(b => `
       <div class="card" style="margin-bottom:12px;display:flex;align-items:center;gap:16px;">
         <div style="font-size:28px;">📅</div>
         <div style="flex:1;">
           <div style="font-size:14px;font-weight:600;">${b.serviceSnapshot?.title || b.listing?.title || 'Service'}</div>
-          <div style="font-size:12px;color:#6b6b6b;">${new Date(b.scheduledDate).toLocaleDateString('en-BD',{weekday:'short',month:'short',day:'numeric'})} ${b.scheduledTime ? '• ' + b.scheduledTime : ''}</div>
+          <div style="font-size:12px;color:#6b6b6b;">${new Date(b.scheduledDate).toLocaleDateString()} ${b.scheduledTime ? '• ' + b.scheduledTime : ''}</div>
           <div style="font-size:12px;color:#6b6b6b;">Provider: ${b.provider?.name || 'TBD'}</div>
         </div>
         <div style="text-align:right;">
           <div style="font-size:14px;font-weight:700;color:#0F6E56;">৳${b.payment?.amount || 0}</div>
-          <span style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:${statusColor(b.status)};color:#fff;">${b.status}</span>
-          <div style="font-size:11px;color:#a0a0a0;margin-top:2px;">${b.bookingRef}</div>
+          <span style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:${b.status==='completed'?'#1D9E75':b.status==='pending'?'#D85A30':'#6b6b6b'};color:#fff;">${b.status}</span>
         </div>
       </div>
     `).join('');
   } catch(e) { document.getElementById('bookingsList').innerHTML = '<div class="loading">Could not load bookings</div>'; }
 }
 
-function statusColor(s) {
-  return s==='completed'?'#1D9E75':s==='confirmed'?'#1D9E75':s==='pending'?'#D85A30':s==='cancelled'?'#dc2626':'#6b6b6b';
-}
-
-// ── MESSAGES ──
 async function loadInbox() {
   try {
     const res  = await fetch(`${API}/api/messages/inbox`, { headers: headers() });
@@ -475,7 +472,7 @@ async function loadInbox() {
         </div>
       </div>
     `).join('');
-  } catch(e) { document.getElementById('inboxList').innerHTML = '<div style="padding:12px;font-size:13px;color:#a0a0a0;">Could not load messages</div>'; }
+  } catch(e) {}
 }
 
 async function openChat(userId, name) {
@@ -484,68 +481,38 @@ async function openChat(userId, name) {
   panel.innerHTML = `
     <div style="padding:14px;border-bottom:1px solid #e5e4df;font-size:14px;font-weight:600;">${name}</div>
     <div id="chatMessages" style="flex:1;min-height:200px;max-height:280px;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;"></div>
-    <div style="padding:12px;border-top:1px solid #e5e4df;">
-      <div class="chat-input">
-        <input id="chatInput" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendMsg()"/>
-        <button onclick="sendMsg()">Send</button>
-      </div>
-    </div>
+    <div style="padding:12px;border-top:1px solid #e5e4df;"><div class="chat-input"><input id="chatInput" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendMsg()"/><button onclick="sendMsg()">Send</button></div></div>
   `;
-  panel.style.display = 'flex';
-  panel.style.flexDirection = 'column';
-
+  panel.style.display = 'flex'; panel.style.flexDirection = 'column';
   const res  = await fetch(`${API}/api/messages/conversation/${userId}`, { headers: headers() });
   const data = await res.json();
   const msgs = document.getElementById('chatMessages');
-  msgs.innerHTML = data.messages?.map(m => `
-    <div class="bubble ${m.sender._id === currentUser._id ? 'me' : 'them'}">${m.content}</div>
-  `).join('') || '<div style="color:#a0a0a0;font-size:13px;text-align:center;">No messages yet</div>';
+  msgs.innerHTML = data.messages?.map(m => `<div class="bubble ${m.sender._id === currentUser._id ? 'me' : 'them'}">${m.content}</div>`).join('') || '<div style="color:#a0a0a0;font-size:13px;text-align:center;">No messages yet</div>';
   msgs.scrollTop = msgs.scrollHeight;
 }
 
 async function sendMsg() {
   if (!currentChatUser) return;
-  const input   = document.getElementById('chatInput');
+  const input = document.getElementById('chatInput');
   const content = input.value.trim();
   if (!content) return;
   input.value = '';
-  const msgs = document.getElementById('chatMessages');
-  msgs.innerHTML += `<div class="bubble me">${content}</div>`;
-  msgs.scrollTop = msgs.scrollHeight;
+  document.getElementById('chatMessages').innerHTML += `<div class="bubble me">${content}</div>`;
+  document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
   await fetch(`${API}/api/messages/send`, { method:'POST', headers: headers(), body: JSON.stringify({ receiverId: currentChatUser, content }) });
 }
 
-// ── BADGES ──
 async function loadBadges() {
   try {
     const res  = await fetch(`${API}/api/badges/my-badges`, { headers: headers() });
     const data = await res.json();
     document.getElementById('loyaltyPoints').textContent = data.loyaltyPoints || 0;
     document.getElementById('badgeProgress').textContent = `${data.progress?.bookings || 0} bookings • ${data.progress?.reviews || 0} reviews`;
-
-    const earned = document.getElementById('earnedBadges');
-    earned.innerHTML = data.earned?.length ? data.earned.map(b => `
-      <div class="badge-card">
-        <span class="badge-emoji">${b.badgeDefinition?.emoji || '🏆'}</span>
-        <div class="badge-name">${b.badgeDefinition?.name || 'Badge'}</div>
-        <span class="badge-tier tier-${b.badgeDefinition?.tier || 'bronze'}">${b.badgeDefinition?.tier || 'bronze'}</span>
-        <div style="font-size:11px;color:#a0a0a0;">Earned ${new Date(b.awardedAt).toLocaleDateString()}</div>
-      </div>
-    `).join('') : '<div style="color:#a0a0a0;font-size:13px;">No badges yet. Complete a booking to earn your first!</div>';
-
-    const locked = document.getElementById('lockedBadges');
-    locked.innerHTML = data.unearned?.map(b => `
-      <div class="badge-card locked">
-        <span class="badge-emoji">${b.emoji}</span>
-        <div class="badge-name">${b.name}</div>
-        <span class="badge-tier tier-${b.tier}">${b.tier}</span>
-        <div style="font-size:11px;color:#a0a0a0;">${b.description}</div>
-      </div>
-    `).join('') || '';
-  } catch(e) { console.error('loadBadges:', e.message); }
+    document.getElementById('earnedBadges').innerHTML = data.earned?.length ? data.earned.map(b => `<div class="badge-card"><span class="badge-emoji">${b.badgeDefinition?.emoji}</span><div class="badge-name">${b.badgeDefinition?.name}</div><span class="badge-tier tier-${b.badgeDefinition?.tier}">${b.badgeDefinition?.tier}</span></div>`).join('') : '<div style="color:#a0a0a0;font-size:13px;">No badges yet.</div>';
+    document.getElementById('lockedBadges').innerHTML = data.unearned?.map(b => `<div class="badge-card locked"><span class="badge-emoji">${b.emoji}</span><div class="badge-name">${b.name}</div><span class="badge-tier tier-${b.tier}">${b.tier}</span></div>`).join('') || '';
+  } catch(e) {}
 }
 
-// ── FRAUD ──
 async function checkFraudStatus() {
   try {
     const res  = await fetch(`${API}/api/fraud/my-status`, { headers: headers() });
@@ -565,17 +532,11 @@ async function submitReport() {
   try {
     const res  = await fetch(`${API}/api/fraud/report`, { method:'POST', headers: headers(), body: JSON.stringify(body) });
     const data = await res.json();
-    if (data.success) {
-      alert('✅ ' + data.message);
-      document.getElementById('reportReason').value = '';
-      document.getElementById('reportTargetId').value = '';
-    } else {
-      alert('❌ ' + data.message);
-    }
+    if (data.success) { alert('✅ ' + data.message); document.getElementById('reportReason').value = ''; document.getElementById('reportTargetId').value = ''; } 
+    else alert('❌ ' + data.message);
   } catch(e) { alert('Server error.'); }
 }
 
-// ── BOOKING MODAL ──
 async function openBooking(id, title, price, unit, cat) {
   activeListing = { id, title, price, unit, cat };
   bkQty = 1; selectedSlot = null;
@@ -586,25 +547,15 @@ async function openBooking(id, title, price, unit, cat) {
   document.getElementById('bkSlots').innerHTML = '<div style="color:#a0a0a0;font-size:13px;text-align:center;">Pick a date first</div>';
   resetBk();
   document.getElementById('bookingModal').classList.add('open');
-
-  // Track this category view for recommendations
-  await fetch(`${API}/api/recommendations/track-view`, {
-    method: 'POST', headers: headers(),
-    body: JSON.stringify({ category: cat })
-  }).catch(()=>{});
+  await fetch(`${API}/api/recommendations/track-view`, { method: 'POST', headers: headers(), body: JSON.stringify({ category: cat }) }).catch(()=>{});
 }
 
-function closeBooking() {
-  document.getElementById('bookingModal').classList.remove('open');
-}
-
+function closeBooking() { document.getElementById('bookingModal').classList.remove('open'); }
 function resetBk() {
   ['bkPanel1','bkPanel2','bkPanel3','bkSuccess'].forEach(id => document.getElementById(id).style.display = 'none');
   document.getElementById('bkPanel1').style.display = 'block';
   document.getElementById('bkError').style.display = 'none';
-  ['bkStep1Ind','bkStep2Ind','bkStep3Ind'].forEach((id,i) => {
-    document.getElementById(id).classList.toggle('active', i===0);
-  });
+  ['bkStep1Ind','bkStep2Ind','bkStep3Ind'].forEach((id,i) => document.getElementById(id).classList.toggle('active', i===0));
 }
 
 document.getElementById('bkDate').addEventListener('change', async (e) => {
@@ -615,18 +566,13 @@ document.getElementById('bkDate').addEventListener('change', async (e) => {
     const res  = await fetch(`${API}/api/schedule/slots?listingId=${activeListing.id}&date=${date}`);
     const data = await res.json();
     const slots = data.availableSlots || [];
-    document.getElementById('bkSlots').innerHTML = `<div class="slots-grid">${slots.map(s =>
-      `<button class="slot-btn ${!s.available?'taken':''}" ${!s.available?'disabled':''} data-time="${s.time}" onclick="selectSlot(this,'${s.time}')">${s.label}</button>`
-    ).join('')}</div>`;
-  } catch(e) {
-    document.getElementById('bkSlots').innerHTML = '<div style="color:#dc2626;font-size:13px;">Could not load slots</div>';
-  }
+    document.getElementById('bkSlots').innerHTML = `<div class="slots-grid">${slots.map(s => `<button class="slot-btn ${!s.available?'taken':''}" ${!s.available?'disabled':''} data-time="${s.time}" onclick="selectSlot(this,'${s.time}')">${s.label}</button>`).join('')}</div>`;
+  } catch(e) { document.getElementById('bkSlots').innerHTML = '<div style="color:#dc2626;font-size:13px;">Could not load slots</div>'; }
 });
 
 function selectSlot(btn, time) {
   document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-  selectedSlot = time;
+  btn.classList.add('selected'); selectedSlot = time;
 }
 
 function changeQty(delta) {
@@ -635,57 +581,35 @@ function changeQty(delta) {
   document.getElementById('bkTotal').textContent = `৳${(activeListing?.price || 0) * bkQty}`;
 }
 
-function showBkError(msg) {
-  const el = document.getElementById('bkError');
-  el.textContent = msg; el.style.display = 'block';
-}
+function showBkError(msg) { document.getElementById('bkError').textContent = msg; document.getElementById('bkError').style.display = 'block'; }
 
 function bkNext(from) {
   document.getElementById('bkError').style.display = 'none';
   if (from === 1) {
-    if (!document.getElementById('bkDate').value) return showBkError('Please select a date.');
-    if (!selectedSlot) return showBkError('Please select a time slot.');
-    document.getElementById('bkPanel1').style.display = 'none';
-    document.getElementById('bkPanel2').style.display = 'block';
-    document.getElementById('bkStep1Ind').classList.remove('active');
-    document.getElementById('bkStep2Ind').classList.add('active');
+    if (!document.getElementById('bkDate').value || !selectedSlot) return showBkError('Please select a date and time.');
+    document.getElementById('bkPanel1').style.display = 'none'; document.getElementById('bkPanel2').style.display = 'block';
+    document.getElementById('bkStep1Ind').classList.remove('active'); document.getElementById('bkStep2Ind').classList.add('active');
     const user = JSON.parse(localStorage.getItem('khoj_user') || '{}');
     if (user.name) document.getElementById('bkName').value = user.name;
     if (user.phone) document.getElementById('bkPhone').value = user.phone;
   } else if (from === 2) {
-    if (!document.getElementById('bkName').value.trim()) return showBkError('Name is required.');
-    if (!/^(\+880|0)1[3-9]\d{8}$/.test(document.getElementById('bkPhone').value.trim())) return showBkError('Enter a valid Bangladeshi phone number.');
-    if (!document.getElementById('bkAddress').value.trim()) return showBkError('Address is required.');
-    document.getElementById('bkPanel2').style.display = 'none';
-    document.getElementById('bkPanel3').style.display = 'block';
-    document.getElementById('bkStep2Ind').classList.remove('active');
-    document.getElementById('bkStep3Ind').classList.add('active');
-    const date = new Date(document.getElementById('bkDate').value).toLocaleDateString('en-BD',{weekday:'long',month:'long',day:'numeric'});
+    if (!document.getElementById('bkName').value.trim() || !document.getElementById('bkAddress').value.trim()) return showBkError('Name and address required.');
+    document.getElementById('bkPanel2').style.display = 'none'; document.getElementById('bkPanel3').style.display = 'block';
+    document.getElementById('bkStep2Ind').classList.remove('active'); document.getElementById('bkStep3Ind').classList.add('active');
+    const date = new Date(document.getElementById('bkDate').value).toLocaleDateString();
     document.getElementById('bkSummary').innerHTML = `
       <div class="sum-row"><span>Service</span><strong>${activeListing.title}</strong></div>
-      <div class="sum-row"><span>Date</span><strong>${date}</strong></div>
-      <div class="sum-row"><span>Time</span><strong>${selectedSlot}</strong></div>
-      <div class="sum-row"><span>Quantity</span><strong>${bkQty} ${activeListing.unit}(s)</strong></div>
-      <div class="sum-row"><span>Address</span><strong>${document.getElementById('bkAddress').value.trim()}</strong></div>
-      <div class="sum-row"><span>Payment</span><strong>${document.getElementById('bkPayment').value}</strong></div>
-      <div class="sum-row sum-total"><span>Total</span><strong style="color:#0F6E56;font-family:'Fraunces',serif;font-size:20px;">৳${activeListing.price * bkQty}</strong></div>
+      <div class="sum-row"><span>Date & Time</span><strong>${date} · ${selectedSlot}</strong></div>
+      <div class="sum-row"><span>Quantity</span><strong>${bkQty}</strong></div>
+      <div class="sum-row sum-total"><span>Total</span><strong style="color:#0F6E56;">৳${activeListing.price * bkQty}</strong></div>
     `;
   }
 }
 
 function bkBack(from) {
   document.getElementById('bkError').style.display = 'none';
-  if (from === 2) {
-    document.getElementById('bkPanel2').style.display = 'none';
-    document.getElementById('bkPanel1').style.display = 'block';
-    document.getElementById('bkStep2Ind').classList.remove('active');
-    document.getElementById('bkStep1Ind').classList.add('active');
-  } else if (from === 3) {
-    document.getElementById('bkPanel3').style.display = 'none';
-    document.getElementById('bkPanel2').style.display = 'block';
-    document.getElementById('bkStep3Ind').classList.remove('active');
-    document.getElementById('bkStep2Ind').classList.add('active');
-  }
+  if (from === 2) { document.getElementById('bkPanel2').style.display = 'none'; document.getElementById('bkPanel1').style.display = 'block'; document.getElementById('bkStep2Ind').classList.remove('active'); document.getElementById('bkStep1Ind').classList.add('active'); } 
+  else if (from === 3) { document.getElementById('bkPanel3').style.display = 'none'; document.getElementById('bkPanel2').style.display = 'block'; document.getElementById('bkStep3Ind').classList.remove('active'); document.getElementById('bkStep2Ind').classList.add('active'); }
 }
 
 async function confirmBooking() {
@@ -705,28 +629,73 @@ async function confirmBooking() {
     const res  = await fetch(`${API}/api/schedule/book`, { method:'POST', headers: headers(), body: JSON.stringify(body) });
     const data = await res.json();
     if (!res.ok) { showBkError(data.message || 'Booking failed.'); btn.textContent = 'Confirm Booking'; btn.disabled = false; return; }
-    document.getElementById('bkPanel3').style.display = 'none';
-    document.getElementById('bkSuccess').style.display = 'block';
+    document.getElementById('bkPanel3').style.display = 'none'; document.getElementById('bkSuccess').style.display = 'block';
     document.getElementById('bkRef').textContent = data.bookingRef;
   } catch(e) { showBkError('Server error.'); btn.textContent = 'Confirm Booking'; btn.disabled = false; }
 }
 
-// ── UNREAD COUNT ──
 async function loadUnreadCount() {
   try {
     const res  = await fetch(`${API}/api/messages/unread-count`, { headers: headers() });
     const data = await res.json();
     const count = data.unreadCount || 0;
-    document.getElementById('msgCount').textContent = count;
     document.getElementById('unreadBadge').textContent = count;
     document.getElementById('unreadBadge').style.display = count > 0 ? 'inline' : 'none';
   } catch(e) {}
 }
 
-// Init
-loadListings();
-loadUnreadCount();
-setInterval(loadUnreadCount, 30000);
+// ── PROFILE MODAL LOGIC ──
+async function openProfileModal() {
+  document.getElementById('profileModal').classList.add('open');
+  try {
+    const res = await fetch(`${API}/api/users/profile`, { headers: headers() });
+    const data = await res.json();
+    if (data.success) {
+      const user = data.user;
+      document.getElementById('profName').textContent = user.name;
+      document.getElementById('profRole').textContent = user.role;
+      document.getElementById('profEmail').textContent = user.email;
+      document.getElementById('profPhone').textContent = user.phone;
+      
+      const nidStat = user.nidVerification?.status || 'unverified';
+      const statEl = document.getElementById('profNidStatus');
+      statEl.textContent = nidStat.toUpperCase();
+      
+      if (nidStat === 'verified') statEl.style.color = '#1D9E75';
+      else if (nidStat === 'pending') statEl.style.color = '#D85A30';
+      else if (nidStat === 'rejected') statEl.style.color = '#dc2626';
+      else statEl.style.color = '#6b6b6b';
+
+      const nidBlock = document.getElementById('nidSubmitBlock');
+      if (nidStat === 'unverified' || nidStat === 'rejected') nidBlock.style.display = 'block';
+      else nidBlock.style.display = 'none';
+    }
+  } catch(e) { console.error("Failed to load profile", e); }
+}
+
+function closeProfileModal() { document.getElementById('profileModal').classList.remove('open'); }
+
+async function submitNid() {
+  const nidNumber = document.getElementById('nidInput').value.trim();
+  if (!nidNumber) return alert('Please enter your NID number.');
+  const btn = event.target;
+  btn.textContent = 'Submitting...'; btn.disabled = true;
+  try {
+    const res = await fetch(`${API}/api/users/verify-nid`, {
+      method: 'POST', headers: headers(),
+      body: JSON.stringify({ nidNumber: nidNumber, frontImageUrl: 'pending.jpg', backImageUrl: 'pending.jpg' })
+    });
+    const data = await res.json();
+    if (data.success) {
+      alert('✅ NID submitted! Pending admin approval.');
+      document.getElementById('nidInput').value = '';
+      openProfileModal();
+    } else alert(data.error || 'Failed to submit NID.');
+  } catch(e) { alert('Server error.'); } 
+  finally { btn.textContent = 'Submit for Verification'; btn.disabled = false; }
+}
+
+loadListings(); loadUnreadCount(); setInterval(loadUnreadCount, 30000);
 </script>
 </body>
 </html>

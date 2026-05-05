@@ -45,7 +45,7 @@ app.get('/',          function(req, res) { res.sendFile(path.join(__dirname, 'pu
 app.get('/app',       function(req, res) { res.sendFile(path.join(__dirname, 'public', 'app.html')); });
 app.get('/customer',  function(req, res) { res.sendFile(path.join(__dirname, 'public', 'customer.html')); });
 app.get('/provider',  function(req, res) { res.sendFile(path.join(__dirname, 'public', 'provider.html')); });
-
+app.get('/admin', function(req, res) { res.sendFile(path.join(__dirname, 'public', 'admin.html')); });
 var PORT = process.env.PORT || 3000;
 app.listen(PORT, function() {
   console.log('🚀 KHOJ running on http://localhost:' + PORT);

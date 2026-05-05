@@ -12,6 +12,12 @@ const userSchema = new mongoose.Schema({
   location: { type: String, default: '' },
   isActive: { type: Boolean, default: true },
   isFlagged:{ type: Boolean, default: false },
+  
+  // ── NEW OTP FIELDS ──
+  isPhoneVerified: { type: Boolean, default: false },
+  otpCode:         { type: String },
+  otpExpire:       { type: Date },
+  
   badges:       [{ type: mongoose.Schema.Types.ObjectId, ref: 'Badge' }],
   loyaltyPoints:{ type: Number, default: 0 },
   nidVerification: {

@@ -61,19 +61,31 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#f4f3ef;color:#1a1a1a
 .tier-platinum{background:#EDE9FE;color:#5B21B6;}
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
 .loading{text-align:center;padding:32px;color:#a0a0a0;font-size:14px;}
+/* Modals */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);z-index:9999;align-items:center;justify-content:center;padding:16px;}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border-radius:24px;width:100%;max-width:400px;padding:24px;position:relative;}
+.modal-close{position:absolute;top:16px;right:16px;background:#f4f3ef;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;}
+.form-group{margin-bottom:16px;}
+.form-group label{font-size:12px;font-weight:600;color:#6b6b6b;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.3px;}
 </style>
 </head>
 <body>
 
 <nav class="navbar">
   <div style="display:flex;align-items:center;gap:14px;">
-    <span class="logo">KHOJ<span>.</span></span>
+    <a href="/" style="text-decoration:none;" class="logo">KHOJ<span>.</span></a>
     <span style="font-size:12px;background:#FFF4F0;color:#D85A30;padding:3px 10px;border-radius:20px;font-weight:600;">Provider</span>
   </div>
   <div style="display:flex;align-items:center;gap:12px;">
     <span id="unseenBadge" style="background:#D85A30;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;display:none;">0 new</span>
-    <div style="width:36px;height:36px;border-radius:50%;background:#D85A30;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;" id="userAvatar">P</div>
-    <span id="userName" style="font-size:14px;font-weight:600;">Provider</span>
+    
+    <!-- Properly Closed Clickable Profile Area -->
+    <div onclick="openProfileModal()" style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 4px 8px; border-radius: 8px; transition: 0.2s;" onmouseover="this.style.background='#FFF4F0'" onmouseout="this.style.background='transparent'">
+      <div style="width:36px;height:36px;border-radius:50%;background:#D85A30;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;" id="userAvatar">P</div>
+      <span id="userName" style="font-size:14px;font-weight:600;">Loading...</span>
+    </div>
+
     <button onclick="logout()" style="padding:6px 16px;border-radius:8px;font-size:13px;font-weight:600;border:1.5px solid #e5e4df;background:#fff;cursor:pointer;">Logout</button>
   </div>
 </nav>
@@ -130,13 +142,11 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#f4f3ef;color:#1a1a1a
       <div class="page-title">💬 Messages</div>
       <div class="page-sub">Chat with your customers and view booking notifications</div>
 
-      <!-- Booking Notifications -->
       <div class="card" style="margin-bottom:20px;">
         <div style="font-size:14px;font-weight:600;margin-bottom:12px;color:#D85A30;">📬 Booking Notifications</div>
         <div id="bookingNotifications"><div class="loading" style="padding:12px;">No notifications</div></div>
       </div>
 
-      <!-- Chat -->
       <div style="display:grid;grid-template-columns:260px 1fr;gap:16px;">
         <div class="card" style="padding:0;overflow:hidden;">
           <div style="padding:14px;border-bottom:1px solid #e5e4df;font-size:13px;font-weight:600;">Conversations</div>
@@ -167,6 +177,40 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#f4f3ef;color:#1a1a1a
     </div>
 
   </main>
+</div>
+
+<!-- ── USER PROFILE MODAL ── -->
+<div class="modal-overlay" id="profileModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeProfileModal()">✕</button>
+    <h3 style="text-align: center; margin-bottom: 24px;">My Profile</h3>
+    
+    <div style="text-align: center; margin-bottom: 24px;">
+      <div style="font-size: 48px; margin-bottom: 8px;">👤</div>
+      <div style="font-size: 18px; font-weight: 700;" id="profName">Loading...</div>
+      <div style="font-size: 12px; color: var(--muted); text-transform: uppercase; margin-top: 4px;" id="profRole">Role</div>
+    </div>
+
+    <div class="form-group">
+      <label>Email Address</label>
+      <div style="padding: 10px 12px; background: #f4f3ef; border-radius: 8px; font-size: 14px;" id="profEmail">-</div>
+    </div>
+    <div class="form-group">
+      <label>Phone Number</label>
+      <div style="padding: 10px 12px; background: #f4f3ef; border-radius: 8px; font-size: 14px;" id="profPhone">-</div>
+    </div>
+
+    <!-- NID Section -->
+    <div class="form-group" style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #e5e4df;">
+      <label>NID Verification Status</label>
+      <div id="profNidStatus" style="font-weight: 700; margin-bottom: 12px;">UNVERIFIED</div>
+      
+      <div id="nidSubmitBlock" style="display: none;">
+        <input type="text" id="nidInput" placeholder="Enter 17-digit NID Number" style="width: 100%; padding: 10px 12px; border: 1.5px solid #e5e4df; border-radius: 8px; font-size: 14px; margin-bottom: 8px;">
+        <button onclick="submitNid()" style="width: 100%; padding: 10px; background: #D85A30; color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Submit for Verification</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -203,7 +247,7 @@ async function loadBookings() {
     allBookings = data.bookings || [];
     renderBookings(allBookings);
     updateStats(allBookings);
-  } catch(e) { console.error('loadBookings:', e.message); }
+  } catch(e) {}
 }
 
 function renderBookings(list) {
@@ -213,7 +257,7 @@ function renderBookings(list) {
       <div class="br-info">
         <div class="br-service">${b.serviceSnapshot?.title || 'Service'}</div>
         <div class="br-customer">👤 ${b.customer?.name || 'Customer'} • ${b.customer?.phone || ''}</div>
-        <div class="br-time">📅 ${new Date(b.scheduledDate).toLocaleDateString('en-BD',{weekday:'short',month:'short',day:'numeric'})} ${b.scheduledTime ? '• ' + b.scheduledTime : ''}</div>
+        <div class="br-time">📅 ${new Date(b.scheduledDate).toLocaleDateString()} ${b.scheduledTime ? '• ' + b.scheduledTime : ''}</div>
         <div style="font-size:11px;color:#a0a0a0;margin-top:2px;">${b.bookingRef}</div>
       </div>
       <div style="text-align:right;">
@@ -229,32 +273,12 @@ function renderBookings(list) {
     </div>
   `).join('') : '<div class="loading">No bookings yet</div>';
 
-  const containers = ['recentBookings', 'allBookingsList'];
-  containers.forEach(id => { if (document.getElementById(id)) document.getElementById(id).innerHTML = html; });
+  ['recentBookings', 'allBookingsList'].forEach(id => { if (document.getElementById(id)) document.getElementById(id).innerHTML = html; });
 }
 
 function filterBookings(status) {
   const filtered = status ? allBookings.filter(b => b.status === status) : allBookings;
-  document.getElementById('allBookingsList').innerHTML = filtered.length ? filtered.map(b => `
-    <div class="booking-row ${!b.providerNotified?'new':''}">
-      <div style="font-size:24px;">📅</div>
-      <div class="br-info">
-        <div class="br-service">${b.serviceSnapshot?.title || 'Service'}</div>
-        <div class="br-customer">👤 ${b.customer?.name || 'Customer'} • ${b.customer?.phone || ''}</div>
-        <div class="br-time">📅 ${new Date(b.scheduledDate).toLocaleDateString('en-BD',{weekday:'short',month:'short',day:'numeric'})} ${b.scheduledTime ? '• ' + b.scheduledTime : ''}</div>
-      </div>
-      <div style="text-align:right;">
-        <div class="br-amount">৳${b.payment?.amount || 0}</div>
-        <select class="status-select" onchange="updateStatus('${b._id}', this.value)">
-          <option value="pending"     ${b.status==='pending'    ?'selected':''}>Pending</option>
-          <option value="confirmed"   ${b.status==='confirmed'  ?'selected':''}>Confirmed</option>
-          <option value="in-progress" ${b.status==='in-progress'?'selected':''}>In Progress</option>
-          <option value="completed"   ${b.status==='completed'  ?'selected':''}>Completed</option>
-          <option value="cancelled"   ${b.status==='cancelled'  ?'selected':''}>Cancelled</option>
-        </select>
-      </div>
-    </div>
-  `).join('') : '<div class="loading">No bookings</div>';
+  renderBookings(filtered);
 }
 
 async function updateStatus(bookingId, status) {
@@ -391,6 +415,57 @@ async function loadBadges() {
       </div>
     `).join('') || '';
   } catch(e) {}
+}
+
+// ── PROFILE MODAL LOGIC ──
+async function openProfileModal() {
+  document.getElementById('profileModal').classList.add('open');
+  try {
+    const res = await fetch(`${API}/api/users/profile`, { headers: headers() });
+    const data = await res.json();
+    if (data.success) {
+      const user = data.user;
+      document.getElementById('profName').textContent = user.name;
+      document.getElementById('profRole').textContent = user.role;
+      document.getElementById('profEmail').textContent = user.email;
+      document.getElementById('profPhone').textContent = user.phone;
+      
+      const nidStat = user.nidVerification?.status || 'unverified';
+      const statEl = document.getElementById('profNidStatus');
+      statEl.textContent = nidStat.toUpperCase();
+      
+      if (nidStat === 'verified') statEl.style.color = '#1D9E75';
+      else if (nidStat === 'pending') statEl.style.color = '#D85A30';
+      else if (nidStat === 'rejected') statEl.style.color = '#dc2626';
+      else statEl.style.color = '#6b6b6b';
+
+      const nidBlock = document.getElementById('nidSubmitBlock');
+      if (nidStat === 'unverified' || nidStat === 'rejected') nidBlock.style.display = 'block';
+      else nidBlock.style.display = 'none';
+    }
+  } catch(e) { console.error("Failed to load profile", e); }
+}
+
+function closeProfileModal() { document.getElementById('profileModal').classList.remove('open'); }
+
+async function submitNid() {
+  const nidNumber = document.getElementById('nidInput').value.trim();
+  if (!nidNumber) return alert('Please enter your NID number.');
+  const btn = event.target;
+  btn.textContent = 'Submitting...'; btn.disabled = true;
+  try {
+    const res = await fetch(`${API}/api/users/verify-nid`, {
+      method: 'POST', headers: headers(),
+      body: JSON.stringify({ nidNumber: nidNumber, frontImageUrl: 'pending.jpg', backImageUrl: 'pending.jpg' })
+    });
+    const data = await res.json();
+    if (data.success) {
+      alert('✅ NID submitted! Pending admin approval.');
+      document.getElementById('nidInput').value = '';
+      openProfileModal();
+    } else alert(data.error || 'Failed to submit NID.');
+  } catch(e) { alert('Server error.'); } 
+  finally { btn.textContent = 'Submit for Verification'; btn.disabled = false; }
 }
 
 // Init
